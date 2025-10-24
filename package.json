@@ -1,0 +1,14 @@
+{
+	"type": "module",
+	"scripts": {
+		"dev": "vitepress dev"
+	},
+	"devDependencies": {
+		"vitepress": "2.0.0-alpha.12"
+	},
+	"pnpm": {
+		"overrides": {
+			"vite": "npm:rolldown-vite@latest"
+		}
+	}
+}
