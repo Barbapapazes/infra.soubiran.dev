@@ -1,9 +1,11 @@
 {
 	"type": "module",
 	"scripts": {
-		"dev": "vitepress dev"
+		"dev": "vitepress dev",
+		"build": "vitepress build"
 	},
 	"devDependencies": {
+		"oxc-minify": "^0.95.0",
 		"vitepress": "2.0.0-alpha.12"
 	},
 	"pnpm": {
