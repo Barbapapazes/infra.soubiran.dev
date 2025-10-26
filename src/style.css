@@ -1,2 +1,19 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "@nuxt/ui";
+
+@theme {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-sofia: 'Sofia sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+:root {
+  --primary: 'black';
+  --ui-text-highlighted: var(--ui-color-neutral-950);
+}
+
+.dark {
+  --primary: 'white';
+  --ui-text-highlighted: var(--ui-color-neutral-200);
+}

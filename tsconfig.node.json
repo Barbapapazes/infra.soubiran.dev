@@ -5,26 +5,26 @@
     "lib": [
       "ES2023"
     ],
-    "module": "ESNext",
-    "types": [
-      "node"
-    ],
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "paths": {
       "#build/ui": [
         "./node_modules/@nuxt/ui/.nuxt/ui"
       ]
     },
+    "types": [
+      "node"
+    ],
+    "allowImportingTsExtensions": true,
     "strict": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
     "noUncheckedSideEffectImports": true
   },
   "include": [
