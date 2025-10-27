@@ -12,7 +12,7 @@ import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 
-export default defineConfig({
+export default (hostname: string) => defineConfig({
   plugins: [
     vue({
       include: [/\.vue$/, /\.md$/],
@@ -84,7 +84,7 @@ export default defineConfig({
 
             // Add UTM for internal links
             if (href && /^https?:\/\/soubiran\.dev/.test(href)) {
-              token.attrSet('href', `${href}?utm_source=chat.soubiran.dev&utm_medium=link`)
+              token.attrSet('href', `${href}?utm_source=${hostname}&utm_medium=link`)
             }
 
             return linkRule(tokens, idx, options, env, self)
@@ -103,7 +103,7 @@ export default defineConfig({
               if (!isExternal) {
                 token.attrSet('width', '768')
                 token.attrSet('height', '400')
-                token.attrSet('src', joinURL('https://infra.soubiran.dev', 'cdn-cgi/image', 'width=1200,quality=80,format=auto', 'https://assets.infra.soubiran.dev', src))
+                token.attrSet('src', joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src))
               }
             }
 

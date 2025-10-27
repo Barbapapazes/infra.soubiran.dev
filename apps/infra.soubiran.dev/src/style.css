@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@source "../../../packages/vite/vite.config.ts";
+
 @import "@nuxt/ui";
 
 @theme {
