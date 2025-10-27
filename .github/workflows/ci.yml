@@ -40,7 +40,7 @@ jobs:
         run: pnpm run preview &
 
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps chrome
+        run: pnpm exec playwright install --with-deps
 
       - name: Run Playwright tests
         run: pnpm run test
