@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite-ssg build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@nuxt/ui": "^4.1.0",
@@ -13,6 +15,7 @@
     "vue": "^3.5.22"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^24.6.0",
     "@vue/tsconfig": "^0.8.1",
