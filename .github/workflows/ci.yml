@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        apps: ['apps/infra.soubiran.dev']
+        apps: [apps/infra.soubiran.dev]
     defaults:
       run:
         working-directory: ${{ matrix.apps }}
