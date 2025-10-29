@@ -7,9 +7,9 @@ Hey! I'm **Estéban Soubiran**, from [soubiran.dev](https://soubiran.dev).
 
 The website you're on is dedicated to documenting the ecosystem I build and maintain. It's like a personal wiki but open to everyone.
 
-Since the beginning of my web journey in 2018, I've always wanted to read concrete, actionable content about everything that goes on behind the scenes of a website. Unfortunately, I never found such content—an end-to-end resource that would cover everything. I sometimes found corporate articles about infrastructure, but that's far too much for personal projects.
+Since the beginning of my web journey in 2018, I've always wanted to read concrete, actionable content about everything that goes on behind the scenes of a website. Unfortunately, I never found such content, an end-to-end resource that would cover everything. I sometimes found corporate articles about infrastructure, but that's far too much for personal projects.
 
-This wiki is my way to fill that gap. Through this wiki, I'll share everything about my infrastructure, the tools I use, the links between them, the deployment process, the platforms I rely on, and more. The documents are highly technical—this isn't meant for beginners—and they cover a wide range of topics, from technical choices to architectural decisions. It's also a way for me to keep track of my infrastructure, empty my brain, and have a reference for future me.
+This wiki is my way to fill that gap. Through this wiki, I'll share everything about my infrastructure, the tools I use, the links between them, the deployment process, the platforms I rely on, and more. The documents are highly technical, this isn't meant for beginners, and they cover a wide range of topics, from technical choices to architectural decisions. It's also a way for me to keep track of my infrastructure, empty my brain, and have a reference for future me.
 
 Before reading, there are three things you absolutely need to keep in mind:
 
