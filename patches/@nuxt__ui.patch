@@ -1,0 +1,13 @@
+diff --git a/dist/runtime/vue/stubs.js b/dist/runtime/vue/stubs.js
+index 3bfdce3951a6d7b509377c3fd08d1f111f16cabc..95f670012849e6f9ff9ec619a709387c57117d32 100644
+--- a/dist/runtime/vue/stubs.js
++++ b/dist/runtime/vue/stubs.js
+@@ -57,7 +57,7 @@ const hooks = createHooks();
+ export function useNuxtApp() {
+   return {
+     isHydrating: true,
+-    payload: { serverRendered: false },
++    payload: { serverRendered: import.meta.env.SSR || false },
+     hooks,
+     hook: hooks.hook
+   };
