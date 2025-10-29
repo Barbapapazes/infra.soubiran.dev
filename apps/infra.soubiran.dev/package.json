@@ -9,7 +9,7 @@
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.1.0",
+    "@nuxt/ui": "https://pkg.pr.new/@nuxt/ui@5347",
     "@unhead/vue": "^2.0.19",
     "markdown-it-github-alerts": "^1.0.0",
     "vue": "^3.5.22"

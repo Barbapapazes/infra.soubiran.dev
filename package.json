@@ -14,9 +14,6 @@
   "pnpm": {
     "overrides": {
       "vite": "npm:rolldown-vite@7.1.14"
-    },
-    "patchedDependencies": {
-      "@nuxt/ui": "patches/@nuxt__ui.patch"
     }
   }
 }
