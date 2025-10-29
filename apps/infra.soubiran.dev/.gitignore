@@ -25,3 +25,4 @@ blob-report/
 playwright/.cache/
 playwright/.auth/
 .vite-ssg-temp
+.env

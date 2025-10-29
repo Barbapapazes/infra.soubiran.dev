@@ -21,6 +21,14 @@ export default (hostname: string) => defineConfig({
     ui({
       autoImport: {
         dts: 'src/auto-imports.d.ts',
+        imports: [
+          'vue',
+          {
+            from: 'tailwind-variants',
+            imports: ['tv'],
+          },
+        ],
+
       },
       components: {
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
