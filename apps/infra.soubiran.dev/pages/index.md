@@ -19,7 +19,7 @@ Before reading, there are three things you absolutely need to keep in mind:
 
 I hope you'll find some useful information in this wiki.
 
-Apart from this wiki, I also share content about web development, my open-source journey, and my speaking adventures on my [personal blog](https://soubiran.dev/blog).
+Apart from this wiki, I also share content about web development, my open-source journey, and my speaking adventures on my [personal blog](https://soubiran.dev/posts).
 
 ---
 
