@@ -1,4 +1,7 @@
+/// <reference types="vite-ssg" />
 import type MarkdownIt from 'markdown-it'
+import { createWriteStream } from 'node:fs'
+import { join } from 'node:path'
 import ui from '@nuxt/ui/vite'
 import shiki from '@shikijs/markdown-it'
 import vue from '@vitejs/plugin-vue'
@@ -6,11 +9,14 @@ import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 // @ts-expect-error No declaration file
 import implicitFigures from 'markdown-it-image-figures'
 import linkAttributes from 'markdown-it-link-attributes'
+import { SitemapStream } from 'sitemap'
 import { joinURL } from 'ufo'
 import fonts from 'unplugin-fonts/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+
+const routes = new Set<string>()
 
 export default (hostname: string) => defineConfig({
   plugins: [
@@ -147,5 +153,22 @@ export default (hostname: string) => defineConfig({
 
   ssgOptions: {
     formatting: 'minify',
+    onPageRendered(route, renderedHTML) {
+      routes.add(route)
+      return renderedHTML
+    },
+    onFinished() {
+      sitemap(hostname, Array.from(routes))
+    },
   },
 })
+
+function sitemap(hostname: string, routes: string[]) {
+  const sitemapStream = new SitemapStream({ hostname: `https://${hostname}` })
+  const sitemapPath = join('dist', 'sitemap.xml')
+  const writeStream = createWriteStream(sitemapPath)
+
+  sitemapStream.pipe(writeStream)
+  routes.forEach(item => sitemapStream.write(item))
+  sitemapStream.end()
+}
