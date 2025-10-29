@@ -142,11 +142,7 @@ export default (hostname: string) => defineConfig({
             return
           const route = basename(id, '.md')
           const path = `og/${route}.png`
-          promises.push(
-            fs.existsSync(`${id.slice(0, -3)}.png`)
-              ? fs.copy(`${id.slice(0, -3)}.png`, `public/${path}`)
-              : generateOg(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`),
-          )
+          promises.push(generateOg(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`))
           frontmatter.image = `https://${hostname}/${path}`
         })()
 
