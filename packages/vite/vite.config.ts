@@ -144,4 +144,8 @@ export default (hostname: string) => defineConfig({
   optimizeDeps: {
     include: ['vue', '@unhead/vue'],
   },
+
+  ssgOptions: {
+    formatting: 'minify',
+  },
 })

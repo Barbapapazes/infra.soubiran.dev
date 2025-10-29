@@ -4,7 +4,7 @@ import { routes } from 'vue-router/auto-routes'
 import App from './App.vue'
 
 import 'markdown-it-github-alerts/styles/github-colors-light.css'
-import 'markdown-it-github-alerts/styles/github-colors-dark-media.css'
+import 'markdown-it-github-alerts/styles/github-colors-dark-class.css'
 import 'markdown-it-github-alerts/styles/github-base.css'
 import './style.css'
 
@@ -14,9 +14,6 @@ export const createApp = ViteSSG(
     routes,
   },
   ({ app }) => {
-    if (import.meta.env.SSR) {
-      return
-    }
     app.use(ui)
   },
 )
