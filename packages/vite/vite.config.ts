@@ -17,10 +17,11 @@ import { canonical } from './src/canonical'
 import { og } from './src/og'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
+import { structuredData } from './src/structured-data'
 
 const config: UserConfig = {}
 
-export default (hostname: string) => defineConfig({
+export default (title: string, hostname: string) => defineConfig({
   plugins: [
     vue({
       include: [/\.vue$/, /\.md$/],
@@ -140,6 +141,7 @@ export default (hostname: string) => defineConfig({
       frontmatterPreprocess(frontmatter, options, id, defaults) {
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
+        structuredData(id, frontmatter, title, hostname)
 
         const head = defaults(frontmatter, options)
         return { head, frontmatter }

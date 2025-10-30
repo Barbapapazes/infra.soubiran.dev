@@ -1,3 +1,3 @@
 import soubiran from '../../packages/vite/vite.config'
 
-export default soubiran('infra.soubiran.dev')
+export default soubiran('Estéban\'s Infra', 'infra.soubiran.dev')
