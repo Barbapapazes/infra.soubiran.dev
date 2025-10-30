@@ -30,6 +30,7 @@
   "include": [
     "vite.config.ts",
     "og.ts",
-    "sitemap.ts"
+    "sitemap.ts",
+    "canonical.ts"
   ]
 }

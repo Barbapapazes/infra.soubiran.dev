@@ -14,6 +14,7 @@ import fonts from 'unplugin-fonts/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import { canonical } from './canonical'
 import { og } from './og'
 import { routes, sitemap } from './sitemap'
 
@@ -139,9 +140,6 @@ export default (hostname: string) => defineConfig({
 
       frontmatterPreprocess(frontmatter, options, id, defaults) {
         (() => {
-          if (!id.endsWith('.md'))
-            return
-
           const route = basename(id, '.md')
           const path = `og/${route}.png`
 
@@ -149,6 +147,8 @@ export default (hostname: string) => defineConfig({
 
           frontmatter.image = `https://${hostname}/${path}`
         })()
+
+        canonical(id, frontmatter, hostname)
 
         const head = defaults(frontmatter, options)
         return { head, frontmatter }
