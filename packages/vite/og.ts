@@ -1,11 +1,12 @@
 import { Buffer } from 'node:buffer'
-import { dirname } from 'node:path'
+import { basename, dirname } from 'node:path'
 import fs from 'fs-extra'
 import sharp from 'sharp'
+import { promises } from './promise'
 
 const ogSVG = fs.readFileSync(new URL('./og-template.svg', import.meta.url), 'utf-8')
 
-export async function og(title: string, output: string) {
+async function generate(title: string, output: string) {
   if (fs.existsSync(output))
     return
 
@@ -32,4 +33,15 @@ export async function og(title: string, output: string) {
   catch (e) {
     console.error('Failed to generate og image', e)
   }
+}
+
+export function og(id: string, frontmatter: any, hostname: string) {
+  (() => {
+    const route = basename(id, '.md')
+    const path = `og/${route}.png`
+
+    promises.push(generate(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`))
+
+    frontmatter.image = `https://${hostname}/${path}`
+  })()
 }

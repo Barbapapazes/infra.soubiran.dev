@@ -31,6 +31,7 @@
     "vite.config.ts",
     "og.ts",
     "sitemap.ts",
-    "canonical.ts"
+    "canonical.ts",
+    "promise.ts"
   ]
 }

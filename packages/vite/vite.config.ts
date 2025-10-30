@@ -1,7 +1,6 @@
 /// <reference types="vite-ssg" />
 import type MarkdownIt from 'markdown-it'
 import type { UserConfig } from 'vite'
-import { basename } from 'node:path'
 import ui from '@nuxt/ui/vite'
 import shiki from '@shikijs/markdown-it'
 import vue from '@vitejs/plugin-vue'
@@ -16,10 +15,10 @@ import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 import { canonical } from './canonical'
 import { og } from './og'
+import { resolveAll } from './promise'
 import { routes, sitemap } from './sitemap'
 
 const config: UserConfig = {}
-const promises: Promise<any>[] = []
 
 export default (hostname: string) => defineConfig({
   plugins: [
@@ -139,15 +138,7 @@ export default (hostname: string) => defineConfig({
       },
 
       frontmatterPreprocess(frontmatter, options, id, defaults) {
-        (() => {
-          const route = basename(id, '.md')
-          const path = `og/${route}.png`
-
-          promises.push(og(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`))
-
-          frontmatter.image = `https://${hostname}/${path}`
-        })()
-
+        og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
 
         const head = defaults(frontmatter, options)
@@ -177,12 +168,12 @@ export default (hostname: string) => defineConfig({
     {
       name: 'await',
       async closeBundle() {
-        await Promise.all(promises)
+        await resolveAll()
       },
     },
 
     {
-      name: 'config-inject',
+      name: 'extract-config',
       configResolved(resolvedConfig) {
         Object.assign(config, resolvedConfig)
       },
