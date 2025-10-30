@@ -1,22 +1,23 @@
+/// <reference types="vite-ssg" />
 import type MarkdownIt from 'markdown-it'
-import { Buffer } from 'node:buffer'
-import { mkdir } from 'node:fs/promises'
-import { basename, dirname } from 'node:path'
+import type { UserConfig } from 'vite'
+import { basename } from 'node:path'
 import ui from '@nuxt/ui/vite'
 import shiki from '@shikijs/markdown-it'
 import vue from '@vitejs/plugin-vue'
-import fs from 'fs-extra'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 // @ts-expect-error No declaration file
 import implicitFigures from 'markdown-it-image-figures'
 import linkAttributes from 'markdown-it-link-attributes'
-import sharp from 'sharp'
 import { joinURL } from 'ufo'
 import fonts from 'unplugin-fonts/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import { og } from './og'
+import { routes, sitemap } from './sitemap'
 
+const config: UserConfig = {}
 const promises: Promise<any>[] = []
 
 export default (hostname: string) => defineConfig({
@@ -140,9 +141,12 @@ export default (hostname: string) => defineConfig({
         (() => {
           if (!id.endsWith('.md'))
             return
+
           const route = basename(id, '.md')
           const path = `og/${route}.png`
-          promises.push(generateOg(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`))
+
+          promises.push(og(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`))
+
           frontmatter.image = `https://${hostname}/${path}`
         })()
 
@@ -176,6 +180,13 @@ export default (hostname: string) => defineConfig({
         await Promise.all(promises)
       },
     },
+
+    {
+      name: 'config-inject',
+      configResolved(resolvedConfig) {
+        Object.assign(config, resolvedConfig)
+      },
+    },
   ],
 
   optimizeDeps: {
@@ -184,35 +195,12 @@ export default (hostname: string) => defineConfig({
 
   ssgOptions: {
     formatting: 'minify',
+    onPageRendered(route, renderedHTML) {
+      routes.add(route)
+      return renderedHTML
+    },
+    onFinished() {
+      sitemap(config, hostname, Array.from(routes))
+    },
   },
 })
-
-const ogSVG = fs.readFileSync(new URL('./og-template.svg', import.meta.url), 'utf-8')
-
-async function generateOg(title: string, output: string) {
-  if (fs.existsSync(output))
-    return
-
-  await fs.mkdir(dirname(output), { recursive: true })
-  // breakline every 30 chars
-  const lines = title.trim().split(/(.{0,30})(?:\s|$)/g).filter(Boolean)
-
-  const data: Record<string, string> = {
-    line1: lines[0],
-    line2: lines[1],
-    line3: lines[2],
-    headline: '',
-  }
-  const svg = ogSVG.replace(/\{\{([^}]+)\}\}/g, (_: unknown, name: string) => data[name] || '')
-
-  console.log(`Generating ${output}`)
-  try {
-    await sharp(Buffer.from(svg))
-      .resize(1200 * 1.1, 630 * 1.1)
-      .png()
-      .toFile(output)
-  }
-  catch (e) {
-    console.error('Failed to generate og image', e)
-  }
-}

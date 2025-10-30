@@ -28,6 +28,8 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "vite.config.ts"
+    "vite.config.ts",
+    "og.ts",
+    "sitemap.ts"
   ]
 }
