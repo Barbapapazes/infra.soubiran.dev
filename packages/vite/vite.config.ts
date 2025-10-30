@@ -13,10 +13,10 @@ import fonts from 'unplugin-fonts/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
-import { canonical } from './canonical'
-import { og } from './og'
-import { resolveAll } from './promise'
-import { routes, sitemap } from './sitemap'
+import { canonical } from './src/canonical'
+import { og } from './src/og'
+import { resolveAll } from './src/promise'
+import { routes, sitemap } from './src/sitemap'
 
 const config: UserConfig = {}
 

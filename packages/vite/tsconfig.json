@@ -29,9 +29,6 @@
   },
   "include": [
     "vite.config.ts",
-    "og.ts",
-    "sitemap.ts",
-    "canonical.ts",
-    "promise.ts"
+    "src"
   ]
 }
