@@ -6,7 +6,7 @@
     "@shikijs/markdown-it": "^3.14.0",
     "@types/markdown-it": "^14.1.2",
     "@types/markdown-it-link-attributes": "^3.0.5",
-    "@types/node": "^24.9.1",
+    "@types/node": "^24.9.2",
     "@vitejs/plugin-vue": "^6.0.1",
     "fs-extra": "^11.3.2",
     "markdown-it": "^14.1.0",
@@ -20,7 +20,7 @@
     "unplugin-fonts": "^1.4.0",
     "unplugin-vue-markdown": "^29.2.0",
     "unplugin-vue-router": "^0.16.0",
-    "vite": "npm:rolldown-vite@7.1.14",
+    "vite": "npm:rolldown-vite@7.1.20",
     "vite-ssg": "^28.2.2"
   },
   "devDependencies": {
