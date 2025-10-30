@@ -5,8 +5,16 @@
     <meta name="author" content="Estéban Soubiran" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estéban's Infra</title>
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#171717" />
+    <meta name="twitter:site" content="@soubiran_" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:site_name" content="Estéban's Infra" />
+    <meta property="og:type" content="website" />
     <script>
       ;(function () {
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -17,7 +25,7 @@
     </script>
     <script defer src="https://umami.soubiran.dev/script.js" data-website-id="cbe51314-3599-4b9b-957a-322761c07aff"></script>
   </head>
-  <body class="font-sans">
+  <body class="font-sans antialiased">
     <div id="app" class="isolate"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

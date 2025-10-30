@@ -1,14 +1,17 @@
 /// <reference types="vite-ssg" />
 import type MarkdownIt from 'markdown-it'
+import { Buffer } from 'node:buffer'
 import { createWriteStream } from 'node:fs'
-import { join } from 'node:path'
+import { basename, dirname, join } from 'node:path'
 import ui from '@nuxt/ui/vite'
 import shiki from '@shikijs/markdown-it'
 import vue from '@vitejs/plugin-vue'
+import fs from 'fs-extra'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 // @ts-expect-error No declaration file
 import implicitFigures from 'markdown-it-image-figures'
 import linkAttributes from 'markdown-it-link-attributes'
+import sharp from 'sharp'
 import { SitemapStream } from 'sitemap'
 import { joinURL } from 'ufo'
 import fonts from 'unplugin-fonts/vite'
@@ -17,6 +20,7 @@ import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 
 const routes = new Set<string>()
+const promises: Promise<any>[] = []
 
 export default (hostname: string) => defineConfig({
   plugins: [
@@ -27,6 +31,14 @@ export default (hostname: string) => defineConfig({
     ui({
       autoImport: {
         dts: 'src/auto-imports.d.ts',
+        imports: [
+          'vue',
+          {
+            from: 'tailwind-variants',
+            imports: ['tv'],
+          },
+        ],
+
       },
       components: {
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
@@ -51,9 +63,10 @@ export default (hostname: string) => defineConfig({
         'max-w-none',
         'prose prose-neutral dark:prose-invert',
         'prose-headings:text-default prose-h2:text-[1.125em] prose-h2:mb-[0.5em] prose-h3:text-[1em]',
-        'prose-p:my-[1em]',
+        'prose-p:my-[1em] dark:prose-p:text-muted prose-p:font-medium',
         'dark:prose-strong:text-default',
-        'dark:prose-a:text-muted prose-a:font-semibold prose-a:no-underline prose-a:border-b prose-a:border-muted prose-a:transition-colors prose-a:duration-300 prose-a:ease-out prose-a:hover:border-dimmed',
+        'dark:prose-a:text-muted prose-a:font-semibold prose-a:no-underline prose-a:border-b prose-a:border-muted prose-a:transition-colors prose-a:duration-300 prose-a:ease-out prose-a:hover:border-[var(--ui-text-dimmed)]',
+        'prose-hr:max-w-1/2 prose-hr:mx-auto prose-hr:my-[2em]',
         'prose-figure:bg-neutral-100 dark:prose-figure:bg-neutral-800 prose-figure:rounded-lg',
         'prose-img:rounded-lg prose-img:border prose-img:border-accented prose-img:shadow-md',
         'prose-video:rounded-lg prose-video:border prose-video:border-accented prose-video:shadow-md',
@@ -125,6 +138,20 @@ export default (hostname: string) => defineConfig({
           },
         }))
       },
+
+      frontmatterPreprocess(frontmatter, options, id, defaults) {
+        (() => {
+          if (!id.endsWith('.md'))
+            return
+          const route = basename(id, '.md')
+          const path = `og/${route}.png`
+          promises.push(generateOg(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`))
+          frontmatter.image = `https://${hostname}/${path}`
+        })()
+
+        const head = defaults(frontmatter, options)
+        return { head, frontmatter }
+      },
     }),
 
     fonts({
@@ -145,6 +172,13 @@ export default (hostname: string) => defineConfig({
         ],
       },
     }),
+
+    {
+      name: 'await',
+      async closeBundle() {
+        await Promise.all(promises)
+      },
+    },
   ],
 
   optimizeDeps: {
@@ -171,4 +205,34 @@ function sitemap(hostname: string, routes: string[]) {
   sitemapStream.pipe(writeStream)
   routes.forEach(item => sitemapStream.write(item))
   sitemapStream.end()
+}
+
+const ogSVG = fs.readFileSync(new URL('./og-template.svg', import.meta.url), 'utf-8')
+
+async function generateOg(title: string, output: string) {
+  if (fs.existsSync(output))
+    return
+
+  await fs.mkdir(dirname(output), { recursive: true })
+  // breakline every 30 chars
+  const lines = title.trim().split(/(.{0,30})(?:\s|$)/g).filter(Boolean)
+
+  const data: Record<string, string> = {
+    line1: lines[0],
+    line2: lines[1],
+    line3: lines[2],
+    headline: '',
+  }
+  const svg = ogSVG.replace(/\{\{([^}]+)\}\}/g, (_: unknown, name: string) => data[name] || '')
+
+  console.log(`Generating ${output}`)
+  try {
+    await sharp(Buffer.from(svg))
+      .resize(1200 * 1.1, 630 * 1.1)
+      .png()
+      .toFile(output)
+  }
+  catch (e) {
+    console.error('Failed to generate og image', e)
+  }
 }
