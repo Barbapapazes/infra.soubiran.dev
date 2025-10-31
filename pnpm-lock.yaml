@@ -9,8 +9,11 @@ overrides:
 
 patchedDependencies:
   '@nuxt/ui':
-    hash: 906cc8c86585c36ae2fe3c39e7767c9f1599edc3946025b3c0a9c01210a5f441
+    hash: 169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c
     path: patches/@nuxt__ui.patch
+  unhead:
+    hash: 2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d
+    path: patches/unhead.patch
   vite-ssg:
     hash: 67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b
     path: patches/vite-ssg.patch
@@ -33,7 +36,7 @@ importers:
     dependencies:
       '@nuxt/ui':
         specifier: ^4.1.0
-        version: 4.1.0(patch_hash=906cc8c86585c36ae2fe3c39e7767c9f1599edc3946025b3c0a9c01210a5f441)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
+        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@unhead/vue':
         specifier: ^2.0.19
         version: 2.0.19(vue@3.5.22(typescript@5.9.3))
@@ -73,7 +76,7 @@ importers:
         version: rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
       vite-ssg:
         specifier: ^28.2.2
-        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
+        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
       vue-router:
         specifier: ^4.6.3
         version: 4.6.3(vue@3.5.22(typescript@5.9.3))
@@ -85,7 +88,7 @@ importers:
     dependencies:
       '@nuxt/ui':
         specifier: ^4.1.0
-        version: 4.1.0(patch_hash=906cc8c86585c36ae2fe3c39e7767c9f1599edc3946025b3c0a9c01210a5f441)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
+        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@shikijs/markdown-it':
         specifier: ^3.14.0
         version: 3.14.0(markdown-it-async@2.2.0)
@@ -128,6 +131,9 @@ importers:
       ufo:
         specifier: ^1.6.1
         version: 1.6.1
+      unhead:
+        specifier: ^2.0.19
+        version: 2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d)
       unplugin-fonts:
         specifier: ^1.4.0
         version: 1.4.0(@nuxt/kit@4.2.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))
@@ -142,7 +148,7 @@ importers:
         version: rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
       vite-ssg:
         specifier: ^28.2.2
-        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
+        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.4
@@ -4260,7 +4266,7 @@ snapshots:
       pkg-types: 2.3.0
       std-env: 3.10.0
 
-  '@nuxt/ui@4.1.0(patch_hash=906cc8c86585c36ae2fe3c39e7767c9f1599edc3946025b3c0a9c01210a5f441)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)':
+  '@nuxt/ui@4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)':
     dependencies:
       '@ai-sdk/vue': 2.0.82(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@iconify/vue': 5.0.0(vue@3.5.22(typescript@5.9.3))
@@ -4734,14 +4740,14 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@unhead/dom@2.0.19(unhead@2.0.19)':
+  '@unhead/dom@2.0.19(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))':
     dependencies:
-      unhead: 2.0.19
+      unhead: 2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d)
 
   '@unhead/vue@2.0.19(vue@3.5.22(typescript@5.9.3))':
     dependencies:
       hookable: 5.5.3
-      unhead: 2.0.19
+      unhead: 2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d)
       vue: 3.5.22(typescript@5.9.3)
 
   '@vercel/oidc@3.0.3': {}
@@ -6954,7 +6960,7 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  unhead@2.0.19:
+  unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d):
     dependencies:
       hookable: 5.5.3
 
@@ -7157,9 +7163,9 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-ssg@28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)):
+  vite-ssg@28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)):
     dependencies:
-      '@unhead/dom': 2.0.19(unhead@2.0.19)
+      '@unhead/dom': 2.0.19(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))
       '@unhead/vue': 2.0.19(vue@3.5.22(typescript@5.9.3))
       ansis: 4.2.0
       cac: 6.7.14

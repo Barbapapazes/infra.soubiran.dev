@@ -17,6 +17,7 @@
     "sitemap": "^8.0.2",
     "typescript": "^5.9.3",
     "ufo": "^1.6.1",
+    "unhead": "^2.0.19",
     "unplugin-fonts": "^1.4.0",
     "unplugin-vue-markdown": "^29.2.0",
     "unplugin-vue-router": "^0.16.0",
