@@ -63,6 +63,7 @@ export default (title: string, hostname: string) => defineConfig({
         'prose prose-neutral dark:prose-invert',
         'prose-headings:text-default prose-h2:text-[1.125em] prose-h2:mb-[0.5em] prose-h3:text-[1em]',
         'prose-p:my-[1em] dark:prose-p:text-muted',
+        'dark:prose-ul:text-muted dark:prose-ol:text-muted',
         'dark:prose-strong:text-default',
         'dark:prose-a:text-muted prose-a:font-semibold prose-a:no-underline prose-a:border-b prose-a:border-muted prose-a:transition-colors prose-a:duration-300 prose-a:ease-out prose-a:hover:border-[var(--ui-text-dimmed)]',
         'prose-hr:max-w-1/2 prose-hr:mx-auto prose-hr:my-[2em]',
