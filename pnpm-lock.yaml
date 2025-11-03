@@ -101,12 +101,18 @@ importers:
       '@types/node':
         specifier: ^24.9.2
         version: 24.9.2
+      '@unhead/vue':
+        specifier: ^2.0.19
+        version: 2.0.19(vue@3.5.22(typescript@5.9.3))
       '@vitejs/plugin-vue':
         specifier: ^6.0.1
         version: 6.0.1(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))
       fs-extra:
         specifier: ^11.3.2
         version: 11.3.2
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
       markdown-it:
         specifier: ^14.1.0
         version: 14.1.0

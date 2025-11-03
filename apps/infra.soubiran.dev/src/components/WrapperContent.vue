@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { useHead } from '@unhead/vue'
-
 const { frontmatter } = defineProps<{
   frontmatter: {
     title: string
@@ -13,13 +11,9 @@ useHead({
 </script>
 
 <template>
-  <UContainer class="py-12">
-    <div class="mx-auto max-w-screen-md space-y-6">
-      <h1 class="text-xl font-bold text-highlighted">
-        {{ frontmatter.title }}
-      </h1>
+  <WrapperContainer>
+    <WrapperTitle :title="frontmatter.title" />
 
-      <slot />
-    </div>
-  </UContainer>
+    <slot />
+  </WrapperContainer>
 </template>
