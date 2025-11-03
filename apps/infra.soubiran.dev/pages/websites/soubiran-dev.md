@@ -1,6 +1,24 @@
 ---
 title: soubiran.dev
 description: This is my personal website and main domain. I use it as the entry point to access all my writings, projects, and talks.
+ecosystem:
+  - type: deployment
+    platform: Cloudflare Workers
+    ecosystem:
+      - type: build
+        platform: Cloudflare Build
+        ecosystem:
+        - type: repository
+          platform: GitHub
+          url: https://github.com/barbapapzes/soubiran.dev
+        - type: data
+          platform: talks.soubiran.dev
+        - type: data
+          platform: GitHub
+  - type: object-storage
+    platform: Cloudflare R2
+  - type: domain
+    platform: Cloudflare Domains
 ---
 
 [soubiran.dev](https://soubiran.dev) is my personal website. It is a content-driven site built with [VitePress](https://vitepress.dev/) and hosted on [Cloudflare Workers](https://workers.cloudflare.com/).
