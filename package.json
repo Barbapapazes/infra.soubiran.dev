@@ -9,6 +9,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^6.1.0",
     "eslint": "^9.38.0",
+    "taze": "^19.9.0",
     "typescript": "^5.9.3"
   },
   "pnpm": {
