@@ -4,7 +4,8 @@ export type EcosystemPlatform = 'Cloudflare Workers' | 'Cloudflare Build' | 'Clo
 export interface EcosystemItem {
   type: EcosystemType
   platform: EcosystemPlatform
-  url?: string
+  description?: string
+  href?: string
   ecosystem?: EcosystemItem[]
 }
 

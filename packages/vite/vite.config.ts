@@ -23,6 +23,12 @@ const config: UserConfig = {}
 
 export default (title: string, hostname: string) => defineConfig({
   plugins: [
+    vueRouter({
+      extensions: ['.vue', '.md'],
+      routesFolder: 'pages',
+      dts: 'src/typed-router.d.ts',
+    }),
+
     vue({
       include: [/\.vue$/, /\.md$/],
     }),
@@ -35,6 +41,7 @@ export default (title: string, hostname: string) => defineConfig({
         ],
         imports: [
           'vue',
+          '@vueuse/core',
           {
             from: 'tailwind-variants',
             imports: ['tv'],
@@ -51,12 +58,6 @@ export default (title: string, hostname: string) => defineConfig({
           neutral: 'neutral',
         },
       },
-    }),
-
-    vueRouter({
-      extensions: ['.vue', '.md'],
-      routesFolder: 'pages',
-      dts: 'src/typed-router.d.ts',
     }),
 
     markdown({
@@ -187,7 +188,17 @@ export default (title: string, hostname: string) => defineConfig({
   ],
 
   optimizeDeps: {
-    include: ['vue', '@unhead/vue', '@iconify/vue', '@vue-flow/core', '@vue-flow/background', '@dagreejs/dagre'],
+    include: [
+      'vue',
+      'scule',
+      'vue-router',
+      '@unhead/vue',
+      'partysocket',
+      '@iconify/vue',
+      '@dagrejs/dagre',
+      '@vue-flow/core',
+      '@vue-flow/background',
+    ],
   },
 
   ssgOptions: {

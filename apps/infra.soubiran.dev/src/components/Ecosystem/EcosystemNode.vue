@@ -6,11 +6,19 @@ import { Handle } from '@vue-flow/core'
 const ecosystemNode = tv({
   slots: {
     base: 'border border-dashed rounded-full flex justify-center',
-    platform: 'px-2 py-1',
     typeIcon: 'size-4',
-    type: 'px-2 py-1 rounded-full text-xs font-mono flex items-center gap-1',
+    type: 'pl-3 pr-2 py-1 rounded-l-full text-xs font-mono flex items-center gap-1',
+    platform: 'py-1 text-sm',
   },
   variants: {
+    type: {
+      true: {
+        platform: 'pl-2 pr-3',
+      },
+      false: {
+        platform: 'px-3',
+      },
+    },
     platform: {
       cloudflare: {
         base: 'border-cloudflare',
@@ -21,8 +29,8 @@ const ecosystemNode = tv({
         type: 'bg-github/15 text-github',
       },
       soubiran: {
-        base: 'border-primary',
-        type: 'bg-primary/15 text-primary',
+        base: 'border-accented',
+        type: 'bg-primary/10 text-muted',
       },
     },
   },
@@ -40,6 +48,8 @@ export interface EcosystemNodeSlots {}
 const props = defineProps<EcosystemNodeProps>()
 defineEmits<EcosystemNodeEmits>()
 defineSlots<EcosystemNodeSlots>()
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
 function isCloudflarePlatform(platform: EcosystemPlatform) {
   return platform.includes('Cloudflare')
@@ -90,6 +100,7 @@ function getTypeIcon(type: EcosystemType, platform: EcosystemPlatform): string |
 const icon = computed(() => getTypeIcon(props.data.type, props.data.platform))
 
 const ui = computed(() => ecosystemNode({
+  type: !!props.data.type,
   platform: isCloudflarePlatform(props.data.platform)
     ? 'cloudflare'
     : isGithubPlatform(props.data.platform)
@@ -101,15 +112,35 @@ const ui = computed(() => ecosystemNode({
 </script>
 
 <template>
-  <div :class="ui.base({ class: [props.ui?.base, props.class] })">
-    <span v-if="props.data.type" :class="ui.type({ class: props.ui?.type })">
-      <UIcon v-if="icon" :name="icon" :class="ui.typeIcon({ class: props.ui?.typeIcon })" />
-      {{ props.data.type }}
-    </span>
+  <DefineTemplate>
+    <div :class="ui.base({ class: [props.ui?.base, props.class] })">
+      <span v-if="props.data.type" :class="ui.type({ class: props.ui?.type })">
+        <UIcon v-if="icon" :name="icon" :class="ui.typeIcon({ class: props.ui?.typeIcon })" />
+        {{ props.data.type }}
+      </span>
 
-    <span :class="ui.platform({ class: props.ui?.platform })">{{ props.data.platform }}</span>
+      <span :class="ui.platform({ class: props.ui?.platform })">{{ props.data.platform }}</span>
 
-    <Handle type="target" :position="props.sourcePosition" style="opacity: 0" />
-    <Handle type="source" :position="props.targetPosition" style="opacity: 0" />
-  </div>
+      <Handle type="target" :position="props.sourcePosition" style="opacity: 0" />
+      <Handle type="source" :position="props.targetPosition" style="opacity: 0" />
+    </div>
+  </DefineTemplate>
+
+  <UPopover v-if="props.data.description" mode="hover" arrow>
+    <ReuseTemplate />
+
+    <template #content>
+      <UPageCard
+        :description="props.data.description"
+        :to="props.data.href"
+        :ui="{
+          container: 'p-2 sm:p-2',
+          title: 'text-sm',
+          description: 'text-sm',
+        }"
+      />
+    </template>
+  </UPopover>
+
+  <ReuseTemplate v-else />
 </template>

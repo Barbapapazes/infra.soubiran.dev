@@ -3,10 +3,11 @@ import type { Edge, Node } from '@vue-flow/core'
 import type { Ecosystem } from '@/types/ecosystem'
 import { Background } from '@vue-flow/background'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
+import { kebabCase } from 'scule'
 
 const ecosystem = tv({
   slots: {
-    root: 'w-full h-120 bg-white dark:bg-black',
+    root: 'w-full h-140 bg-white dark:bg-black',
     base: '',
   },
 })
@@ -27,7 +28,7 @@ defineEmits<EcosystemEmits>()
 defineSlots<EcosystemSlots>()
 
 const initialNode = {
-  id: globalThis.crypto.randomUUID(),
+  id: kebabCase(props.name),
   type: 'ecosystem',
   data: {
     platform: props.name,
@@ -35,19 +36,18 @@ const initialNode = {
   position: { x: 0, y: 0 },
 }
 
-const { fitView } = useVueFlow()
-
 const { nodes: initialNodes, edges: initialEdges } = createNodesEdges(initialNode)
 
 const nodes = ref<Node[]>(initialNodes)
 const edges = ref<Edge[]>(initialEdges)
 
+const { fitView } = useVueFlow()
 const { layout } = useLayout()
 onMounted(() => {
   nodes.value = layout(nodes.value, edges.value)
 
   nextTick(() => {
-    fitView()
+    fitView({ minZoom: 1 })
   })
 })
 
@@ -66,7 +66,7 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
 
   for (const item of ecosystem) {
     const currentNode = {
-      id: globalThis.crypto.randomUUID(),
+      id: kebabCase(`${item.platform}-${item.type}`),
       type: 'ecosystem',
       position: { x: 0, y: 0 },
       data: item,
@@ -105,7 +105,7 @@ const ui = computed(() => ecosystem())
       fit-view-on-init
       :default-viewport="{ zoom: 1 }"
       :nodes-draggable="false"
-      :min-zoom="1"
+      :min-zoom="0.5"
       :max-zoom="1"
       :nodes="nodes"
       :edges="edges"
