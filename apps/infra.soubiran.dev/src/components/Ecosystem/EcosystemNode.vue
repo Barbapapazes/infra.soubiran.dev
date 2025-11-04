@@ -20,17 +20,37 @@ const ecosystemNode = tv({
       },
     },
     platform: {
-      cloudflare: {
+      'cloudflare': {
         base: 'border-cloudflare',
         type: 'bg-cloudflare/15 text-cloudflare',
       },
-      github: {
+      'github': {
         base: 'border-github',
         type: 'bg-github/15 text-github',
       },
-      soubiran: {
+      'soubiran': {
         base: 'border-accented',
         type: 'bg-primary/10 text-muted',
+      },
+      'slidev': {
+        base: 'border-slidev',
+        type: 'bg-slidev/15 text-slidev',
+      },
+      'vitepress': {
+        base: 'border-vitepress',
+        type: 'bg-vitepress/15 text-vitepress',
+      },
+      'pinia-colada': {
+        base: 'border-pinia-colada',
+        type: 'bg-pinia-colada/15 text-pinia-colada',
+      },
+      'vite': {
+        base: 'border-vite',
+        type: 'bg-vite/15 text-vite',
+      },
+      'vue': {
+        base: 'border-vue',
+        type: 'bg-vue/15 text-vue',
       },
     },
   },
@@ -63,7 +83,11 @@ function isSoubiranPlatform(platform: EcosystemPlatform) {
   return platform.includes('soubiran.dev')
 }
 
-function getTypeIcon(type: EcosystemType, platform: EcosystemPlatform): string | undefined {
+function isSlidevPlatform(platform: EcosystemPlatform) {
+  return platform.includes('Slidev')
+}
+
+function getTypeIcon(platform: EcosystemPlatform, type?: EcosystemType): string | undefined {
   if (isCloudflarePlatform(platform)) {
     switch (type) {
       case 'deployment':
@@ -95,19 +119,70 @@ function getTypeIcon(type: EcosystemType, platform: EcosystemPlatform): string |
         return 'i-ph:globe-simple'
     }
   }
+
+  if (platform === 'Slidev') {
+    return 'i-logos:slidev'
+  }
 }
 
-const icon = computed(() => getTypeIcon(props.data.type, props.data.platform))
+function getTypeLogo(platform: EcosystemPlatform): string | undefined {
+  if (platform === 'VitePress') {
+    return 'https://vitepress.dev/vitepress-logo-mini.svg'
+  }
+
+  if (platform === 'Pinia Colada') {
+    return 'https://pinia-colada.esm.dev/logo.svg'
+  }
+
+  if (platform === 'Vite') {
+    return 'https://vitejs.dev/logo.svg'
+  }
+
+  if (platform === 'Vue') {
+    return 'https://vuejs.org/images/logo.png'
+  }
+}
+
+const icon = computed(() => getTypeIcon(props.data.platform, props.data.type))
+const logo = computed(() => getTypeLogo(props.data.platform))
+
+function genericPlatform(platform: EcosystemPlatform) {
+  if (isCloudflarePlatform(platform)) {
+    return 'cloudflare'
+  }
+
+  if (isGithubPlatform(platform)) {
+    return 'github'
+  }
+
+  if (isSoubiranPlatform(platform)) {
+    return 'soubiran'
+  }
+
+  if (isSlidevPlatform(platform)) {
+    return 'slidev'
+  }
+
+  if (platform === 'VitePress') {
+    return 'vitepress'
+  }
+
+  if (platform === 'Pinia Colada') {
+    return 'pinia-colada'
+  }
+
+  if (platform === 'Vite') {
+    return 'vite'
+  }
+
+  if (platform === 'Vue') {
+    return 'vue'
+  }
+}
 
 const ui = computed(() => ecosystemNode({
   type: !!props.data.type,
-  platform: isCloudflarePlatform(props.data.platform)
-    ? 'cloudflare'
-    : isGithubPlatform(props.data.platform)
-      ? 'github'
-      : isSoubiranPlatform(props.data.platform)
-        ? 'soubiran'
-        : undefined,
+  platform: genericPlatform(props.data.platform),
 }))
 </script>
 
@@ -116,6 +191,7 @@ const ui = computed(() => ecosystemNode({
     <div :class="ui.base({ class: [props.ui?.base, props.class] })">
       <span v-if="props.data.type" :class="ui.type({ class: props.ui?.type })">
         <UIcon v-if="icon" :name="icon" :class="ui.typeIcon({ class: props.ui?.typeIcon })" />
+        <img v-else-if="logo" :src="logo" :alt="props.data.platform" :class="ui.typeIcon({ class: props.ui?.typeIcon })">
         {{ props.data.type }}
       </span>
 

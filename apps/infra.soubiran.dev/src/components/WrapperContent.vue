@@ -16,6 +16,7 @@ useHead({
 
 <template>
   <div>
+    <!-- TODO: rework the py -->
     <UContainer class="py-12">
       <div class="mx-auto max-w-screen-md space-y-6">
         <h1 class="text-xl font-bold text-highlighted">
@@ -30,6 +31,7 @@ useHead({
       v-if="frontmatter.ecosystem"
       :name="frontmatter.title"
       :ecosystem="frontmatter.ecosystem"
+      :ui="{ root: 'w-full h-140' }"
     />
   </div>
 </template>

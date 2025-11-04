@@ -12,6 +12,11 @@
 
   --color-cloudflare: #F63;
   --color-github: #5FED83;
+  --color-slidev: #6fcce1;
+  --color-vitepress: #a8b1ff;
+  --color-pinia-colada: #fad541;
+  --color-vite: #bcc0ff;
+  --color-vue: #42d292;
 }
 
 :root {

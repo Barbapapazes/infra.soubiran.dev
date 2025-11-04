@@ -30,6 +30,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/ecosystem': RouteRecordInfo<
+      '/ecosystem',
+      '/ecosystem',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/platforms/': RouteRecordInfo<
       '/platforms/',
       '/platforms',
@@ -44,9 +51,23 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/websites/infra-soubira-dev': RouteRecordInfo<
+      '/websites/infra-soubira-dev',
+      '/websites/infra-soubira-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/websites/soubiran-dev': RouteRecordInfo<
       '/websites/soubiran-dev',
       '/websites/soubiran-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/websites/talks-soubiran-dev': RouteRecordInfo<
+      '/websites/talks-soubiran-dev',
+      '/websites/talks-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -70,6 +91,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'pages/ecosystem.vue': {
+      routes:
+        | '/ecosystem'
+      views:
+        | never
+    }
     'pages/platforms/index.md': {
       routes:
         | '/platforms/'
@@ -82,9 +109,21 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'pages/websites/infra-soubira-dev.md': {
+      routes:
+        | '/websites/infra-soubira-dev'
+      views:
+        | never
+    }
     'pages/websites/soubiran-dev.md': {
       routes:
         | '/websites/soubiran-dev'
+      views:
+        | never
+    }
+    'pages/websites/talks-soubiran-dev.md': {
+      routes:
+        | '/websites/talks-soubiran-dev'
       views:
         | never
     }

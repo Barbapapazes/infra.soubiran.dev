@@ -19,6 +19,7 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
+    "pages/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",

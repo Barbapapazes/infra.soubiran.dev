@@ -27,6 +27,8 @@ const props = defineProps<EcosystemProps>()
 defineEmits<EcosystemEmits>()
 defineSlots<EcosystemSlots>()
 
+const { fitView } = useVueFlow()
+
 const initialNode = {
   id: kebabCase(props.name),
   type: 'ecosystem',
@@ -41,7 +43,6 @@ const { nodes: initialNodes, edges: initialEdges } = createNodesEdges(initialNod
 const nodes = ref<Node[]>(initialNodes)
 const edges = ref<Edge[]>(initialEdges)
 
-const { fitView } = useVueFlow()
 const { layout } = useLayout()
 onMounted(() => {
   nodes.value = layout(nodes.value, edges.value)
@@ -65,19 +66,21 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
   const edges: Edge[] = []
 
   for (const item of ecosystem) {
+    const id = kebabCase(`${item.platform}-${item.type}${item.name ? `-${item.name}` : ''}`.replace(/\s+/g, '-'))
+
     const currentNode = {
-      id: kebabCase(`${item.platform}-${item.type}`),
+      id,
       type: 'ecosystem',
       position: { x: 0, y: 0 },
       data: item,
-    }
+    } satisfies Node
 
     nodes.push(currentNode)
 
     if (parentNode) {
       edges.push({
-        id: `${parentNode.id}-${currentNode.id}`,
-        source: currentNode.id,
+        id: `${parentNode.id}-${id}`,
+        source: id,
         target: parentNode.id,
         animated: true,
       })
@@ -91,8 +94,8 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
   }
 
   return {
-    nodes,
-    edges,
+    nodes: Array.from(new Set(nodes.map(node => node.id))).map(id => nodes.find(node => node.id === id)) as Node[],
+    edges: Array.from(new Set(edges.map(edge => edge.id))).map(id => edges.find(edge => edge.id === id)) as Edge[],
   }
 }
 

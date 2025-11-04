@@ -125,6 +125,9 @@ importers:
       fs-extra:
         specifier: ^11.3.2
         version: 11.3.2
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
       markdown-it:
         specifier: ^14.1.0
         version: 14.1.0

@@ -1,9 +1,12 @@
 /// <reference types="vite-ssg" />
 import type MarkdownIt from 'markdown-it'
 import type { UserConfig } from 'vite'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import ui from '@nuxt/ui/vite'
 import shiki from '@shikijs/markdown-it'
 import vue from '@vitejs/plugin-vue'
+import matter from 'gray-matter'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 // @ts-expect-error No declaration file
 import implicitFigures from 'markdown-it-image-figures'
@@ -27,6 +30,18 @@ export default (title: string, hostname: string) => defineConfig({
       extensions: ['.vue', '.md'],
       routesFolder: 'pages',
       dts: 'src/typed-router.d.ts',
+      extendRoute(route) {
+        const path = route.components.get('default')
+        if (!path)
+          return
+
+        if (path.endsWith('.md')) {
+          const { data } = matter(readFileSync(path, 'utf-8'))
+          route.addToMeta({
+            frontmatter: data,
+          })
+        }
+      },
     }),
 
     vue({
@@ -41,6 +56,7 @@ export default (title: string, hostname: string) => defineConfig({
         ],
         imports: [
           'vue',
+          'vue-router',
           '@vueuse/core',
           {
             from: 'tailwind-variants',
@@ -199,6 +215,12 @@ export default (title: string, hostname: string) => defineConfig({
       '@vue-flow/core',
       '@vue-flow/background',
     ],
+  },
+
+  resolve: {
+    alias: {
+      '@': resolve('./src'),
+    },
   },
 
   ssgOptions: {
