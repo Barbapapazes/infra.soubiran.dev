@@ -1,11 +1,12 @@
 <script lang="ts">
 import type { Edge, Node } from '@vue-flow/core'
 import type { Ecosystem } from '@/types/ecosystem'
-import { VueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { useVueFlow, VueFlow } from '@vue-flow/core'
 
 const ecosystem = tv({
   slots: {
-    root: 'w-full h-120 border',
+    root: 'w-full h-120 bg-white dark:bg-black',
     base: '',
   },
 })
@@ -27,25 +28,36 @@ defineSlots<EcosystemSlots>()
 
 const initialNode = {
   id: globalThis.crypto.randomUUID(),
-  type: 'website',
+  type: 'ecosystem',
   data: {
     platform: props.name,
   },
-  position: { x: 250, y: 25 },
+  position: { x: 0, y: 0 },
 }
 
-const { nodes, edges } = createNodesEdges(initialNode)
+const { fitView } = useVueFlow()
+
+const { nodes: initialNodes, edges: initialEdges } = createNodesEdges(initialNode)
+
+const nodes = ref<Node[]>(initialNodes)
+const edges = ref<Edge[]>(initialEdges)
+
+const { layout } = useLayout()
+onMounted(() => {
+  nodes.value = layout(nodes.value, edges.value)
+
+  nextTick(() => {
+    fitView()
+  })
+})
 
 function createNodesEdges(initialNode: Node) {
-  const nodes = [initialNode]
-  const edges = []
+  const { nodes, edges } = ecosystemToNodesEdges(props.ecosystem, initialNode)
 
-  const nodesEdges = ecosystemToNodesEdges(props.ecosystem, initialNode)
-
-  nodes.push(...nodesEdges.nodes)
-  edges.push(...nodesEdges.edges)
-
-  return { nodes, edges }
+  return {
+    nodes: [initialNode, ...nodes],
+    edges,
+  }
 }
 
 function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
@@ -55,8 +67,8 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
   for (const item of ecosystem) {
     const currentNode = {
       id: globalThis.crypto.randomUUID(),
-      type: item.type,
-      position: { x: 250, y: 250 },
+      type: 'ecosystem',
+      position: { x: 0, y: 0 },
       data: item,
     }
 
@@ -65,8 +77,9 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
     if (parentNode) {
       edges.push({
         id: `${parentNode.id}-${currentNode.id}`,
-        source: parentNode.id,
-        target: currentNode.id,
+        source: currentNode.id,
+        target: parentNode.id,
+        animated: true,
       })
     }
 
@@ -90,35 +103,19 @@ const ui = computed(() => ecosystem())
   <div :class="ui.root({ class: props.ui?.root })">
     <VueFlow
       fit-view-on-init
-
       :default-viewport="{ zoom: 1 }"
+      :nodes-draggable="false"
       :min-zoom="1"
       :max-zoom="1"
       :nodes="nodes"
       :edges="edges"
       :class="ui.base({ class: [props.ui?.base, props.class] })"
     >
-      <template #node-build="buildNodeProps">
-        <EcosystemBuildNode v-bind="buildNodeProps" />
+      <template #node-ecosystem="defaultNodeProps">
+        <EcosystemNode v-bind="defaultNodeProps" />
       </template>
-      <template #node-data="dataNodeProps">
-        <EcosystemDataNode v-bind="dataNodeProps" />
-      </template>
-      <template #node-domain="domainNodeProps">
-        <EcosystemDomainNode v-bind="domainNodeProps" />
-      </template>
-      <template #node-object-storage="objectStorageNodeProps">
-        <EcosystemObjectStorageNode v-bind="objectStorageNodeProps" />
-      </template>
-      <template #node-deployment="deploymentNodeProps">
-        <EcosystemDeploymentNode v-bind="deploymentNodeProps" />
-      </template>
-      <template #node-repository="repositoryNodeProps">
-        <EcosystemRepositoryNode v-bind="repositoryNodeProps" />
-      </template>
-      <template #node-website="websiteNodeProps">
-        <EcosystemWebsiteNode v-bind="websiteNodeProps" />
-      </template>
+
+      <Background />
     </VueFlow>
     <div />
   </div>
@@ -126,5 +123,8 @@ const ui = computed(() => ecosystem())
 
 <style>
 @import '@vue-flow/core/dist/style.css';
-@import '@vue-flow/core/dist/theme-default.css';
+
+.vue-flow__edge-path {
+  stroke: var(--ui-border-muted);
+}
 </style>

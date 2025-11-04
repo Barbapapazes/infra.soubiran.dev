@@ -10,6 +10,8 @@ ecosystem:
         - type: repository
           platform: GitHub
           url: https://github.com/barbapapzes/soubiran.dev
+        - type: ci/cd
+          platform: GitHub Actions
         - type: data
           platform: talks.soubiran.dev
         - type: data

@@ -1,4 +1,4 @@
-export type EcosystemType = 'deployment' | 'build' | 'repository' | 'data' | 'object-storage' | 'domain' | 'website'
+export type EcosystemType = 'deployment' | 'build' | 'repository' | 'data' | 'object-storage' | 'domain' | 'website' | 'ci/cd'
 export type EcosystemPlatform = 'Cloudflare Workers' | 'Cloudflare Build' | 'Cloudflare R2' | 'Cloudflare Domains' | 'GitHub' | ({} & string)
 
 export interface EcosystemItem {

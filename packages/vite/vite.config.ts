@@ -30,6 +30,9 @@ export default (title: string, hostname: string) => defineConfig({
     ui({
       autoImport: {
         dts: 'src/auto-imports.d.ts',
+        dirs: [
+          'src/composables',
+        ],
         imports: [
           'vue',
           {
@@ -184,7 +187,7 @@ export default (title: string, hostname: string) => defineConfig({
   ],
 
   optimizeDeps: {
-    include: ['vue', '@unhead/vue'],
+    include: ['vue', '@unhead/vue', '@iconify/vue', '@vue-flow/core', '@vue-flow/background', '@dagreejs/dagre'],
   },
 
   ssgOptions: {

@@ -34,12 +34,21 @@ importers:
 
   apps/infra.soubiran.dev:
     dependencies:
+      '@dagrejs/dagre':
+        specifier: ^1.1.8
+        version: 1.1.8
+      '@iconify/vue':
+        specifier: ^5.0.0
+        version: 5.0.0(vue@3.5.22(typescript@5.9.3))
       '@nuxt/ui':
         specifier: ^4.1.0
         version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.9.2)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@unhead/vue':
         specifier: ^2.0.19
         version: 2.0.19(vue@3.5.22(typescript@5.9.3))
+      '@vue-flow/background':
+        specifier: ^1.3.2
+        version: 1.3.2(@vue-flow/core@1.47.0(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
       '@vue-flow/core':
         specifier: ^1.47.0
         version: 1.47.0(vue@3.5.22(typescript@5.9.3))
@@ -327,6 +336,13 @@ packages:
   '@csstools/css-tokenizer@3.0.4':
     resolution: {integrity: sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==}
     engines: {node: '>=18'}
+
+  '@dagrejs/dagre@1.1.8':
+    resolution: {integrity: sha512-5SEDlndt4W/LaVzPYJW+bSmSEZc9EzTf8rJ20WCKvjS5EAZAN0b+x0Yww7VMT4R3Wootkg+X9bUfUxazYw6Blw==}
+
+  '@dagrejs/graphlib@2.2.4':
+    resolution: {integrity: sha512-mepCf/e9+SKYy1d02/UkvSy6+6MoyXhVxP8lLDfA7BPE1X1d4dR0sZznmbM8/XVJ1GPM+Svnx7Xj6ZweByWUkw==}
+    engines: {node: '>17.0.0'}
 
   '@emnapi/core@1.6.0':
     resolution: {integrity: sha512-zq/ay+9fNIJJtJiZxdTnXS20PllcYMX3OE23ESc4HK/bdYu3cOWYVhsOhVnXALfU/uqJIxn5NBPd9z4v+SfoSg==}
@@ -1282,6 +1298,12 @@ packages:
 
   '@volar/typescript@2.4.23':
     resolution: {integrity: sha512-lAB5zJghWxVPqfcStmAP1ZqQacMpe90UrP5RJ3arDyrhy4aCUQqmxPPLB2PWDKugvylmO41ljK7vZ+t6INMTag==}
+
+  '@vue-flow/background@1.3.2':
+    resolution: {integrity: sha512-eJPhDcLj1wEo45bBoqTXw1uhl0yK2RaQGnEINqvvBsAFKh/camHJd5NPmOdS1w+M9lggc9igUewxaEd3iCQX2w==}
+    peerDependencies:
+      '@vue-flow/core': ^1.23.0
+      vue: ^3.3.0
 
   '@vue-flow/core@1.47.0':
     resolution: {integrity: sha512-w+qrm/xjQP5NUeKUOMIbQvpOeivTbGZtY2lGffK5kHiN3ZLyEazhESc8OeIV9NZkK2T5DIeyX/nhHxCC45HLiw==}
@@ -3772,6 +3794,12 @@ snapshots:
 
   '@csstools/css-tokenizer@3.0.4': {}
 
+  '@dagrejs/dagre@1.1.8':
+    dependencies:
+      '@dagrejs/graphlib': 2.2.4
+
+  '@dagrejs/graphlib@2.2.4': {}
+
   '@emnapi/core@1.6.0':
     dependencies:
       '@emnapi/wasi-threads': 1.1.0
@@ -4825,6 +4853,11 @@ snapshots:
       '@volar/language-core': 2.4.23
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
+
+  '@vue-flow/background@1.3.2(@vue-flow/core@1.47.0(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))':
+    dependencies:
+      '@vue-flow/core': 1.47.0(vue@3.5.22(typescript@5.9.3))
+      vue: 3.5.22(typescript@5.9.3)
 
   '@vue-flow/core@1.47.0(vue@3.5.22(typescript@5.9.3))':
     dependencies:

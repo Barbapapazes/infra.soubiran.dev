@@ -15,19 +15,21 @@ useHead({
 </script>
 
 <template>
-  <UContainer class="py-12">
-    <div class="mx-auto max-w-screen-md space-y-6">
-      <h1 class="text-xl font-bold text-highlighted">
-        {{ frontmatter.title }}
-      </h1>
+  <div>
+    <UContainer class="py-12">
+      <div class="mx-auto max-w-screen-md space-y-6">
+        <h1 class="text-xl font-bold text-highlighted">
+          {{ frontmatter.title }}
+        </h1>
 
-      <slot />
+        <slot />
+      </div>
+    </UContainer>
 
-      <Ecosystem
-        v-if="frontmatter.ecosystem"
-        :name="frontmatter.title"
-        :ecosystem="frontmatter.ecosystem"
-      />
-    </div>
-  </UContainer>
+    <Ecosystem
+      v-if="frontmatter.ecosystem"
+      :name="frontmatter.title"
+      :ecosystem="frontmatter.ecosystem"
+    />
+  </div>
 </template>
