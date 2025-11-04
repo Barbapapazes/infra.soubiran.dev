@@ -51,9 +51,9 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/websites/infra-soubira-dev': RouteRecordInfo<
-      '/websites/infra-soubira-dev',
-      '/websites/infra-soubira-dev',
+    '/websites/infra-soubiran-dev': RouteRecordInfo<
+      '/websites/infra-soubiran-dev',
+      '/websites/infra-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -109,9 +109,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'pages/websites/infra-soubira-dev.md': {
+    'pages/websites/infra-soubiran-dev.md': {
       routes:
-        | '/websites/infra-soubira-dev'
+        | '/websites/infra-soubiran-dev'
       views:
         | never
     }
