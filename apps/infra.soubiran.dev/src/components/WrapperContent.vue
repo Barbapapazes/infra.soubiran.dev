@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import type { Ecosystem } from '@/types/ecosystem'
 import { useHead } from '@unhead/vue'
 
 const { frontmatter } = defineProps<{
   frontmatter: {
     title: string
+    ecosystem?: Ecosystem
   }
 }>()
 
@@ -20,6 +22,12 @@ useHead({
       </h1>
 
       <slot />
+
+      <Ecosystem
+        v-if="frontmatter.ecosystem"
+        :name="frontmatter.title"
+        :ecosystem="frontmatter.ecosystem"
+      />
     </div>
   </UContainer>
 </template>

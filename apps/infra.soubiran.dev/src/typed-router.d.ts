@@ -44,6 +44,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/websites/soubiran-dev': RouteRecordInfo<
+      '/websites/soubiran-dev',
+      '/websites/soubiran-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
   }
 
   /**
@@ -72,6 +79,12 @@ declare module 'vue-router/auto-routes' {
     'pages/platforms/chat-soubiran-dev.md': {
       routes:
         | '/platforms/chat-soubiran-dev'
+      views:
+        | never
+    }
+    'pages/websites/soubiran-dev.md': {
+      routes:
+        | '/websites/soubiran-dev'
       views:
         | never
     }

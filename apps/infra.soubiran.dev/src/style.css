@@ -9,6 +9,8 @@
   --font-sans: 'DM Sans', sans-serif;
   --font-sofia: 'Sofia sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
+
+  --color-cloudflare: #F63;
 }
 
 :root {
