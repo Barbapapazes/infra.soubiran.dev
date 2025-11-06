@@ -1,6 +1,4 @@
 /// <reference types="vite-ssg" />
-import type MarkdownIt from 'markdown-it'
-import type { MarkdownExit } from 'markdown-it'
 import type { UserConfig } from 'vite'
 import ui from '@nuxt/ui/vite'
 import shiki from '@shikijs/markdown-it'
@@ -100,7 +98,7 @@ export default (title: string, hostname: string) => defineConfig({
             },
           },
         ])
-        md.use((md: MarkdownIt) => {
+        md.use((md) => {
           const linkRule = md.renderer.rules.link_open!
           md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
             const token = tokens[idx]
@@ -115,7 +113,7 @@ export default (title: string, hostname: string) => defineConfig({
           }
         })
 
-        md.use((md: MarkdownExit) => {
+        md.use((md) => {
           const imageRule = md.renderer.rules.image!
           md.renderer.rules.image = async (tokens, idx, options, env, self) => {
             const token = tokens[idx]
@@ -134,11 +132,11 @@ export default (title: string, hostname: string) => defineConfig({
                 const { data } = await getPixels(img)
                 const blurhash = encode(Uint8ClampedArray.from(data), width, height, 4, 4)
 
+                token.attrSet('src', remoteSrc)
+                token.attrSet('loading', 'lazy')
                 token.attrSet('width', width.toString())
                 token.attrSet('height', height.toString())
-                token.attrSet('loading', 'lazy')
                 token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
-                token.attrSet('src', remoteSrc)
               }
             }
 
