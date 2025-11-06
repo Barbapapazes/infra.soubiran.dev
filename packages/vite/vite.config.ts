@@ -1,9 +1,15 @@
 /// <reference types="vite-ssg" />
-import type MarkdownIt from 'markdown-it'
 import type { UserConfig } from 'vite'
+import { Buffer } from 'node:buffer'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
 import ui from '@nuxt/ui/vite'
 import shiki from '@shikijs/markdown-it'
+import { getPixels } from '@unpic/pixels'
+import { blurhashToDataUri } from '@unpic/placeholder'
 import vue from '@vitejs/plugin-vue'
+import { encode } from 'blurhash'
+import { imageSize } from 'image-size'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 // @ts-expect-error No declaration file
 import implicitFigures from 'markdown-it-image-figures'
@@ -80,7 +86,7 @@ export default (title: string, hostname: string) => defineConfig({
 
         md.use(implicitFigures, { figcaption: 'alt' })
 
-        md.use(linkAttributes, [
+        md.use(linkAttributes as any, [
           {
             matcher: (link: string) => /^https?:\/\/soubiran\.dev/.test(link),
             attrs: {
@@ -95,7 +101,7 @@ export default (title: string, hostname: string) => defineConfig({
             },
           },
         ])
-        md.use((md: MarkdownIt) => {
+        md.use((md) => {
           const linkRule = md.renderer.rules.link_open!
           md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
             const token = tokens[idx]
@@ -110,19 +116,36 @@ export default (title: string, hostname: string) => defineConfig({
           }
         })
 
-        md.use((md: MarkdownIt) => {
+        md.use((md) => {
           const imageRule = md.renderer.rules.image!
-          md.renderer.rules.image = (tokens, idx, options, env, self) => {
+          md.renderer.rules.image = async (tokens, idx, options, env, self) => {
             const token = tokens[idx]
             const src = token.attrGet('src')
 
             if (src) {
-              const isExternal = src.startsWith('http') || src.startsWith('//')
+              const isExternal = src.startsWith('http')
 
               if (!isExternal) {
-                token.attrSet('width', '768')
-                token.attrSet('height', '400')
-                token.attrSet('src', joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src))
+                const remoteSrc = joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src)
+
+                const file = join('.cache', src)
+                let img: Uint8Array<ArrayBufferLike> | undefined = await readFile(file).then(bin => Buffer.from(bin)).catch(() => undefined)
+                if (!img) {
+                  img = await fetch(remoteSrc).then(res => res.bytes())
+                  await mkdir(dirname(file), { recursive: true })
+                  await writeFile(file, Buffer.from(img!))
+                }
+
+                const { width, height } = imageSize(img!)
+
+                const { data } = await getPixels(img!)
+                const blurhash = encode(Uint8ClampedArray.from(data), width, height, 4, 4)
+
+                token.attrSet('src', remoteSrc)
+                token.attrSet('loading', 'lazy')
+                token.attrSet('width', width.toString())
+                token.attrSet('height', height.toString())
+                token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
               }
             }
 
