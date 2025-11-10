@@ -21,7 +21,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^24.9.2",
     "@vue/tsconfig": "^0.8.1",
-    "tailwindcss": "^4.1.16",
+    "tailwindcss": "^4.1.17",
     "typescript": "~5.9.3",
     "vite": "npm:rolldown-vite@7.1.20",
     "vite-ssg": "^28.2.2",
