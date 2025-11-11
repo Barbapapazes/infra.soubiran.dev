@@ -1,7 +1,8 @@
 <script lang="ts">
 const wrapperContainer = tv({
   slots: {
-    base: 'py-12',
+    root: 'py-12',
+    base: '',
     content: 'mx-auto max-w-screen-md space-y-6',
   },
 })
@@ -13,6 +14,7 @@ export interface WrapperContainerProps {
 export interface WrapperContainerEmits {}
 export interface WrapperContainerSlots {
   default: (props: any) => any
+  bottom: (props: any) => any
 }
 </script>
 
@@ -25,9 +27,13 @@ const ui = computed(() => wrapperContainer())
 </script>
 
 <template>
-  <UContainer :class="ui.base({ class: [props.ui?.base, props.class] })">
-    <div :class="ui.content({ class: [props.ui?.content] })">
-      <slot />
-    </div>
-  </UContainer>
+  <div :class="ui.root({ class: props.ui?.root })">
+    <UContainer :class="ui.base({ class: [props.ui?.base, props.class] })">
+      <div :class="ui.content({ class: [props.ui?.content] })">
+        <slot />
+      </div>
+    </UContainer>
+
+    <slot name="bottom" />
+  </div>
 </template>
