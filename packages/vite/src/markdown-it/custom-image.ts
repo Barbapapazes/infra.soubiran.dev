@@ -1,11 +1,14 @@
 import type { MarkdownItAsync } from 'markdown-it-async'
-import { Buffer } from 'node:buffer'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
-import { getPixels } from '@unpic/pixels'
 import { blurhashToDataUri } from '@unpic/placeholder'
-import { encode } from 'blurhash'
 import { joinURL } from 'ufo'
+
+interface Metadata {
+  width: number
+  height: number
+  blurhash: string
+}
 
 export function customImage(md: MarkdownItAsync, hostname: string) {
   md.use((md) => {
@@ -18,24 +21,22 @@ export function customImage(md: MarkdownItAsync, hostname: string) {
         const isExternal = src.startsWith('http')
 
         if (!isExternal) {
-          const remoteSrc = joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src)
+          const remoteSrc = `https://assets.${hostname}`
 
-          const file = join('.cache', src)
-          let img: Uint8Array<ArrayBufferLike> | undefined = await readFile(file).then(bin => Buffer.from(bin)).catch(() => undefined)
-          if (!img) {
-            img = await fetch(remoteSrc).then(res => res.bytes())
-            await mkdir(dirname(file), { recursive: true })
-            await writeFile(file, Buffer.from(img!))
+          const metadataFilename = `${src}.json`
+          const cachedMetadataFilename = join('.cache', metadataFilename)
+          let metadata: Metadata | undefined = await readFile(cachedMetadataFilename, 'utf-8').then(text => JSON.parse(text)).catch(() => undefined)
+          if (!metadata) {
+            metadata = await fetch(joinURL(remoteSrc, metadataFilename)).then(res => res.json()) as Metadata
+            await mkdir(dirname(cachedMetadataFilename), { recursive: true })
+            await writeFile(cachedMetadataFilename, JSON.stringify(metadata, null, 2))
           }
 
-          const data = await getPixels(img!)
-          const blurhash = encode(Uint8ClampedArray.from(data.data), data.width, data.height, 4, 4)
-
-          token.attrSet('src', remoteSrc)
           token.attrSet('loading', 'lazy')
-          token.attrSet('width', data.width.toString())
-          token.attrSet('height', data.height.toString())
-          token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
+          token.attrSet('width', metadata.width.toString())
+          token.attrSet('height', metadata.height.toString())
+          token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(metadata.blurhash)});`)
+          token.attrSet('src', joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', remoteSrc, src))
         }
       }
 
