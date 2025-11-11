@@ -20,6 +20,7 @@ import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import { assert } from './src/assert'
 import { canonical } from './src/canonical'
 import { og } from './src/og'
 import { resolveAll } from './src/promise'
@@ -164,6 +165,7 @@ export default (title: string, hostname: string) => defineConfig({
       },
 
       frontmatterPreprocess(frontmatter, options, id, defaults) {
+        assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
         structuredData(id, frontmatter, title, hostname)
