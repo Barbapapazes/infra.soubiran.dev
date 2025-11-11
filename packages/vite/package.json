@@ -29,6 +29,7 @@
     "vite-ssg": "^28.2.2"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4"
+    "@types/fs-extra": "^11.0.4",
+    "unplugin-icons": "^22.5.0"
   }
 }

@@ -16,6 +16,7 @@ import implicitFigures from 'markdown-it-image-figures'
 import linkAttributes from 'markdown-it-link-attributes'
 import { joinURL } from 'ufo'
 import fonts from 'unplugin-fonts/vite'
+import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
@@ -189,6 +190,10 @@ export default (title: string, hostname: string) => defineConfig({
           },
         ],
       },
+    }),
+
+    icons({
+      autoInstall: true,
     }),
 
     {

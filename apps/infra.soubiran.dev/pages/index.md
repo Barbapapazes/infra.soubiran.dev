@@ -27,28 +27,7 @@ Apart from this wiki, I also share content about web development, my open-source
 
 Want to connect with me? You can find me on the following platforms:
 
-<p class="flex flex-wrap gap-2">
-  <a class="flex items-center gap-1" href="https://www.linkedin.com/in/esteban25/" target="_blank" rel="noopener noreferrer">
-    <UIcon name="i-simple-icons:linkedin" class="size-4" />
-    <span>LinkedIn</span>
-  </a>
-  <a class="flex items-center gap-1" href="https://x.com/soubiran_" target="_blank" rel="noopener noreferrer">
-    <UIcon name="i-simple-icons:x" class="size-4" />
-    <span>X (Twitter)</span>
-  </a>
-  <a class="flex items-center gap-1" href="https://github.com/barbapapazes" target="_blank" rel="noopener noreferrer">
-    <UIcon name="i-simple-icons:github" class="size-4" />
-    <span>GitHub</span>
-  </a>
-  <a class="flex items-center gap-1" href="https://www.twitch.tv/barbapapazes" target="_blank" rel="noopener noreferrer">
-    <UIcon name="i-simple-icons:twitch" class="size-4" />
-    <span>Twitch</span>
-  </a>
-  <a class="flex items-center gap-1" href="https://www.youtube.com/@barbapapazes" target="_blank" rel="noopener noreferrer">
-    <UIcon name="i-simple-icons:youtube" class="size-4" />
-    <span>YouTube</span>
-  </a>
-</p>
+<Socials />
 
 If you have any questions or suggestions, feel free to reach out! You can message me on X or email me at <span class="font-sofia">infra@soubiran.dev</span>.
 
@@ -60,6 +39,4 @@ Everything on this website is free (content under [CC-BY-NC-SA-4.0](https://crea
 
 Thanks to all my current sponsors for their support!
 
-<a class="not-prose" href="https://soubiran.dev/sponsorship?utm_source=infra.soubiran.dev&utm_medium=link" target="_blank">
-  <img src="https://raw.githubusercontent.com/Barbapapazes/static/refs/heads/main/sponsors.svg" alt="Sponsors" class="border-0" />
-</a>
+<Sponsors />
