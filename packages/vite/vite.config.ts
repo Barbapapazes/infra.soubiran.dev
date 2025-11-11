@@ -1,20 +1,7 @@
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
-import { Buffer } from 'node:buffer'
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
 import ui from '@nuxt/ui/vite'
-import shiki from '@shikijs/markdown-it'
-import { getPixels } from '@unpic/pixels'
-import { blurhashToDataUri } from '@unpic/placeholder'
 import vue from '@vitejs/plugin-vue'
-import { encode } from 'blurhash'
-import { imageSize } from 'image-size'
-import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
-// @ts-expect-error No declaration file
-import implicitFigures from 'markdown-it-image-figures'
-import linkAttributes from 'markdown-it-link-attributes'
-import { joinURL } from 'ufo'
 import fonts from 'unplugin-fonts/vite'
 import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
@@ -22,6 +9,7 @@ import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 import { assert } from './src/assert'
 import { canonical } from './src/canonical'
+import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
 import { og } from './src/og'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
@@ -84,82 +72,12 @@ export default (title: string, hostname: string) => defineConfig({
       wrapperComponent: 'WrapperContent',
 
       async markdownItSetup(md) {
-        md.use(MarkdownItGitHubAlerts)
-
-        md.use(implicitFigures, { figcaption: 'alt' })
-
-        md.use(linkAttributes as any, [
-          {
-            matcher: (link: string) => /^https?:\/\/(?:[a-z0-9-]+\.)?soubiran\.dev(?:[/?#]|$)/.test(link),
-            attrs: {
-              target: '_blank',
-            },
-          },
-          {
-            matcher: (link: string) => /^https?:\/\//.test(link),
-            attrs: {
-              target: '_blank',
-              rel: 'noopener',
-            },
-          },
-        ])
-        md.use((md) => {
-          const linkRule = md.renderer.rules.link_open!
-          md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
-            const token = tokens[idx]
-            const href = token.attrGet('href')
-
-            // Add UTM for internal links (including subdomains)
-            if (href && /^https?:\/\/(?:[a-z0-9-]+\.)?soubiran\.dev(?:[/?#]|$)/.test(href)) {
-              token.attrSet('href', `${href}?utm_source=${hostname}&utm_medium=link`)
-            }
-
-            return linkRule(tokens, idx, options, env, self)
-          }
-        })
-
-        md.use((md) => {
-          const imageRule = md.renderer.rules.image!
-          md.renderer.rules.image = async (tokens, idx, options, env, self) => {
-            const token = tokens[idx]
-            const src = token.attrGet('src')
-
-            if (src) {
-              const isExternal = src.startsWith('http')
-
-              if (!isExternal) {
-                const remoteSrc = joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src)
-
-                const file = join('.cache', src)
-                let img: Uint8Array<ArrayBufferLike> | undefined = await readFile(file).then(bin => Buffer.from(bin)).catch(() => undefined)
-                if (!img) {
-                  img = await fetch(remoteSrc).then(res => res.bytes())
-                  await mkdir(dirname(file), { recursive: true })
-                  await writeFile(file, Buffer.from(img!))
-                }
-
-                const data = await getPixels(img!)
-                const blurhash = encode(Uint8ClampedArray.from(data.data), data.width, data.height, 4, 4)
-
-                token.attrSet('src', remoteSrc)
-                token.attrSet('loading', 'lazy')
-                token.attrSet('width', data.width.toString())
-                token.attrSet('height', data.height.toString())
-                token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
-              }
-            }
-
-            return imageRule(tokens, idx, options, env, self)
-          }
-        })
-
-        md.use(await shiki({
-          defaultColor: false,
-          themes: {
-            light: 'github-light',
-            dark: 'github-dark',
-          },
-        }))
+        githubAlerts(md)
+        implicitFiguresRule(md)
+        linkAttributesRule(md)
+        customLink(md, hostname)
+        customImage(md, hostname)
+        await shikiHighlight(md)
       },
 
       frontmatterPreprocess(frontmatter, options, id, defaults) {
