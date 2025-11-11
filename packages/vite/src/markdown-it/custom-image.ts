@@ -1,4 +1,4 @@
-import type MarkdownIt from 'markdown-it'
+import type { MarkdownItAsync } from 'markdown-it-async'
 import { Buffer } from 'node:buffer'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -7,7 +7,7 @@ import { blurhashToDataUri } from '@unpic/placeholder'
 import { encode } from 'blurhash'
 import { joinURL } from 'ufo'
 
-export function customImage(md: MarkdownIt, hostname: string) {
+export function customImage(md: MarkdownItAsync, hostname: string) {
   md.use((md) => {
     const imageRule = md.renderer.rules.image!
     md.renderer.rules.image = async (tokens, idx, options, env, self) => {

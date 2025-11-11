@@ -1,12 +1,16 @@
-import type MarkdownIt from 'markdown-it'
-import shiki from '@shikijs/markdown-it'
+import type { MarkdownItAsync } from 'markdown-it-async'
+import { fromAsyncCodeToHtml } from '@shikijs/markdown-it/async'
+import { codeToHtml } from 'shiki'
 
-export async function shikiHighlight(md: MarkdownIt) {
-  md.use(await shiki({
-    defaultColor: false,
-    themes: {
-      light: 'github-light',
-      dark: 'github-dark',
+export async function shikiHighlight(md: MarkdownItAsync) {
+  md.use(fromAsyncCodeToHtml(
+    codeToHtml,
+    {
+      defaultColor: false,
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
     },
-  }))
+  ))
 }

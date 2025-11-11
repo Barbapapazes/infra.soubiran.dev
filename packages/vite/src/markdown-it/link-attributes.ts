@@ -1,7 +1,7 @@
-import type MarkdownIt from 'markdown-it'
+import type { MarkdownItAsync } from 'markdown-it-async'
 import linkAttributes from 'markdown-it-link-attributes'
 
-export function linkAttributesRule(md: MarkdownIt) {
+export function linkAttributesRule(md: MarkdownItAsync) {
   md.use(linkAttributes as any, [
     {
       matcher: (link: string) => /^https?:\/\/(?:[a-z0-9-]+\.)?soubiran\.dev(?:[/?#]|$)/.test(link),

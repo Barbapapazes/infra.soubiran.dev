@@ -1,6 +1,6 @@
-import type MarkdownIt from 'markdown-it'
+import type { MarkdownItAsync } from 'markdown-it-async'
 
-export function customLink(md: MarkdownIt, hostname: string) {
+export function customLink(md: MarkdownItAsync, hostname: string) {
   md.use((md) => {
     const linkRule = md.renderer.rules.link_open!
     md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
