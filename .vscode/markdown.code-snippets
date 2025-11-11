@@ -1,0 +1,19 @@
+{
+	"New Infra Page": {
+		"isFileTemplate": true,
+		"scope": "markdown",
+		"description": "Create a new markdown file for infra.soubiran.dev with front matter",
+		"prefix": "new:md:infra",
+		"body": [
+			"---",
+			"title: $1",
+			"description: ",
+			"url: ",
+			"repository: ",
+			"ecosystem: ",
+			"---",
+			"",
+			"$0"
+		]
+	}
+}
