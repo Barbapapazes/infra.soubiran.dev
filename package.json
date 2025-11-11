@@ -1,19 +1,26 @@
 {
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d",
+  "packageManager": "pnpm@10.20.0",
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.1.0",
-    "eslint": "^9.38.0",
+    "@antfu/eslint-config": "^6.2.0",
+    "eslint": "^9.39.1",
+    "taze": "^19.9.0",
     "typescript": "^5.9.3"
   },
   "pnpm": {
     "overrides": {
-      "vite": "npm:rolldown-vite@7.1.14"
+      "markdown-it": "npm:markdown-exit@1.0.0-beta.6",
+      "vite": "npm:rolldown-vite@7.1.20"
+    },
+    "patchedDependencies": {
+      "@nuxt/ui": "patches/@nuxt__ui.patch",
+      "vite-ssg": "patches/vite-ssg.patch",
+      "unhead": "patches/unhead.patch"
     }
   }
 }
