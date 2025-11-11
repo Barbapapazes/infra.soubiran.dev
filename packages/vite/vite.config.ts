@@ -9,7 +9,6 @@ import { getPixels } from '@unpic/pixels'
 import { blurhashToDataUri } from '@unpic/placeholder'
 import vue from '@vitejs/plugin-vue'
 import { encode } from 'blurhash'
-import { imageSize } from 'image-size'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 // @ts-expect-error No declaration file
 import implicitFigures from 'markdown-it-image-figures'
