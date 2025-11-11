@@ -1,5 +1,7 @@
 ---
 title: infra.soubiran.dev
+url: https://infra.soubiran.dev
+repository: https://github.com/barbapapazes/infra.soubiran.dev
 ecosystem:
   - type: deployment
     id: infra-soubiran-dev

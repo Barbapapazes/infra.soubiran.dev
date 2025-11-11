@@ -6,6 +6,65 @@ repository:
   url: https://github.com/barbapapazes/eats.soubiran.dev
   private: true
 ecosystem:
+  - type: auth
+    id: bipbip.boo
+    name: Authentik
+    description: Provide authentication for the platform.
+  - type: object-storage
+    id: eats-soubiran-dev
+    name: Cloudflare R2
+    description: Store images of the pastries.
+  - type: domain
+    name: Cloudflare Domains
+    description: Manage the DNS records.
+  - type: deployment
+    id: perso
+    name: Hetzner
+    description: Host the platform.
+    ecosystem:
+      - type: build
+        id: perso
+        name: Forge
+        description: Deploy the platform automatically.
+        ecosystem:
+          - type: repository
+            id: eats-soubiran-dev
+            name: GitHub
+            description: Source code for the platform.
+            href: https://github.com/barbapapazes/eats.soubiran.dev
+            ecosystem:
+              - type: stack
+                name: Laravel
+                href: https://laravel.com
+              - type: stack
+                name: Inertia.js
+                href: https://inertiajs.com
+              - type: stack
+                name: Nuxt UI
+                href: https://ui.nuxt.com
+              - type: stack
+                name: Vue
+                href: https://vuejs.org
+              - type: stack
+                name: Vite
+                href: https://vite.dev
+      - type: object-storage
+        id: eats-soubiran-dev
+        name: Cloudflare R2
+        description: Store images of the pastries.
+      - type: database
+        id: eats-soubiran-dev
+        name: SQLite
+        description: Store the platform data.
+      - type: backup
+        id: eats-soubiran-dev
+        name: Litestream
+        description: Backup the SQLite database to Cloudflare R2.
+        ecosystem:
+          - type: object-storage
+            id: backups
+            name: Cloudflare R2
+            description: Store the database backups.
 ---
 
 > [!WARNING]

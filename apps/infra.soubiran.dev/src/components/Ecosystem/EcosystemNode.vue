@@ -2,11 +2,18 @@
 import type { NodeProps } from '@vue-flow/core'
 import type { EcosystemItem, EcosystemName, EcosystemType } from '@/types/ecosystem'
 import { Handle } from '@vue-flow/core'
+import { RouterLink } from 'vue-router'
+import nuxt from '~icons/logos/nuxt-icon'
 import slidev from '~icons/logos/slidev'
 import globeSimple from '~icons/ph/globe-simple'
+import authentik from '~icons/simple-icons/authentik'
 import cloudflare from '~icons/simple-icons/cloudflare'
 import github from '~icons/simple-icons/github'
 import githubactions from '~icons/simple-icons/githubactions'
+import hetzner from '~icons/simple-icons/hetzner'
+import inertiajs from '~icons/simple-icons/inertia'
+import laravel from '~icons/simple-icons/laravel'
+import sqlite from '~icons/simple-icons/sqlite'
 
 const ecosystemNode = tv({
   slots: {
@@ -25,6 +32,10 @@ const ecosystemNode = tv({
       },
     },
     name: {
+      'soubiran': {
+        base: 'border-accented',
+        type: 'bg-primary/10 text-muted',
+      },
       'cloudflare': {
         base: 'border-cloudflare',
         type: 'bg-cloudflare/15 text-cloudflare',
@@ -33,21 +44,21 @@ const ecosystemNode = tv({
         base: 'border-github',
         type: 'bg-github/15 text-github',
       },
-      'soubiran': {
-        base: 'border-accented',
-        type: 'bg-primary/10 text-muted',
+      'authentik': {
+        base: 'border-authentik',
+        type: 'bg-authentik/15 text-authentik',
       },
-      'slidev': {
-        base: 'border-slidev',
-        type: 'bg-slidev/15 text-slidev',
+      'forge': {
+        base: 'border-forge',
+        type: 'bg-forge/15 text-forge',
       },
-      'vitepress': {
-        base: 'border-vitepress',
-        type: 'bg-vitepress/15 text-vitepress',
+      'hetzner': {
+        base: 'border-hetzner',
+        type: 'bg-hetzner/15 text-hetzner',
       },
-      'pinia-colada': {
-        base: 'border-pinia-colada',
-        type: 'bg-pinia-colada/15 text-pinia-colada',
+      'partykit': {
+        base: 'border-partykit',
+        type: 'bg-partykit/15 text-partykit',
       },
       'vite': {
         base: 'border-vite',
@@ -57,9 +68,37 @@ const ecosystemNode = tv({
         base: 'border-vue',
         type: 'bg-vue/15 text-vue',
       },
-      'partykit': {
-        base: 'border-partykit',
-        type: 'bg-partykit/15 text-partykit',
+      'nuxt': {
+        base: 'border-nuxt',
+        type: 'bg-nuxt/15 text-nuxt',
+      },
+      'vitepress': {
+        base: 'border-vitepress',
+        type: 'bg-vitepress/15 text-vitepress',
+      },
+      'slidev': {
+        base: 'border-slidev',
+        type: 'bg-slidev/15 text-slidev',
+      },
+      'pinia-colada': {
+        base: 'border-pinia-colada',
+        type: 'bg-pinia-colada/15 text-pinia-colada',
+      },
+      'inertiajs': {
+        base: 'border-inertiajs',
+        type: 'bg-inertiajs/15 text-inertiajs',
+      },
+      'laravel': {
+        base: 'border-laravel',
+        type: 'bg-laravel/15 text-laravel',
+      },
+      'sqlite': {
+        base: 'border-sqlite',
+        type: 'bg-sqlite/15 text-sqlite',
+      },
+      'litestream': {
+        base: 'border-litestream',
+        type: 'bg-litestream/15 text-litestream',
       },
     },
   },
@@ -83,12 +122,12 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 const isCloudflare = (name: EcosystemName) => name.includes('Cloudflare')
 const isGithub = (name: EcosystemName) => name.includes('GitHub')
 const isSoubiran = (name: EcosystemName) => name.includes('soubiran.dev')
+const isNuxt = (name: EcosystemName) => name.includes('Nuxt')
 
 function getTypeIcon(name: EcosystemName, type?: EcosystemType): string | object | undefined {
   if (isCloudflare(name)) {
     switch (type) {
       case 'deployment':
-        return 'cloudflare:workers'
       case 'build':
         return 'cloudflare:workers'
       case 'object-storage':
@@ -110,14 +149,43 @@ function getTypeIcon(name: EcosystemName, type?: EcosystemType): string | object
 
   if (isSoubiran(name)) {
     switch (type) {
+      case 'platform':
       case 'website':
       case 'data':
         return globeSimple
     }
   }
 
+  if (isNuxt(name)) {
+    return nuxt
+  }
+
   if (name === 'Slidev') {
     return slidev
+  }
+
+  if (name === 'Forge') {
+    return 'forge'
+  }
+
+  if (name === 'Authentik') {
+    return authentik
+  }
+
+  if (name === 'Hetzner') {
+    return hetzner
+  }
+
+  if (name === 'Inertia.js') {
+    return inertiajs
+  }
+
+  if (name === 'Laravel') {
+    return laravel
+  }
+
+  if (name === 'SQLite') {
+    return sqlite
   }
 }
 
@@ -133,6 +201,8 @@ function getTypeLogo(name: EcosystemName): string | undefined {
       return 'https://vuejs.org/images/logo.png'
     case 'PartyKit':
       return 'https://docs.partykit.io/favicon.svg'
+    case 'Litestream':
+      return 'https://litestream.io/favicon-16x16.png'
     default:
       return undefined
   }
@@ -149,21 +219,14 @@ function genericName(name: EcosystemName) {
       return 'github'
     case isSoubiran(name):
       return 'soubiran'
-    case name === 'Slidev':
-      return 'slidev'
-    case name === 'VitePress':
-      return 'vitepress'
-    case name === 'Pinia Colada':
-      return 'pinia-colada'
-    case name === 'Vite':
-      return 'vite'
-    case name === 'Vue':
-      return 'vue'
-    case name === 'PartyKit':
-      return 'partykit'
+    case isNuxt(name):
+      return 'nuxt'
     default:
+      return name.toLowerCase().replace(/\s+/g, '-').replace(/\./g, '') as any
   }
 }
+
+const isWebsiteOrPlatform = computed(() => props.data.type === 'website' || props.data.type === 'platform')
 
 const ui = computed(() => ecosystemNode({
   type: !!props.data.type,
@@ -174,7 +237,7 @@ const ui = computed(() => ecosystemNode({
 <template>
   <div>
     <DefineTemplate>
-      <div :class="ui.base({ class: [props.ui?.base, props.class] })">
+      <component :is="isWebsiteOrPlatform ? RouterLink : 'div'" :class="ui.base({ class: [props.ui?.base, props.class] })" :to="isWebsiteOrPlatform ? `${props.data.type}s/${props.data.name.replace(/\./g, '-')}` : undefined">
         <span v-if="props.data.type" :class="ui.type({ class: props.ui?.type })">
           <UIcon v-if="icon" :name="icon" :class="ui.typeIcon({ class: props.ui?.typeIcon })" />
           <img v-else-if="logo" :src="logo" :alt="props.data.name" :class="ui.typeIcon({ class: props.ui?.typeIcon })">
@@ -185,7 +248,7 @@ const ui = computed(() => ecosystemNode({
 
         <Handle type="target" :position="props.sourcePosition" style="opacity: 0" />
         <Handle type="source" :position="props.targetPosition" style="opacity: 0" />
-      </div>
+      </component>
     </DefineTemplate>
 
     <UPopover v-if="props.data.description" mode="hover" arrow>

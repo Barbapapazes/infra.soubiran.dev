@@ -12,12 +12,21 @@
 
   --color-cloudflare: #F63;
   --color-github: #5FED83;
-  --color-slidev: #6fcce1;
-  --color-vitepress: #a8b1ff;
-  --color-pinia-colada: #fad541;
+  --color-authentik: #FD4B2D;
+  --color-forge: #18B79B;
+  --color-hetzner: #D50E2F;
+  --color-partykit: #FF1010;
+
   --color-vite: #bcc0ff;
   --color-vue: #42d292;
-  --color-partykit: #FF1010;
+  --color-nuxt: #00DC82;
+  --color-vitepress: #a8b1ff;
+  --color-slidev: #6fcce1;
+  --color-pinia-colada: #fad541;
+  --color-inertiajs: #B794F4;
+  --color-laravel: #F53102;
+  --color-sqlite: #3C9EDB;
+  --color-litestream: #0053FA;
 }
 
 :root {
