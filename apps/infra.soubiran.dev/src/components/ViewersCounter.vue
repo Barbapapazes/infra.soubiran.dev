@@ -57,15 +57,17 @@ const ui = computed(() => viewersCounter())
 </script>
 
 <template>
-  <div
-    v-if="count"
-    :title
-    :class="ui.base({ class: [props.class, props.ui?.base] })"
-  >
-    <span>{{ count }}</span>
-    <span
-      :class="ui.dot({ class: props.ui?.dot })"
-      aria-hidden="true"
-    />
-  </div>
+  <Transition name="fade">
+    <div
+      v-if="count"
+      :title
+      :class="ui.base({ class: [props.class, props.ui?.base] })"
+    >
+      <span>{{ count }}</span>
+      <span
+        :class="ui.dot({ class: props.ui?.dot })"
+        aria-hidden="true"
+      />
+    </div>
+  </Transition>
 </template>
