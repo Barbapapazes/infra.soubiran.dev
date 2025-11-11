@@ -127,32 +127,26 @@ export default (title: string, hostname: string) => defineConfig({
               const isExternal = src.startsWith('http')
 
               if (!isExternal) {
-                try {
-                  const remoteSrc = joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src)
+                const remoteSrc = joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src)
 
-                  const file = join('.cache', src)
-                  let img: Uint8Array<ArrayBufferLike> | undefined = await readFile(file).then(bin => Buffer.from(bin)).catch(() => undefined)
-                  if (!img) {
-                    img = await fetch(remoteSrc).then(res => res.bytes())
-                    await mkdir(dirname(file), { recursive: true })
-                    await writeFile(file, Buffer.from(img!))
-                  }
-
-                  const { width, height } = imageSize(img!)
-
-                  const { data } = await getPixels(img!)
-                  const blurhash = encode(Uint8ClampedArray.from(data), width, height, 4, 4)
-
-                  token.attrSet('src', remoteSrc)
-                  token.attrSet('loading', 'lazy')
-                  token.attrSet('width', width.toString())
-                  token.attrSet('height', height.toString())
-                  token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
+                const file = join('.cache', src)
+                let img: Uint8Array<ArrayBufferLike> | undefined = await readFile(file).then(bin => Buffer.from(bin)).catch(() => undefined)
+                if (!img) {
+                  img = await fetch(remoteSrc).then(res => res.bytes())
+                  await mkdir(dirname(file), { recursive: true })
+                  await writeFile(file, Buffer.from(img!))
                 }
-                catch (error) {
-                  // Skip image processing if it fails (e.g., in test environments)
-                  console.warn(`Failed to process image ${src}:`, error)
-                }
+
+                const { width, height } = imageSize(img!)
+
+                const { data } = await getPixels(img!)
+                const blurhash = encode(Uint8ClampedArray.from(data), width, height, 4, 4)
+
+                token.attrSet('src', remoteSrc)
+                token.attrSet('loading', 'lazy')
+                token.attrSet('width', width.toString())
+                token.attrSet('height', height.toString())
+                token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
               }
             }
 
