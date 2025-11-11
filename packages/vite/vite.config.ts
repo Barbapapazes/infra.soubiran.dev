@@ -1,22 +1,19 @@
 /// <reference types="vite-ssg" />
-import type MarkdownIt from 'markdown-it'
 import type { UserConfig } from 'vite'
 import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import ui from '@nuxt/ui/vite'
-import shiki from '@shikijs/markdown-it'
 import { unheadVueComposablesImports } from '@unhead/vue'
 import vue from '@vitejs/plugin-vue'
 import matter from 'gray-matter'
-import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
-// @ts-expect-error No declaration file
-import implicitFigures from 'markdown-it-image-figures'
-import linkAttributes from 'markdown-it-link-attributes'
-import { joinURL } from 'ufo'
 import fonts from 'unplugin-fonts/vite'
+import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import { assert } from './src/assert'
 import { canonical } from './src/canonical'
+import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
 import { og } from './src/og'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
@@ -27,6 +24,24 @@ const config: UserConfig = {}
 
 export default (title: string, hostname: string) => defineConfig({
   plugins: [
+    vueRouter({
+      extensions: ['.vue', '.md'],
+      routesFolder: 'pages',
+      dts: 'src/typed-router.d.ts',
+      extendRoute(route) {
+        const path = route.components.get('default')
+        if (!path)
+          return
+
+        if (path.endsWith('.md')) {
+          const { data } = matter(readFileSync(path, 'utf-8'))
+          route.addToMeta({
+            frontmatter: data,
+          })
+        }
+      },
+    }),
+
     vue({
       include: [/\.vue$/, /\.md$/],
     }),
@@ -34,9 +49,13 @@ export default (title: string, hostname: string) => defineConfig({
     ui({
       autoImport: {
         dts: 'src/auto-imports.d.ts',
+        dirs: [
+          'src/composables',
+        ],
         imports: [
           'vue',
           'vue-router',
+          '@vueuse/core',
           unheadVueComposablesImports,
           {
             from: 'tailwind-variants',
@@ -53,24 +72,6 @@ export default (title: string, hostname: string) => defineConfig({
         colors: {
           neutral: 'neutral',
         },
-      },
-    }),
-
-    vueRouter({
-      extensions: ['.vue', '.md'],
-      routesFolder: 'pages',
-      dts: 'src/typed-router.d.ts',
-      extendRoute(route) {
-        const path = route.components.get('default')
-        if (!path)
-          return
-
-        if (path.endsWith('.md')) {
-          const { data } = matter(readFileSync(path, 'utf-8'))
-          route.addToMeta({
-            frontmatter: data,
-          })
-        }
       },
     }),
 
@@ -102,70 +103,16 @@ export default (title: string, hostname: string) => defineConfig({
       },
 
       async markdownItSetup(md) {
-        md.use(MarkdownItGitHubAlerts)
-
-        md.use(implicitFigures, { figcaption: 'alt' })
-
-        md.use(linkAttributes, [
-          {
-            matcher: (link: string) => /^https?:\/\/soubiran\.dev/.test(link),
-            attrs: {
-              target: '_blank',
-            },
-          },
-          {
-            matcher: (link: string) => /^https?:\/\//.test(link),
-            attrs: {
-              target: '_blank',
-              rel: 'noopener',
-            },
-          },
-        ])
-        md.use((md: MarkdownIt) => {
-          const linkRule = md.renderer.rules.link_open!
-          md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
-            const token = tokens[idx]
-            const href = token.attrGet('href')
-
-            // Add UTM for internal links
-            if (href && /^https?:\/\/soubiran\.dev/.test(href)) {
-              token.attrSet('href', `${href}?utm_source=${hostname}&utm_medium=link`)
-            }
-
-            return linkRule(tokens, idx, options, env, self)
-          }
-        })
-
-        md.use((md: MarkdownIt) => {
-          const imageRule = md.renderer.rules.image!
-          md.renderer.rules.image = (tokens, idx, options, env, self) => {
-            const token = tokens[idx]
-            const src = token.attrGet('src')
-
-            if (src) {
-              const isExternal = src.startsWith('http') || src.startsWith('//')
-
-              if (!isExternal) {
-                token.attrSet('width', '768')
-                token.attrSet('height', '400')
-                token.attrSet('src', joinURL(`https://${hostname}`, 'cdn-cgi/image', 'width=1200,quality=80,format=auto', `https://assets.${hostname}`, src))
-              }
-            }
-
-            return imageRule(tokens, idx, options, env, self)
-          }
-        })
-
-        md.use(await shiki({
-          defaultColor: false,
-          themes: {
-            light: 'github-light',
-            dark: 'github-dark',
-          },
-        }))
+        githubAlerts(md)
+        implicitFiguresRule(md)
+        linkAttributesRule(md)
+        customLink(md, hostname)
+        customImage(md, hostname)
+        await shikiHighlight(md)
       },
 
       frontmatterPreprocess(frontmatter, options, id, defaults) {
+        assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
         structuredData(id, frontmatter, title, hostname)
@@ -194,6 +141,10 @@ export default (title: string, hostname: string) => defineConfig({
       },
     }),
 
+    icons({
+      autoInstall: true,
+    }),
+
     {
       name: 'await',
       async closeBundle() {
@@ -210,7 +161,23 @@ export default (title: string, hostname: string) => defineConfig({
   ],
 
   optimizeDeps: {
-    include: ['vue', '@unhead/vue', 'partysocket'],
+    include: [
+      'vue',
+      'scule',
+      'vue-router',
+      '@unhead/vue',
+      'partysocket',
+      '@iconify/vue',
+      '@dagrejs/dagre',
+      '@vue-flow/core',
+      '@vue-flow/background',
+    ],
+  },
+
+  resolve: {
+    alias: {
+      '@': resolve('./src'),
+    },
   },
 
   ssgOptions: {

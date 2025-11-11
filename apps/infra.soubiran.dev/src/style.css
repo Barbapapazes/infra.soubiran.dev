@@ -9,6 +9,24 @@
   --font-sans: 'DM Sans', sans-serif;
   --font-sofia: 'Sofia sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
+
+  --color-cloudflare: #F63;
+  --color-github: #5FED83;
+  --color-authentik: #FD4B2D;
+  --color-forge: #18B79B;
+  --color-hetzner: #D50E2F;
+  --color-partykit: #FF1010;
+
+  --color-vite: #bcc0ff;
+  --color-vue: #42d292;
+  --color-nuxt: #00DC82;
+  --color-vitepress: #a8b1ff;
+  --color-slidev: #6fcce1;
+  --color-pinia-colada: #fad541;
+  --color-inertiajs: #B794F4;
+  --color-laravel: #F53102;
+  --color-sqlite: #3C9EDB;
+  --color-litestream: #0053FA;
 }
 
 :root {
@@ -16,7 +34,36 @@
   --ui-text-highlighted: var(--ui-color-neutral-950);
 }
 
+.shiki {
+  color: var(--shiki-light);
+  background-color: var(--ui-color-neutral-100);
+}
+
+.shiki .line span {
+  color: var(--shiki-light);
+}
+
+
 .dark {
   --ui-primary: white;
   --ui-text-highlighted: var(--ui-color-neutral-200);
+}
+
+.dark .shiki {
+  color: var(--shiki-dark);
+  background-color: var(--ui-color-neutral-800);
+}
+
+.dark .shiki .line span {
+  color: var(--shiki-dark);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

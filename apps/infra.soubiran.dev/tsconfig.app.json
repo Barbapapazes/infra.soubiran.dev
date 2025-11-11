@@ -2,8 +2,15 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     "types": [
-      "vite/client"
+      "vite/client",
+      "unplugin-icons/types/vue"
     ],
     "strict": true,
     "noFallthroughCasesInSwitch": true,
@@ -13,6 +20,7 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
+    "pages/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
