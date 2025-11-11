@@ -1,7 +1,10 @@
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import ui from '@nuxt/ui/vite'
 import vue from '@vitejs/plugin-vue'
+import matter from 'gray-matter'
 import fonts from 'unplugin-fonts/vite'
 import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
@@ -19,6 +22,24 @@ const config: UserConfig = {}
 
 export default (title: string, hostname: string) => defineConfig({
   plugins: [
+    vueRouter({
+      extensions: ['.vue', '.md'],
+      routesFolder: 'pages',
+      dts: 'src/typed-router.d.ts',
+      extendRoute(route) {
+        const path = route.components.get('default')
+        if (!path)
+          return
+
+        if (path.endsWith('.md')) {
+          const { data } = matter(readFileSync(path, 'utf-8'))
+          route.addToMeta({
+            frontmatter: data,
+          })
+        }
+      },
+    }),
+
     vue({
       include: [/\.vue$/, /\.md$/],
     }),
@@ -26,8 +47,13 @@ export default (title: string, hostname: string) => defineConfig({
     ui({
       autoImport: {
         dts: 'src/auto-imports.d.ts',
+        dirs: [
+          'src/composables',
+        ],
         imports: [
           'vue',
+          'vue-router',
+          '@vueuse/core',
           {
             from: 'tailwind-variants',
             imports: ['tv'],
@@ -44,12 +70,6 @@ export default (title: string, hostname: string) => defineConfig({
           neutral: 'neutral',
         },
       },
-    }),
-
-    vueRouter({
-      extensions: ['.vue', '.md'],
-      routesFolder: 'pages',
-      dts: 'src/typed-router.d.ts',
     }),
 
     markdown({
@@ -130,7 +150,23 @@ export default (title: string, hostname: string) => defineConfig({
   ],
 
   optimizeDeps: {
-    include: ['vue', '@unhead/vue'],
+    include: [
+      'vue',
+      'scule',
+      'vue-router',
+      '@unhead/vue',
+      'partysocket',
+      '@iconify/vue',
+      '@dagrejs/dagre',
+      '@vue-flow/core',
+      '@vue-flow/background',
+    ],
+  },
+
+  resolve: {
+    alias: {
+      '@': resolve('./src'),
+    },
   },
 
   ssgOptions: {

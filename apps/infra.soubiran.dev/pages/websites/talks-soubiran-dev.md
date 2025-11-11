@@ -3,6 +3,33 @@ title: talks.soubiran.dev
 description: My collection of talks given at conferences and meetups over the years. Automatically listed on my personal website.
 url: https://talks.soubiran.dev
 repository: https://github.com/barbapapazes/talks
+ecosystem:
+  - type: deployment
+    id: talks-soubiran-dev
+    name: Cloudflare Workers
+    description: Deploy the website worldwide.
+    ecosystem:
+      - type: build
+        id: talks-soubiran-dev
+        name: Cloudflare Build
+        description: Build the website automatically.
+        ecosystem:
+          - type: repository
+            id: talks-soubiran-dev
+            name: GitHub
+            description: Source code of the website.
+            href: https://github.com/barbapapazes/talks
+            ecosystem:
+              - type: stack
+                name: Slidev
+                href: https://sli.dev
+  - type: object-storage
+    id: talks-soubiran-dev
+    name: Cloudflare R2
+    description: Host PDFs of the talks.
+  - type: domain
+    name: Cloudflare Domains
+    description: Manage the DNS records.
 ---
 
 The website [talks.soubiran.dev](https://talks.soubiran.dev) contains all the talks I've given at conferences and meetups over the years. The root redirects to the page listing all talks: [soubiran.dev/talks](https://soubiran.dev/talks).
