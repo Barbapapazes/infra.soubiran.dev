@@ -1,3 +1,4 @@
+import type { Buffer } from 'node:buffer'
 import { exec } from 'node:child_process'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, parse } from 'node:path'
@@ -16,9 +17,8 @@ const TARGET_DIRECTORIES = ['websites', 'platforms']
 
 /**
  * Generates blurhash for an image buffer
- * Reused logic from packages/vite/src/markdown-it/custom-image.ts
  */
-async function generateBlurhash(imageBuffer) {
+async function generateBlurhash(imageBuffer: Buffer) {
   const data = await getPixels(imageBuffer)
   const blurhash = encode(Uint8ClampedArray.from(data.data), data.width, data.height, 4, 4)
 
@@ -29,7 +29,7 @@ async function generateBlurhash(imageBuffer) {
   }
 }
 
-async function getVideoMetadata(filePath) {
+async function getVideoMetadata(filePath: string) {
   // Use ffprobe to get video dimensions
   const { stdout: probeOutput } = await execAsync(
     `ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "${filePath}"`,
@@ -54,7 +54,7 @@ async function getVideoMetadata(filePath) {
   }
 }
 
-async function processFile(filePath) {
+async function processFile(filePath: string) {
   const { ext, dir, name } = parse(filePath)
   const lowerExt = ext.toLowerCase()
 
@@ -83,15 +83,15 @@ async function processFile(filePath) {
 
     await writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`)
     // eslint-disable-next-line no-console
-    console.log(`✓ Created metadata: ${metadataPath}`)
+    console.log(`Created metadata: ${metadataPath}`)
   }
   catch (error) {
-    console.error(`✗ Failed to process ${filePath}:`, error)
+    console.error(`Failed to process ${filePath}:`, error)
   }
 }
 
-async function scanDirectory(dirPath) {
-  const files = []
+async function scanDirectory(dirPath: string) {
+  const files: string[] = []
   const entries = await readdir(dirPath, { withFileTypes: true })
 
   for (const entry of entries) {

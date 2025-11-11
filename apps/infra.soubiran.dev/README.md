@@ -1,6 +1,4 @@
-# Infrastructure Status Page
-
-## Deployment
+## Assets
 
 ```sh
 rclone copy public perso:infra-soubiran-dev --filter-from ./copy-assets.txt
@@ -22,4 +20,4 @@ This script will:
   - `blurhash`: Blurhash string for placeholder rendering
 - Process all files concurrently for better performance
 
-Example: `public/websites/image.png` → `public/websites/image.png.json`
+Example: `public/websites/image.png` => `public/websites/image.png.json`
