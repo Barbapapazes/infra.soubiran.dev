@@ -1,7 +1,7 @@
 <script lang="ts">
 const pageCardList = tv({
   slots: {
-    base: '',
+    base: 'space-y-6',
     item: '',
   },
 })
@@ -13,13 +13,6 @@ export interface PageCardListProps {
 }
 export interface PageCardListEmits {}
 export interface PageCardListSlots {}
-
-// Shared card UI configuration
-export const cardUI = {
-  root: 'ring-0 hover:bg-transparent',
-  container: 'p-0 sm:p-0',
-  description: 'mt-2',
-}
 </script>
 
 <script lang="ts" setup>
@@ -48,10 +41,15 @@ const ui = computed(() => pageCardList())
   <ul :class="ui.base({ class: [props.ui?.base, props.class] })">
     <li v-for="item in routes" :key="item.path" :class="ui.item({ class: props.ui?.item })">
       <UPageCard
+        as="article"
         :title="item.title"
         :description="item.description"
         :to="item.path"
-        :ui="cardUI"
+        :ui="{
+          root: 'ring-0 hover:bg-transparent',
+          container: 'p-0 sm:p-0',
+          description: 'mt-2 text-sm',
+        }"
       />
     </li>
   </ul>
