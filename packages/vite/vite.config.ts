@@ -89,7 +89,7 @@ export default (title: string, hostname: string) => defineConfig({
 
         md.use(linkAttributes as any, [
           {
-            matcher: (link: string) => /^https?:\/\/soubiran\.dev/.test(link),
+            matcher: (link: string) => /^https?:\/\/(?:[a-z0-9-]+\.)?soubiran\.dev(?:[/?#]|$)/.test(link),
             attrs: {
               target: '_blank',
             },
@@ -108,8 +108,8 @@ export default (title: string, hostname: string) => defineConfig({
             const token = tokens[idx]
             const href = token.attrGet('href')
 
-            // Add UTM for internal links
-            if (href && /^https?:\/\/soubiran\.dev/.test(href)) {
+            // Add UTM for internal links (including subdomains)
+            if (href && /^https?:\/\/(?:[a-z0-9-]+\.)?soubiran\.dev(?:[/?#]|$)/.test(href)) {
               token.attrSet('href', `${href}?utm_source=${hostname}&utm_medium=link`)
             }
 
