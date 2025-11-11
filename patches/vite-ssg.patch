@@ -1,0 +1,31 @@
+diff --git a/dist/shared/vite-ssg.0i5mAeat.mjs b/dist/shared/vite-ssg.0i5mAeat.mjs
+index 6c74327c9cf19cdce335627d2f5021f89198b74a..0827a546143d9d401cd9334278fbd3e51511c3d2 100644
+--- a/dist/shared/vite-ssg.0i5mAeat.mjs
++++ b/dist/shared/vite-ssg.0i5mAeat.mjs
+@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
+ import { resolve, isAbsolute, parse, join, dirname } from 'node:path';
+ import process from 'node:process';
+ import { pathToFileURL } from 'node:url';
+-import { renderDOMHead } from '@unhead/dom';
++import { transformHtmlTemplate  } from '@unhead/vue/server';
+ import { gray, yellow, blue, dim, cyan, red, green } from 'ansis';
+ import { JSDOM } from 'jsdom';
+ import { resolveConfig, build as build$1, mergeConfig } from 'vite';
+@@ -1337,13 +1337,14 @@ async function build(ssgOptions = {}, viteConfig = {}) {
+         });
+         const jsdom = new JSDOM(renderedHTML);
+         renderPreloadLinks(jsdom.window.document, ctx.modules || /* @__PURE__ */ new Set(), ssrManifest);
+-        if (head)
+-          await renderDOMHead(head, { document: jsdom.window.document });
+         const html = jsdom.serialize();
+         let transformed = await onPageRendered?.(route, html, appCtx) || html;
+         if (beasties)
+           transformed = await beasties.process(transformed);
+-        const formatted = await formatHtml(transformed, formatting);
++        let optimized = html
++        if (head)
++          optimized = await transformHtmlTemplate(head, transformed)
++        const formatted = await formatHtml(optimized, formatting);
+         const relativeRouteFile = `${(route.endsWith("/") ? `${route}index` : route).replace(/^\//g, "")}.html`;
+         const filename = await prepareHtmlFileName(
+           dirStyle === "nested" ? join(route.replace(/^\//g, ""), "index.html") : relativeRouteFile,

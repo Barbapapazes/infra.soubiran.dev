@@ -12,18 +12,22 @@
     "@nuxt/ui": "^4.1.0",
     "@unhead/vue": "^2.0.19",
     "markdown-it-github-alerts": "^1.0.0",
+    "partysocket": "^1.1.6",
+    "tailwind-variants": "^3.1.1",
     "vue": "^3.5.22"
   },
   "devDependencies": {
+    "@iconify-json/simple-icons": "^1.2.57",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/node": "^24.6.0",
+    "@types/node": "^24.10.0",
     "@vue/tsconfig": "^0.8.1",
     "tailwindcss": "^4.1.16",
     "typescript": "~5.9.3",
-    "vite": "npm:rolldown-vite@7.1.14",
+    "unplugin-icons": "^22.5.0",
+    "vite": "npm:rolldown-vite@7.1.20",
     "vite-ssg": "^28.2.2",
     "vue-router": "^4.6.3",
-    "vue-tsc": "^3.1.0"
+    "vue-tsc": "^3.1.3"
   }
 }

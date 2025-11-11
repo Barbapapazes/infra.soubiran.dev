@@ -1,8 +1,9 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
-@source "../../../packages/vite/vite.config.ts";
-
 @import "@nuxt/ui";
+
+@plugin "@tailwindcss/typography";
+
+@source "../../../packages/vite/vite.config.ts";
 
 @theme {
   --font-sans: 'DM Sans', sans-serif;
@@ -11,11 +12,21 @@
 }
 
 :root {
-  --primary: 'black';
+  --ui-primary: black;
   --ui-text-highlighted: var(--ui-color-neutral-950);
 }
 
 .dark {
-  --primary: 'white';
+  --ui-primary: white;
   --ui-text-highlighted: var(--ui-color-neutral-200);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

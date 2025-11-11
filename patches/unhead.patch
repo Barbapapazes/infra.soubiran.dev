@@ -1,0 +1,16 @@
+diff --git a/dist/shared/unhead.DZbvapt-.mjs b/dist/shared/unhead.DZbvapt-.mjs
+index 396b90fc75b72975c10212be6cf1d7276cab2d22..c69e726e9620fa20daea2d434f96d09c75b23f13 100644
+--- a/dist/shared/unhead.DZbvapt-.mjs
++++ b/dist/shared/unhead.DZbvapt-.mjs
+@@ -56,9 +56,9 @@ function tagWeight(head, tag) {
+   } else if (tag.tag === "script") {
+     if (isTruthy(tag.props.async)) {
+       weight = weightMap.script.async;
+-    } else if (tag.props.src && !isTruthy(tag.props.defer) && !isTruthy(tag.props.async) && tag.props.type !== "module" && !tag.props.type?.endsWith("json")) {
++    } else if ((tag.props.src && !isTruthy(tag.props.defer) && !isTruthy(tag.props.async) && tag.props.type !== "module" && !tag.props.type?.endsWith("json")) || (tag.innerHTML && !tag.props.type?.endsWith('json'))) {
+       weight = weightMap.script.sync;
+-    } else if (isTruthy(tag.props.defer) && tag.props.src && !isTruthy(tag.props.async)) {
++    } else if ((isTruthy(tag.props.defer) && tag.props.src && !isTruthy(tag.props.async)) || tag.props.type === "module") {
+       weight = weightMap.script.defer;
+     }
+   } else if (tag.tag === "style") {
