@@ -7,4 +7,4 @@ title: chat.soubiran.dev
 
 The platform **chat.soubiran.dev** is an AI application powered by AI Agents. It answers user queries in a chat-like interface, providing a unified way to interact with all the platforms of Estéban's digital ecosystem.
 
-![The platform chat.soubiran.dev](/platforms/chat-soubiran-dev/chat-soubiran-dev.webp)
+<!--![The platform chat.soubiran.dev](/platforms/chat-soubiran-dev/chat-soubiran-dev.webp)-->

@@ -175,8 +175,8 @@ export default (title: string, hostname: string) => defineConfig({
           const descLength = frontmatter.description.length
           if (descLength < 110 || descLength > 160) {
             throw new Error(
-              `Description length must be between 110 and 160 characters. ` +
-              `Current length: ${descLength} in file: ${id}`
+              `Description length must be between 110 and 160 characters. `
+              + `Current length: ${descLength} in file: ${id}`,
             )
           }
         }
