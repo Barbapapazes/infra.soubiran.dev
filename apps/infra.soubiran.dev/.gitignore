@@ -27,4 +27,6 @@ playwright/.auth/
 .vite-ssg-temp
 .env
 public/og
+public/websites
+public/platforms
 .cache
