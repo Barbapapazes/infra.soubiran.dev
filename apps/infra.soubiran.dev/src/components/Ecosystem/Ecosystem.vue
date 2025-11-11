@@ -93,9 +93,17 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
     }
   }
 
+  // Deduplicate nodes and edges by ID
+  const uniqueNodes = nodes.filter((node, index, self) =>
+    index === self.findIndex(n => n.id === node.id),
+  )
+  const uniqueEdges = edges.filter((edge, index, self) =>
+    index === self.findIndex(e => e.id === edge.id),
+  )
+
   return {
-    nodes: Array.from(new Set(nodes.map(node => node.id))).map(id => nodes.find(node => node.id === id)) as Node[],
-    edges: Array.from(new Set(edges.map(edge => edge.id))).map(id => edges.find(edge => edge.id === id)) as Edge[],
+    nodes: uniqueNodes,
+    edges: uniqueEdges,
   }
 }
 
