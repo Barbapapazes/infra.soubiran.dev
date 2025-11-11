@@ -1,13 +1,13 @@
 <script lang="ts">
 import type { Edge, Node } from '@vue-flow/core'
-import type { Ecosystem } from '@/types/ecosystem'
+import type { Ecosystem, EcosystemItem } from '@/types/ecosystem'
 import { Background } from '@vue-flow/background'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 import { kebabCase } from 'scule'
 
 const ecosystem = tv({
   slots: {
-    root: 'w-full h-140 bg-white dark:bg-black',
+    root: 'relative w-full h-140 bg-white dark:bg-black',
     base: '',
   },
 })
@@ -15,6 +15,7 @@ const ecosystem = tv({
 export interface EcosystemProps {
   name: string
   ecosystem: Ecosystem
+  inline?: boolean
   class?: any
   ui?: Partial<typeof ecosystem.slots>
 }
@@ -33,8 +34,8 @@ const initialNode = {
   id: kebabCase(props.name),
   type: 'ecosystem',
   data: {
-    platform: props.name,
-  },
+    name: props.name,
+  } satisfies EcosystemItem,
   position: { x: 0, y: 0 },
 }
 
@@ -45,9 +46,8 @@ const edges = ref<Edge[]>(initialEdges)
 
 const { layout } = useLayout()
 onMounted(() => {
-  nodes.value = layout(nodes.value, edges.value)
-
   nextTick(() => {
+    nodes.value = layout(nodes.value, edges.value)
     fitView({ minZoom: 1 })
   })
 })
@@ -66,7 +66,7 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
   const edges: Edge[] = []
 
   for (const item of ecosystem) {
-    const id = kebabCase(`${item.platform}-${item.type}${item.name ? `-${item.name}` : ''}`.replace(/\s+/g, '-'))
+    const id = kebabCase(`${item.name}-${item.type}${item.id ? `-${item.id}` : ''}`.replace(/\s+/g, '-'))
 
     const currentNode = {
       id,
@@ -104,6 +104,8 @@ const ui = computed(() => ecosystem())
 
 <template>
   <div :class="ui.root({ class: props.ui?.root })">
+    <div v-if="props.inline" class="z-10 absolute top-0 h-2 inset-x-0 bg-linear-to-b from-(--ui-bg) to-(--ui-bg)/0" />
+    <div v-if="props.inline" class="z-10 absolute bottom-0 h-2 inset-x-0 bg-linear-to-t from-(--ui-bg) to-(--ui-bg)/0" />
     <VueFlow
       fit-view-on-init
       :default-viewport="{ zoom: 1 }"

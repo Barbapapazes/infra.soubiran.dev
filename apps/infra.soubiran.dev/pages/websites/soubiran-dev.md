@@ -2,46 +2,47 @@
 title: soubiran.dev
 ecosystem:
   - type: deployment
-    name: soubiran-dev
-    platform: Cloudflare Workers
+    id: soubiran-dev
+    name: Cloudflare Workers
     description: Deploy the website worldwide.
     ecosystem:
       - type: build
-        name: soubiran-dev
-        platform: Cloudflare Build
+        id: soubiran-dev
+        name: Cloudflare Build
         description: Build the website automatically.
         ecosystem:
           - type: repository
-            name: soubiran.dev
-            platform: GitHub
+            id: soubiran.dev
+            name: GitHub
             description: Source code for the website.
             href: https://github.com/barbapapazes/soubiran.dev
             ecosystem:
               - type: stack
-                platform: VitePress
+                name: VitePress
                 href: https://vitepress.dev
               - type: stack
-                platform: Pinia Colada
+                name: Pinia Colada
                 href: https://pinia-colada.esm.dev
           - type: ci/cd
-            platform: GitHub Actions
+            name: GitHub Actions
             description: Trigger a build every day.
           - type: data
-            platform: talks.soubiran.dev
+            name: talks.soubiran.dev
             description: Fetch talks data.
             href: /websites/talks-soubiran-dev
           - type: data
-            name: projects
-            platform: GitHub
+            id: projects
+            name: GitHub
             description: Fetch projects data.
             href: https://github.com/barbapapazes?tab=repositories
   - type: object-storage
-    name: soubiran-dev
-    platform: Cloudflare R2
+    id: soubiran-dev
+    name: Cloudflare R2
     description: Host videos.
   - type: domain
-    platform: Cloudflare Domains
+    name: Cloudflare Domains
     description: Manage the DNS records.
+  - type: realtime
+    name: PartyKit
+    description: Provide real-time viewer count.
 ---
-
-<!-- missing partykit in the schema -->

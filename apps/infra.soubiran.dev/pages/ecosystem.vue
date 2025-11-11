@@ -7,7 +7,7 @@ const ecosystem = router.getRoutes()
   .filter(route => (route.path.startsWith('/websites/') || route.path.startsWith('/platforms/')) && route.meta.frontmatter.ecosystem)
   .map(route => ({
     type: route.path.startsWith('/websites/') ? 'website' : 'platform',
-    platform: route.meta.frontmatter.title,
+    name: route.meta.frontmatter.title,
     ecosystem: route.meta.frontmatter.ecosystem!,
   } satisfies EcosystemItem))
 </script>

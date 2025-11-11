@@ -9,7 +9,7 @@ export type EcosystemType
     | 'repository'
     | 'stack'
     | 'website'
-export type EcosystemPlatform
+export type EcosystemName
   = | 'Cloudflare Workers'
     | 'Cloudflare Build'
     | 'Cloudflare R2'
@@ -20,12 +20,13 @@ export type EcosystemPlatform
     | 'Pinia Colada'
     | 'Vite'
     | 'Vue'
+    | 'PartyKit'
     | ({} & string)
 
 export interface EcosystemItem {
   type?: EcosystemType
-  name?: string
-  platform: EcosystemPlatform
+  id?: string
+  name: EcosystemName
   description?: string
   href?: string
   ecosystem?: EcosystemItem[]

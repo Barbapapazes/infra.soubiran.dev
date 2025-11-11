@@ -2,34 +2,35 @@
 title: infra.soubiran.dev
 ecosystem:
   - type: deployment
-    name: infra-soubiran-dev
-    platform: Cloudflare Workers
+    id: infra-soubiran-dev
+    name: Cloudflare Workers
     description: Deploy the infrastructure worldwide.
     ecosystem:
       - type: build
-        name: infra-soubiran-dev
-        platform: Cloudflare Build
+        id: infra-soubiran-dev
+        name: Cloudflare Build
         description: Build the infrastructure automatically.
         ecosystem:
           - type: repository
-            name: infra.soubiran.dev
-            platform: GitHub
+            id: infra.soubiran.dev
+            name: GitHub
             description: Source code for the infrastructure.
             href: https://github.com/barbapapazes/infra.soubiran.dev
             ecosystem:
               - type: stack
-                platform: Vite
+                name: Vite
                 href: https://vite.dev
               - type: stack
-                platform: Vue
+                name: Vue
                 href: https://vuejs.org
   - type: object-storage
-    name: infra-soubiran-dev
-    platform: Cloudflare R2
+    id: infra-soubiran-dev
+    name: Cloudflare R2
     description: Host public assets.
   - type: domain
-    platform: Cloudflare Domains
+    name: Cloudflare Domains
     description: Manage the DNS records.
+  - type: realtime
+    name: PartyKit
+    description: Provide real-time viewer count.
 ---
-
-<!-- missing partykit in the schema -->
