@@ -22,14 +22,14 @@ This platform is built with [Laravel](https://laravel.com) and [Vue.js](https://
 > [!NOTE]
 > The design is work in progress to match my current branding.
 
-Contrary to most of many other projects, a database is required as the content is created and managed directly on the platform. No Markdown files or static content are used. So, images of the pastries are stored on [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/) to avoid storing them on the server directly. This makes the system more resilient.
+Contrary to most of my other projects, a database is required as the content is created and managed directly on the platform. No Markdown files or static content are used. So, images of the pastries are stored on [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/) to avoid storing them on the server directly. This makes the system more resilient.
 
-For the authentication system, I rely on an external service hosted, [Authentik](https://goauthentik.io/), by a friend. The workflow is similar to any OAuth2 provider. However, this makes sure that only authorized and known users can access the platform.
+For the authentication system, I rely on an external service, [Authentik](https://goauthentik.io/), hosted by a friend. The workflow is similar to any OAuth2 provider. However, this makes sure that only authorized and known users can access the platform.
 
 ## Deployment
 
 The platform is hosted on a [Hetzner VPS](https://www.hetzner.com/cloud/). The deployment is automated using [Forge](https://forge.laravel.com).
 
-On production, a [SQLite](https://sqlite.org/) database is used to keep things simple. A backup system is in place, using [Listream](https://litestream.io/), to replicate the database to a dedicated R2 bucket.
+On production, a [SQLite](https://sqlite.org/) database is used to keep things simple. A backup system is in place, using [Litestream](https://litestream.io/), to replicate the database to a dedicated R2 bucket.
 
 In case of failure, the server can be rebuilt from scratch without any data loss.

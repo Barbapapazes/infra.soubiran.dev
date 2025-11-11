@@ -28,5 +28,5 @@ playwright/.auth/
 .env
 public/og
 public/websites
-public/platforms
+
 .cache
