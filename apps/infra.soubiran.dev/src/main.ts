@@ -1,3 +1,4 @@
+import { Socials, ViewersCounter } from '@infra.soubiran.dev/ui'
 import ui from '@nuxt/ui/vue-plugin'
 import { ViteSSG } from 'vite-ssg'
 import { routes } from 'vue-router/auto-routes'
@@ -15,5 +16,7 @@ export const createApp = ViteSSG(
   },
   ({ app }) => {
     app.use(ui)
+    app.component('Socials', Socials)
+    app.component('ViewersCounter', ViewersCounter)
   },
 )

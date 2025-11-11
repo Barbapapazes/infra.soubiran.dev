@@ -9,6 +9,7 @@
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@infra.soubiran.dev/ui": "workspace:*",
     "@nuxt/ui": "^4.1.0",
     "@unhead/vue": "^2.0.19",
     "markdown-it-github-alerts": "^1.0.0",
