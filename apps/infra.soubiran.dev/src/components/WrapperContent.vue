@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { useHead } from '@unhead/vue'
+import link from '~icons/ph/link'
+import github from '~icons/simple-icons/github'
 
 interface Repository {
   url: string
   private?: boolean
 }
 
-const { frontmatter } = defineProps<{
+const props = defineProps<{
   frontmatter: {
     title: string
     url?: string
@@ -18,22 +20,10 @@ useHead({
   titleTemplate: '%s · Estéban Soubiran',
 })
 
-// Helper to get repository info
-function getRepositoryInfo() {
-  if (!frontmatter.repository)
-    return null
+const isRepositoryPrivate = computed(() => typeof props.frontmatter.repository === 'string' ? false : props.frontmatter.repository?.private ?? false)
+const repositoryUrl = computed(() => typeof props.frontmatter.repository === 'string' ? props.frontmatter.repository : props.frontmatter.repository?.url ?? '')
 
-  if (typeof frontmatter.repository === 'string') {
-    return { url: frontmatter.repository, private: false }
-  }
-
-  return {
-    url: frontmatter.repository.url,
-    private: frontmatter.repository.private ?? false,
-  }
-}
-
-const repositoryInfo = getRepositoryInfo()
+const linkClass = '[&_span]:border-b [&_span]:border-muted hover:[&_span]:border-(--ui-text-dimmed) [&_span]:transition-colors [&_span]:duration-300'
 </script>
 
 <template>
@@ -41,34 +31,30 @@ const repositoryInfo = getRepositoryInfo()
     <div class="mx-auto max-w-screen-md space-y-6">
       <div>
         <h1 class="text-xl font-bold text-highlighted">
-          {{ frontmatter.title }}
+          {{ props.frontmatter.title }}
         </h1>
-        <div v-if="frontmatter.url || repositoryInfo" class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
+        <div v-if="props.frontmatter.url || props.frontmatter.repository" class="mt-2 flex items-center gap-2 font-sofia text-sm text-muted">
           <a
-            v-if="frontmatter.url"
-            :href="frontmatter.url"
+            v-if="props.frontmatter.url"
+            :href="`${props.frontmatter.url}?utm_source=infra.soubiran.dev&utm_medium=link`"
+            :class="linkClass"
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-1 hover:text-default transition-colors"
+            class="inline-flex items-center gap-1"
           >
-            <span>Website:</span>
-            <span class="font-semibold">{{ frontmatter.url }}</span>
+            <UIcon :name="link" class="size-4" />
+            <span>{{ props.frontmatter.url }}</span>
           </a>
-          <div v-if="repositoryInfo" class="inline-flex items-center gap-1">
-            <span>Repository:</span>
-            <a
-              v-if="!repositoryInfo.private"
-              :href="repositoryInfo.url"
-              target="_blank"
-              rel="noopener"
-              class="font-semibold hover:text-default transition-colors"
-            >
-              {{ repositoryInfo.url }}
-            </a>
-            <span v-else class="font-semibold">
-              {{ repositoryInfo.url }}
-            </span>
-          </div>
+          <span v-if="props.frontmatter.url && repositoryUrl"> · </span>
+          <component
+            :is="isRepositoryPrivate ? 'span' : 'a'"
+            v-if="repositoryUrl"
+            v-bind="isRepositoryPrivate ? {} : { href: repositoryUrl, target: '_blank', rel: 'noopener', class: linkClass }"
+            class="inline-flex items-center gap-1"
+          >
+            <UIcon :name="github" class="size-4" />
+            <span>{{ repositoryUrl }}</span>
+          </component>
         </div>
       </div>
 
