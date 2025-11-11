@@ -9,10 +9,12 @@
   "devDependencies": {
     "@antfu/eslint-config": "^6.1.0",
     "eslint": "^9.38.0",
+    "taze": "^19.9.0",
     "typescript": "^5.9.3"
   },
   "pnpm": {
     "overrides": {
+      "markdown-it": "npm:markdown-exit@1.0.0-beta.6",
       "vite": "npm:rolldown-vite@7.1.20"
     },
     "patchedDependencies": {
