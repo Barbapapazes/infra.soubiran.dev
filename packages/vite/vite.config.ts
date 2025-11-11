@@ -138,15 +138,13 @@ export default (title: string, hostname: string) => defineConfig({
                   await writeFile(file, Buffer.from(img!))
                 }
 
-                const { width, height } = imageSize(img!)
-
-                const { data } = await getPixels(img!)
-                const blurhash = encode(Uint8ClampedArray.from(data), width, height, 4, 4)
+                const data = await getPixels(img!)
+                const blurhash = encode(Uint8ClampedArray.from(data.data), data.width, data.height, 4, 4)
 
                 token.attrSet('src', remoteSrc)
                 token.attrSet('loading', 'lazy')
-                token.attrSet('width', width.toString())
-                token.attrSet('height', height.toString())
+                token.attrSet('width', data.width.toString())
+                token.attrSet('height', data.height.toString())
                 token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
               }
             }

@@ -1,6 +1,6 @@
 ---
 title: talks.soubiran.dev
-description: My collection of talks given at conferences and meetups. Automatically listed on my personal website.
+description: My collection of talks given at conferences and meetups over the years. Automatically listed on my personal website.
 url: https://talks.soubiran.dev
 repository: https://github.com/barbapapazes/talks
 ---
