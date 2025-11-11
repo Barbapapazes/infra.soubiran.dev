@@ -2,6 +2,7 @@
 import type { UserConfig } from 'vite'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import ui from '@nuxt/ui/vite'
 import { unheadVueComposablesImports } from '@unhead/vue'
 import vue from '@vitejs/plugin-vue'
@@ -11,6 +12,7 @@ import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import soubiranResolver from '../ui/src/resolver'
 import { assert } from './src/assert'
 import { canonical } from './src/canonical'
 import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
@@ -67,6 +69,9 @@ export default (title: string, hostname: string) => defineConfig({
       components: {
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         dts: 'src/components.d.ts',
+        resolvers: [
+          soubiranResolver(),
+        ],
       },
       ui: {
         colors: {
@@ -180,6 +185,7 @@ export default (title: string, hostname: string) => defineConfig({
 
   resolve: {
     alias: {
+      '@soubiran/ui': fileURLToPath(new URL('../ui/src', import.meta.url)),
       '@': resolve('./src'),
     },
   },

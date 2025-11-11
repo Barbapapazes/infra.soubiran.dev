@@ -1,5 +1,7 @@
 <script lang="ts">
 import PartySocket from 'partysocket'
+import { tv } from 'tailwind-variants'
+import { computed, onMounted, ref } from 'vue'
 
 const viewersCounter = tv({
   slots: {

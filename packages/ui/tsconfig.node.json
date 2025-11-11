@@ -8,11 +8,6 @@
     "moduleDetection": "force",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "paths": {
-      "#build/ui": [
-        "./node_modules/@nuxt/ui/.nuxt/ui"
-      ]
-    },
     "types": [
       "node"
     ],
@@ -28,7 +23,6 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "vite.config.ts",
-    ".scripts/*.ts"
+    "src/resolver.ts"
   ]
 }

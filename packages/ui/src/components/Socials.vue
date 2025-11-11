@@ -1,4 +1,6 @@
 <script lang="ts">
+import { tv } from 'tailwind-variants'
+import { computed } from 'vue'
 import github from '~icons/simple-icons/github'
 import linkedin from '~icons/simple-icons/linkedin'
 import twitch from '~icons/simple-icons/twitch'

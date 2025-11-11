@@ -1,24 +1,16 @@
 {
-  "name": "@infra.soubiran.dev/ui",
   "type": "module",
-  "version": "0.0.1",
   "private": true,
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    }
-  },
   "dependencies": {
     "@nuxt/ui": "^4.1.0",
+    "@types/node": "^24.10.0",
+    "@vue/tsconfig": "^0.8.1",
     "partysocket": "^1.1.6",
     "tailwind-variants": "^3.1.1",
-    "vue": "^3.5.22"
-  },
-  "devDependencies": {
-    "@iconify-json/simple-icons": "^1.2.57",
-    "@vue/tsconfig": "^0.8.1",
     "typescript": "~5.9.3",
-    "unplugin-icons": "^22.5.0"
+    "unplugin-icons": "^22.5.0",
+    "unplugin-vue-components": "^30.0.0",
+    "vite": "npm:rolldown-vite@7.1.20",
+    "vue": "^3.5.22"
   }
 }
