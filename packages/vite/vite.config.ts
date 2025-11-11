@@ -20,6 +20,7 @@ import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import { assert } from './src/assert'
 import { canonical } from './src/canonical'
 import { og } from './src/og'
 import { resolveAll } from './src/promise'
@@ -164,17 +165,7 @@ export default (title: string, hostname: string) => defineConfig({
       },
 
       frontmatterPreprocess(frontmatter, options, id, defaults) {
-        // Validate description length if present
-        if (frontmatter.description) {
-          const descLength = frontmatter.description.length
-          if (descLength < 110 || descLength > 160) {
-            throw new Error(
-              `Description length must be between 110 and 160 characters. `
-              + `Current length: ${descLength} in file: ${id}`,
-            )
-          }
-        }
-
+        assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
         structuredData(id, frontmatter, title, hostname)
