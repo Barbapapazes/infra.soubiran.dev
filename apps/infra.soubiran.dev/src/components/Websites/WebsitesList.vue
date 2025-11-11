@@ -21,7 +21,7 @@ defineSlots<WebsitesListSlots>()
 
 const router = useRouter()
 const routes = router.getRoutes()
-  .filter(route => route.path.startsWith('/websites/'))
+  .filter(route => route.path.startsWith('/websites/') && route.path !== '/websites/')
   .map((route) => {
     return {
       path: route.path,

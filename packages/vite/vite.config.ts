@@ -99,6 +99,10 @@ export default (title: string, hostname: string) => defineConfig({
           return 'WrapperPlatforms'
         }
 
+        if (page === 'websites-index') {
+          return 'WrapperWebsites'
+        }
+
         return 'WrapperContent'
       },
 
