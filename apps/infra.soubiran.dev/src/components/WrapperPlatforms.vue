@@ -34,6 +34,6 @@ const ui = computed(() => wrapperPlatforms())
   <WrapperContainer :class="ui.base({ class: [props.ui?.base, props.class] })" :ui="{ content: 'space-y-2' }">
     <WrapperTitle :title="props.frontmatter.title" />
 
-    <PlatformsList />
+    <PageCardList path-prefix="/platforms" :class="ui.base({ class: [props.ui?.base, props.class] })" />
   </WrapperContainer>
 </template>

@@ -34,6 +34,6 @@ const ui = computed(() => wrapperWebsites())
   <WrapperContainer :class="ui.base({ class: [props.ui?.base, props.class] })" :ui="{ content: 'space-y-2' }">
     <WrapperTitle :title="props.frontmatter.title" />
 
-    <WebsitesList />
+    <PageCardList path-prefix="/websites" :class="ui.base({ class: [props.ui?.base, props.class] })" />
   </WrapperContainer>
 </template>
