@@ -1,5 +1,3 @@
-#!/usr/bin/env tsx
-
 import { exec } from 'node:child_process'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, parse } from 'node:path'
@@ -10,19 +8,18 @@ import { encode } from 'blurhash'
 
 const execAsync = promisify(exec)
 
-interface MediaMetadata {
-  width: number
-  height: number
-  blurhash: string
-}
-
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg']
 const VIDEO_EXTENSIONS = ['.mp4']
 const SUPPORTED_EXTENSIONS = [...IMAGE_EXTENSIONS, ...VIDEO_EXTENSIONS]
 
-async function getImageMetadata(filePath: string): Promise<MediaMetadata> {
-  const buffer = await readFile(filePath)
-  const data = await getPixels(buffer)
+const TARGET_DIRECTORIES = ['websites', 'platforms']
+
+/**
+ * Generates blurhash for an image buffer
+ * Reused logic from packages/vite/src/markdown-it/custom-image.ts
+ */
+async function generateBlurhash(imageBuffer) {
+  const data = await getPixels(imageBuffer)
   const blurhash = encode(Uint8ClampedArray.from(data.data), data.width, data.height, 4, 4)
 
   return {
@@ -32,7 +29,7 @@ async function getImageMetadata(filePath: string): Promise<MediaMetadata> {
   }
 }
 
-async function getVideoMetadata(filePath: string): Promise<MediaMetadata> {
+async function getVideoMetadata(filePath) {
   // Use ffprobe to get video dimensions
   const { stdout: probeOutput } = await execAsync(
     `ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "${filePath}"`,
@@ -46,19 +43,18 @@ async function getVideoMetadata(filePath: string): Promise<MediaMetadata> {
     `ffmpeg -i "${filePath}" -vframes 1 -f image2 "${tempImagePath}" -y`,
   )
 
-  // Get blurhash from the extracted frame
+  // Get blurhash from the extracted frame using shared logic
   const frameBuffer = await readFile(tempImagePath)
-  const data = await getPixels(frameBuffer)
-  const blurhash = encode(Uint8ClampedArray.from(data.data), data.width, data.height, 4, 4)
+  const result = await generateBlurhash(frameBuffer)
 
   return {
     width,
     height,
-    blurhash,
+    blurhash: result.blurhash,
   }
 }
 
-async function processFile(filePath: string): Promise<void> {
+async function processFile(filePath) {
   const { ext, dir, name } = parse(filePath)
   const lowerExt = ext.toLowerCase()
 
@@ -72,10 +68,11 @@ async function processFile(filePath: string): Promise<void> {
   console.log(`Processing: ${filePath}`)
 
   try {
-    let metadata: MediaMetadata
+    let metadata
 
     if (IMAGE_EXTENSIONS.includes(lowerExt)) {
-      metadata = await getImageMetadata(filePath)
+      const buffer = await readFile(filePath)
+      metadata = await generateBlurhash(buffer)
     }
     else if (VIDEO_EXTENSIONS.includes(lowerExt)) {
       metadata = await getVideoMetadata(filePath)
@@ -93,8 +90,8 @@ async function processFile(filePath: string): Promise<void> {
   }
 }
 
-async function scanDirectory(dirPath: string): Promise<string[]> {
-  const files: string[] = []
+async function scanDirectory(dirPath) {
+  const files = []
   const entries = await readdir(dirPath, { withFileTypes: true })
 
   for (const entry of entries) {
@@ -119,16 +116,28 @@ async function main() {
   const publicDir = join(process.cwd(), 'public')
 
   // eslint-disable-next-line no-console
-  console.log(`Scanning ${publicDir} for media files...`)
+  console.log(`Scanning for media files in ${TARGET_DIRECTORIES.join(', ')}...`)
 
-  const mediaFiles = await scanDirectory(publicDir)
+  const allMediaFiles = []
+
+  // Scan only specified directories
+  for (const dir of TARGET_DIRECTORIES) {
+    const dirPath = join(publicDir, dir)
+    try {
+      const files = await scanDirectory(dirPath)
+      allMediaFiles.push(...files)
+    }
+    catch {
+      // Directory doesn't exist, skip it
+      console.warn(`Directory ${dirPath} not found, skipping...`)
+    }
+  }
 
   // eslint-disable-next-line no-console
-  console.log(`Found ${mediaFiles.length} media file(s)`)
+  console.log(`Found ${allMediaFiles.length} media file(s)`)
 
-  for (const file of mediaFiles) {
-    await processFile(file)
-  }
+  // Process all files concurrently
+  await Promise.all(allMediaFiles.map(file => processFile(file)))
 
   // eslint-disable-next-line no-console
   console.log('\nDone!')

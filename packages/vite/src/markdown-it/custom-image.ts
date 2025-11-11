@@ -2,10 +2,9 @@ import type { MarkdownItAsync } from 'markdown-it-async'
 import { Buffer } from 'node:buffer'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
-import { getPixels } from '@unpic/pixels'
 import { blurhashToDataUri } from '@unpic/placeholder'
-import { encode } from 'blurhash'
 import { joinURL } from 'ufo'
+import { generateBlurhash } from '../blurhash'
 
 export function customImage(md: MarkdownItAsync, hostname: string) {
   md.use((md) => {
@@ -28,14 +27,13 @@ export function customImage(md: MarkdownItAsync, hostname: string) {
             await writeFile(file, Buffer.from(img!))
           }
 
-          const data = await getPixels(img!)
-          const blurhash = encode(Uint8ClampedArray.from(data.data), data.width, data.height, 4, 4)
+          const data = await generateBlurhash(img!)
 
           token.attrSet('src', remoteSrc)
           token.attrSet('loading', 'lazy')
           token.attrSet('width', data.width.toString())
           token.attrSet('height', data.height.toString())
-          token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(blurhash)});`)
+          token.attrSet('style', `background-size: cover; background-image: url(${blurhashToDataUri(data.blurhash)});`)
         }
       }
 
