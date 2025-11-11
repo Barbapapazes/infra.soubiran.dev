@@ -1,5 +1,8 @@
 ---
 title: chat.soubiran.dev
+description: An AI application powered by AI Agents that answers queries in a chat-like interface, providing a unified way to interact with platforms.
+url: https://chat.soubiran.dev
+repository: https://github.com/barbapapazes/chat.soubiran.dev
 ---
 
 > [!NOTE]
