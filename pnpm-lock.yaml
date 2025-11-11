@@ -141,6 +141,9 @@ importers:
       '@types/node':
         specifier: ^24.10.0
         version: 24.10.0
+      '@unhead/vue':
+        specifier: ^2.0.19
+        version: 2.0.19(vue@3.5.22(typescript@5.9.3))
       '@unpic/placeholder':
         specifier: ^0.1.2
         version: 0.1.2

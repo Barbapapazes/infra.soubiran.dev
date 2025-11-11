@@ -3,6 +3,7 @@ import type { UserConfig } from 'vite'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import ui from '@nuxt/ui/vite'
+import { unheadVueComposablesImports } from '@unhead/vue'
 import vue from '@vitejs/plugin-vue'
 import matter from 'gray-matter'
 import fonts from 'unplugin-fonts/vite'
@@ -17,6 +18,7 @@ import { og } from './src/og'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
 import { structuredData } from './src/structured-data'
+import { extractPage } from './src/utils'
 
 const config: UserConfig = {}
 
@@ -54,6 +56,7 @@ export default (title: string, hostname: string) => defineConfig({
           'vue',
           'vue-router',
           '@vueuse/core',
+          unheadVueComposablesImports,
           {
             from: 'tailwind-variants',
             imports: ['tv'],
@@ -89,7 +92,19 @@ export default (title: string, hostname: string) => defineConfig({
         'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
         '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
       ],
-      wrapperComponent: 'WrapperContent',
+      wrapperComponent: (id) => {
+        const page = extractPage(id)
+
+        if (page === 'platforms-index') {
+          return 'WrapperPlatforms'
+        }
+
+        if (page === 'websites-index') {
+          return 'WrapperWebsites'
+        }
+
+        return 'WrapperContent'
+      },
 
       async markdownItSetup(md) {
         githubAlerts(md)
