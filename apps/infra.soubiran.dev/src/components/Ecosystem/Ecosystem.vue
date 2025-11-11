@@ -104,8 +104,8 @@ const ui = computed(() => ecosystem())
 
 <template>
   <div :class="ui.root({ class: props.ui?.root })">
-    <div v-if="props.inline" class="z-10 absolute top-0 h-2 inset-x-0 bg-linear-to-b from-(--ui-bg) to-(--ui-bg)/0" />
-    <div v-if="props.inline" class="z-10 absolute bottom-0 h-2 inset-x-0 bg-linear-to-t from-(--ui-bg) to-(--ui-bg)/0" />
+    <div v-if="props.inline" class="z-10 absolute top-0 h-4 inset-x-0 bg-linear-to-b from-(--ui-bg) to-(--ui-bg)/0" />
+    <div v-if="props.inline" class="z-10 absolute bottom-0 h-4 inset-x-0 bg-linear-to-t from-(--ui-bg) to-(--ui-bg)/0" />
     <VueFlow
       fit-view-on-init
       :default-viewport="{ zoom: 1 }"

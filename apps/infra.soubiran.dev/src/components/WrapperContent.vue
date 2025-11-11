@@ -15,9 +15,8 @@ useHead({
 </script>
 
 <template>
-  <div>
-    <!-- TODO: rework the py -->
-    <UContainer class="py-12">
+  <div class="py-12">
+    <UContainer>
       <div class="mx-auto max-w-screen-md space-y-6">
         <h1 class="text-xl font-bold text-highlighted">
           {{ frontmatter.title }}
@@ -30,9 +29,10 @@ useHead({
     <Ecosystem
       v-if="frontmatter.ecosystem"
       inline
+      class="mt-12"
       :name="frontmatter.title"
       :ecosystem="frontmatter.ecosystem"
-      :ui="{ root: 'w-full h-140' }"
+      :ui="{ root: 'w-full h-160' }"
     />
   </div>
 </template>
