@@ -6,6 +6,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@soubiran/ui": [
+        "../../packages/ui/src/index.ts"
       ]
     },
     "types": [
