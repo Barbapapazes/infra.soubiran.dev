@@ -17,10 +17,10 @@
     "vue": "^3.5.22"
   },
   "devDependencies": {
-    "@iconify-json/simple-icons": "^1.2.54",
+    "@iconify-json/simple-icons": "^1.2.57",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.0",
     "@vue/tsconfig": "^0.8.1",
     "tailwindcss": "^4.1.16",
     "typescript": "~5.9.3",
@@ -28,6 +28,6 @@
     "vite": "npm:rolldown-vite@7.1.20",
     "vite-ssg": "^28.2.2",
     "vue-router": "^4.6.3",
-    "vue-tsc": "^3.1.2"
+    "vue-tsc": "^3.1.3"
   }
 }
