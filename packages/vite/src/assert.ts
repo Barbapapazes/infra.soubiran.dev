@@ -9,4 +9,22 @@ export function assert(id: string, frontmatter: Record<string, any>) {
       )
     }
   }
+
+  // Check if this is a platform or website page (not index pages)
+  const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
+    && !id.endsWith('index.md')
+
+  // Validate url field for platform/website pages
+  if (isPlatformOrWebsite && !frontmatter.url) {
+    throw new Error(
+      `Missing required field 'url' in frontmatter for file: ${id}`,
+    )
+  }
+
+  // Validate repository field for platform/website pages
+  if (isPlatformOrWebsite && !frontmatter.repository) {
+    throw new Error(
+      `Missing required field 'repository' in frontmatter for file: ${id}`,
+    )
+  }
 }
