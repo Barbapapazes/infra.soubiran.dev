@@ -21,6 +21,11 @@
       "@nuxt/ui": "patches/@nuxt__ui.patch",
       "vite-ssg": "patches/vite-ssg.patch",
       "unhead": "patches/unhead.patch"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "vue-demi"
+    ]
   }
 }
