@@ -16,9 +16,28 @@
   --ui-text-highlighted: var(--ui-color-neutral-950);
 }
 
+.shiki {
+  color: var(--shiki-light);
+  background-color: var(--ui-color-neutral-100);
+}
+
+.shiki .line span {
+  color: var(--shiki-light);
+}
+
+
 .dark {
   --ui-primary: white;
   --ui-text-highlighted: var(--ui-color-neutral-200);
+}
+
+.dark .shiki {
+  color: var(--shiki-dark);
+  background-color: var(--ui-color-neutral-800);
+}
+
+.dark .shiki .line span {
+  color: var(--shiki-dark);
 }
 
 .fade-enter-active,
