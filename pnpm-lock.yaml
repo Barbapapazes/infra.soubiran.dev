@@ -36,6 +36,94 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  apps/code.soubiran.dev:
+    dependencies:
+      '@dagrejs/dagre':
+        specifier: ^1.1.8
+        version: 1.1.8
+      '@iconify/vue':
+        specifier: ^5.0.0
+        version: 5.0.0(vue@3.5.22(typescript@5.9.3))
+      '@nuxt/ui':
+        specifier: ^4.1.0
+        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
+      '@unhead/vue':
+        specifier: ^2.0.19
+        version: 2.0.19(vue@3.5.22(typescript@5.9.3))
+      '@unpic/pixels':
+        specifier: ^1.3.0
+        version: 1.3.0
+      '@vue-flow/background':
+        specifier: ^1.3.2
+        version: 1.3.2(@vue-flow/core@1.47.0(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
+      '@vue-flow/core':
+        specifier: ^1.47.0
+        version: 1.47.0(vue@3.5.22(typescript@5.9.3))
+      '@vueuse/core':
+        specifier: ^13
+        version: 13.9.0(vue@3.5.22(typescript@5.9.3))
+      blurhash:
+        specifier: ^2.0.5
+        version: 2.0.5
+      markdown-it-github-alerts:
+        specifier: ^1.0.0
+        version: 1.0.0(markdown-it@14.1.0)
+      partysocket:
+        specifier: ^1.1.6
+        version: 1.1.6
+      scule:
+        specifier: ^1.3.0
+        version: 1.3.0
+      tailwind-variants:
+        specifier: ^3.1.1
+        version: 3.1.1(tailwind-merge@3.3.1)(tailwindcss@4.1.16)
+      vue:
+        specifier: ^3.5.22
+        version: 3.5.22(typescript@5.9.3)
+    devDependencies:
+      '@iconify-json/logos':
+        specifier: ^1.2.9
+        version: 1.2.9
+      '@iconify-json/ph':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.57
+        version: 1.2.58
+      '@playwright/test':
+        specifier: ^1.56.1
+        version: 1.56.1
+      '@tailwindcss/typography':
+        specifier: ^0.5.19
+        version: 0.5.19(tailwindcss@4.1.16)
+      '@types/node':
+        specifier: ^24.10.0
+        version: 24.10.0
+      '@vue/tsconfig':
+        specifier: ^0.8.1
+        version: 0.8.1(typescript@5.9.3)(vue@3.5.22(typescript@5.9.3))
+      tailwindcss:
+        specifier: ^4.1.16
+        version: 4.1.16
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
+      unplugin-icons:
+        specifier: ^22.5.0
+        version: 22.5.0(@vue/compiler-sfc@3.5.22)
+      vite:
+        specifier: npm:rolldown-vite@7.1.20
+        version: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vite-ssg:
+        specifier: ^28.2.2
+        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
+      vue-router:
+        specifier: ^4.6.3
+        version: 4.6.3(vue@3.5.22(typescript@5.9.3))
+      vue-tsc:
+        specifier: ^3.1.3
+        version: 3.1.3(typescript@5.9.3)
+
   apps/infra.soubiran.dev:
     dependencies:
       '@dagrejs/dagre':

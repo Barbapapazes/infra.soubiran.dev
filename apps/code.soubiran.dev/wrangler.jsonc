@@ -1,0 +1,9 @@
+{
+  "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
+  "name": "code-soubiran-dev",
+  "compatibility_date": "2025-10-24",
+  "assets": {
+    "directory": "./dist"
+  },
+  "preview_urls": false
+}
