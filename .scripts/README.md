@@ -62,5 +62,6 @@ Example: `public/websites/image.png` → `public/websites/image.png.json`
 
 ### Requirements
 
+- **Node.js 24 or higher** (required for native TypeScript support)
 - `ffmpeg` and `ffprobe` must be installed for video processing
 - Dependencies: `@unpic/pixels`, `blurhash` (installed at root level)

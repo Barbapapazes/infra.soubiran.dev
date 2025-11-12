@@ -8,6 +8,8 @@ rclone copy public perso:infra-soubiran-dev --filter-from ./copy-assets.txt
 
 Generate metadata files (width, height, blurhash) for images and videos. The script is located at the root of the monorepo (`.scripts/generate-media-metadata.ts`) and can be used by any app.
 
+**Requirements**: Node.js 24 or higher
+
 ```sh
 pnpm run generate:media-metadata
 ```
