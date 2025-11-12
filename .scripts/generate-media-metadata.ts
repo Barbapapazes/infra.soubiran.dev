@@ -1,7 +1,7 @@
 import type { Buffer } from 'node:buffer'
 import { exec } from 'node:child_process'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
-import { join, parse } from 'node:path'
+import { join, parse, resolve } from 'node:path'
 import process from 'node:process'
 import { promisify } from 'node:util'
 import { getPixels } from '@unpic/pixels'
@@ -12,8 +12,6 @@ const execAsync = promisify(exec)
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg']
 const VIDEO_EXTENSIONS = ['.mp4']
 const SUPPORTED_EXTENSIONS = [...IMAGE_EXTENSIONS, ...VIDEO_EXTENSIONS]
-
-const TARGET_DIRECTORIES = ['websites', 'platforms']
 
 /**
  * Generates blurhash for an image buffer
@@ -113,15 +111,25 @@ async function scanDirectory(dirPath: string) {
 }
 
 async function main() {
-  const publicDir = join(process.cwd(), 'public')
+  // Parse command line arguments
+  // Usage: node generate-media-metadata.ts [publicDir] [targetDir1,targetDir2,...]
+  const args = process.argv.slice(2)
+
+  // Default to 'public' directory in current working directory
+  const publicDir = args[0] ? resolve(args[0]) : resolve(process.cwd(), 'public')
+
+  // Default target directories
+  const targetDirectories = args[1] ? args[1].split(',') : ['websites', 'platforms']
 
   // eslint-disable-next-line no-console
-  console.log(`Scanning for media files in ${TARGET_DIRECTORIES.join(', ')}...`)
+  console.log(`Scanning for media files in ${targetDirectories.join(', ')}...`)
+  // eslint-disable-next-line no-console
+  console.log(`Public directory: ${publicDir}`)
 
   const allMediaFiles = []
 
   // Scan only specified directories
-  for (const dir of TARGET_DIRECTORIES) {
+  for (const dir of targetDirectories) {
     const dirPath = join(publicDir, dir)
     try {
       const files = await scanDirectory(dirPath)

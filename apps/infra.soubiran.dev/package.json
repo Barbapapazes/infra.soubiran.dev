@@ -7,7 +7,7 @@
     "preview": "vite preview",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "generate:media-metadata": "node .scripts/generate-media-metadata.ts"
+    "generate:media-metadata": "tsx ../../.scripts/generate-media-metadata.ts"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.8",

@@ -26,12 +26,21 @@ importers:
       '@antfu/eslint-config':
         specifier: ^6.2.0
         version: 6.2.0(@vue/compiler-sfc@3.5.22)(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@unpic/pixels':
+        specifier: ^1.3.0
+        version: 1.3.0
+      blurhash:
+        specifier: ^2.0.5
+        version: 2.0.5
       eslint:
         specifier: ^9.39.1
         version: 9.39.1(jiti@2.6.1)
       taze:
         specifier: ^19.9.0
         version: 19.9.0
+      tsx:
+        specifier: ^4.20.6
+        version: 4.20.6
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -46,7 +55,7 @@ importers:
         version: 5.0.0(vue@3.5.22(typescript@5.9.3))
       '@nuxt/ui':
         specifier: ^4.1.0
-        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
+        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@unhead/vue':
         specifier: ^2.0.19
         version: 2.0.19(vue@3.5.22(typescript@5.9.3))
@@ -113,10 +122,10 @@ importers:
         version: 22.5.0(@vue/compiler-sfc@3.5.22)
       vite:
         specifier: npm:rolldown-vite@7.1.20
-        version: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+        version: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vite-ssg:
         specifier: ^28.2.2
-        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
+        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
       vue-router:
         specifier: ^4.6.3
         version: 4.6.3(vue@3.5.22(typescript@5.9.3))
@@ -128,7 +137,7 @@ importers:
     dependencies:
       '@nuxt/ui':
         specifier: ^4.1.0
-        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
+        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@types/node':
         specifier: ^24.10.0
         version: 24.10.0
@@ -152,7 +161,7 @@ importers:
         version: 30.0.0(@babel/parser@7.28.5)(@nuxt/kit@4.2.0)(vue@3.5.22(typescript@5.9.3))
       vite:
         specifier: npm:rolldown-vite@7.1.20
-        version: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+        version: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vue:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.9.3)
@@ -161,7 +170,7 @@ importers:
     dependencies:
       '@nuxt/ui':
         specifier: ^4.1.0
-        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
+        version: 4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@shikijs/markdown-it':
         specifier: ^3.14.0
         version: 3.14.0(markdown-it-async@2.2.0)
@@ -182,7 +191,7 @@ importers:
         version: 0.1.2
       '@vitejs/plugin-vue':
         specifier: ^6.0.1
-        version: 6.0.1(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))
+        version: 6.0.1(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))
       fs-extra:
         specifier: ^11.3.2
         version: 11.3.2
@@ -224,19 +233,19 @@ importers:
         version: 2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d)
       unplugin-fonts:
         specifier: ^1.4.0
-        version: 1.4.0(@nuxt/kit@4.2.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))
+        version: 1.4.0(@nuxt/kit@4.2.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       unplugin-vue-markdown:
         specifier: ^29.2.0
-        version: 29.2.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))
+        version: 29.2.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       unplugin-vue-router:
         specifier: ^0.16.1
         version: 0.16.1(@vue/compiler-sfc@3.5.22)(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
       vite:
         specifier: npm:rolldown-vite@7.1.20
-        version: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+        version: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vite-ssg:
         specifier: ^28.2.2
-        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
+        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))
       vue-router:
         specifier: ^4.6.3
         version: 4.6.3(vue@3.5.22(typescript@5.9.3))
@@ -3429,6 +3438,11 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
+  tsx@4.20.6:
+    resolution: {integrity: sha512-ytQKuwgmrrkDTFP4LjR0ToE2nqgy886GpvRSpU0JAnrdBYppuY5rLkRUYPU1yCryb24SsKBTL/hlDQAEFVwtZg==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -4402,17 +4416,17 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@nuxt/devtools-kit@2.7.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))':
+  '@nuxt/devtools-kit@2.7.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@nuxt/kit': 3.20.0
       execa: 8.0.1
-      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
     transitivePeerDependencies:
       - magicast
 
-  '@nuxt/fonts@0.11.4(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))':
+  '@nuxt/fonts@0.11.4(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
-      '@nuxt/devtools-kit': 2.7.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))
+      '@nuxt/devtools-kit': 2.7.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       '@nuxt/kit': 3.20.0
       consola: 3.4.2
       css-tree: 3.1.0
@@ -4456,13 +4470,13 @@ snapshots:
       - uploadthing
       - vite
 
-  '@nuxt/icon@2.1.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))':
+  '@nuxt/icon@2.1.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))':
     dependencies:
       '@iconify/collections': 1.0.612
       '@iconify/types': 2.0.0
       '@iconify/utils': 3.0.2
       '@iconify/vue': 5.0.0(vue@3.5.22(typescript@5.9.3))
-      '@nuxt/devtools-kit': 2.7.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))
+      '@nuxt/devtools-kit': 2.7.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       '@nuxt/kit': 4.2.0
       consola: 3.4.2
       local-pkg: 1.1.2
@@ -4537,20 +4551,20 @@ snapshots:
       pkg-types: 2.3.0
       std-env: 3.10.0
 
-  '@nuxt/ui@4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)':
+  '@nuxt/ui@4.1.0(patch_hash=169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c)(@babel/parser@7.28.5)(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)':
     dependencies:
       '@ai-sdk/vue': 2.0.82(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@iconify/vue': 5.0.0(vue@3.5.22(typescript@5.9.3))
       '@internationalized/date': 3.10.0
       '@internationalized/number': 3.6.5
-      '@nuxt/fonts': 0.11.4(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))
-      '@nuxt/icon': 2.1.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))
+      '@nuxt/fonts': 0.11.4(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
+      '@nuxt/icon': 2.1.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))
       '@nuxt/kit': 4.2.0
       '@nuxt/schema': 4.2.0
       '@nuxtjs/color-mode': 3.5.2
       '@standard-schema/spec': 1.0.0
       '@tailwindcss/postcss': 4.1.16
-      '@tailwindcss/vite': 4.1.16(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))
+      '@tailwindcss/vite': 4.1.16(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       '@tanstack/vue-table': 8.21.3(vue@3.5.22(typescript@5.9.3))
       '@tanstack/vue-virtual': 3.13.12(vue@3.5.22(typescript@5.9.3))
       '@unhead/vue': 2.0.19(vue@3.5.22(typescript@5.9.3))
@@ -4869,12 +4883,12 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.1.16
 
-  '@tailwindcss/vite@4.1.16(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))':
+  '@tailwindcss/vite@4.1.16(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@tailwindcss/node': 4.1.16
       '@tailwindcss/oxide': 4.1.16
       tailwindcss: 4.1.16
-      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
 
   '@tanstack/table-core@8.21.3': {}
 
@@ -5072,10 +5086,10 @@ snapshots:
 
   '@vercel/oidc@3.0.3': {}
 
-  '@vitejs/plugin-vue@6.0.1(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))':
+  '@vitejs/plugin-vue@6.0.1(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.29
-      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vue: 3.5.22(typescript@5.9.3)
 
   '@vitest/eslint-plugin@1.4.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
@@ -7096,7 +7110,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1):
+  rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1):
     dependencies:
       '@oxc-project/runtime': 0.95.0
       fdir: 6.5.0(picomatch@4.0.3)
@@ -7111,6 +7125,7 @@ snapshots:
       fsevents: 2.3.3
       jiti: 2.6.1
       terser: 5.44.0
+      tsx: 4.20.6
       yaml: 2.8.1
 
   rolldown@1.0.0-beta.45:
@@ -7378,6 +7393,13 @@ snapshots:
 
   tslib@2.8.1: {}
 
+  tsx@4.20.6:
+    dependencies:
+      esbuild: 0.25.11
+      get-tsconfig: 4.13.0
+    optionalDependencies:
+      fsevents: 2.3.3
+
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
@@ -7481,11 +7503,11 @@ snapshots:
       '@nuxt/kit': 4.2.0
       '@vueuse/core': 13.9.0(vue@3.5.22(typescript@5.9.3))
 
-  unplugin-fonts@1.4.0(@nuxt/kit@4.2.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)):
+  unplugin-fonts@1.4.0(@nuxt/kit@4.2.0)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
     dependencies:
       fast-glob: 3.3.3
       unplugin: 2.3.5
-      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
     optionalDependencies:
       '@nuxt/kit': 4.2.0
 
@@ -7523,7 +7545,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  unplugin-vue-markdown@29.2.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)):
+  unplugin-vue-markdown@29.2.0(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
     dependencies:
       '@mdit-vue/plugin-component': 3.0.2
       '@mdit-vue/plugin-frontmatter': 3.0.2
@@ -7533,7 +7555,7 @@ snapshots:
       markdown-it-async: 2.2.0
       unplugin: 2.3.10
       unplugin-utils: 0.3.1
-      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
 
   unplugin-vue-router@0.16.1(@vue/compiler-sfc@3.5.22)(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)):
     dependencies:
@@ -7623,7 +7645,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-ssg@28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)):
+  vite-ssg@28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3)):
     dependencies:
       '@unhead/dom': 2.0.19(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))
       '@unhead/vue': 2.0.19(vue@3.5.22(typescript@5.9.3))
@@ -7632,7 +7654,7 @@ snapshots:
       html-minifier-terser: 7.2.0
       html5parser: 2.0.2
       jsdom: 27.0.1(postcss@8.5.6)
-      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@24.10.0)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vue: 3.5.22(typescript@5.9.3)
     optionalDependencies:
       prettier: 3.6.2
