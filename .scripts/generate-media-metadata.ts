@@ -1,6 +1,6 @@
 import type { Buffer } from 'node:buffer'
 import { exec } from 'node:child_process'
-import { readdir, readFile, writeFile } from 'node:fs/promises'
+import { glob, readFile, writeFile } from 'node:fs/promises'
 import { join, parse, resolve } from 'node:path'
 import process from 'node:process'
 import { promisify } from 'node:util'
@@ -88,56 +88,31 @@ async function processFile(filePath: string) {
   }
 }
 
-async function scanDirectory(dirPath: string) {
-  const files: string[] = []
-  const entries = await readdir(dirPath, { withFileTypes: true })
-
-  for (const entry of entries) {
-    const fullPath = join(dirPath, entry.name)
-
-    if (entry.isDirectory()) {
-      const subFiles = await scanDirectory(fullPath)
-      files.push(...subFiles)
-    }
-    else if (entry.isFile()) {
-      const ext = parse(entry.name).ext.toLowerCase()
-      if (SUPPORTED_EXTENSIONS.includes(ext)) {
-        files.push(fullPath)
-      }
-    }
-  }
-
-  return files
-}
-
 async function main() {
   // Parse command line arguments
-  // Usage: node generate-media-metadata.ts [publicDir] [targetDir1,targetDir2,...]
+  // Usage: node generate-media-metadata.ts [publicDir]
   const args = process.argv.slice(2)
 
   // Default to 'public' directory in current working directory
   const publicDir = args[0] ? resolve(args[0]) : resolve(process.cwd(), 'public')
 
-  // Default target directories
-  const targetDirectories = args[1] ? args[1].split(',') : ['websites', 'platforms']
-
   // eslint-disable-next-line no-console
-  console.log(`Scanning for media files in ${targetDirectories.join(', ')}...`)
-  // eslint-disable-next-line no-console
-  console.log(`Public directory: ${publicDir}`)
+  console.log(`Scanning for media files in ${publicDir}...`)
 
-  const allMediaFiles = []
+  // Build glob patterns for all supported extensions
+  const patterns = SUPPORTED_EXTENSIONS.map(ext => `**/*${ext}`)
 
-  // Scan only specified directories
-  for (const dir of targetDirectories) {
-    const dirPath = join(publicDir, dir)
+  const allMediaFiles: string[] = []
+
+  // Use Node 24's glob API to scan for all media files
+  for (const pattern of patterns) {
     try {
-      const files = await scanDirectory(dirPath)
-      allMediaFiles.push(...files)
+      for await (const file of glob(pattern, { cwd: publicDir })) {
+        allMediaFiles.push(join(publicDir, file))
+      }
     }
-    catch {
-      // Directory doesn't exist, skip it
-      console.warn(`Directory ${dirPath} not found, skipping...`)
+    catch (error) {
+      console.warn(`Error scanning with pattern ${pattern}:`, error)
     }
   }
 

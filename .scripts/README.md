@@ -14,10 +14,10 @@ From the root directory:
 pnpm run generate:media-metadata
 ```
 
-Or with custom parameters:
+Or with custom public directory:
 
 ```bash
-pnpm run generate:media-metadata [publicDir] [targetDir1,targetDir2,...]
+pnpm run generate:media-metadata [publicDir]
 ```
 
 From any app directory:
@@ -29,16 +29,15 @@ pnpm run generate:media-metadata
 ### Parameters
 
 - `publicDir` (optional): Path to the public directory to scan. Defaults to `./public` relative to the current working directory.
-- `targetDir1,targetDir2,...` (optional): Comma-separated list of subdirectories within the public directory to scan. Defaults to `websites,platforms`.
 
 ### Examples
 
 ```bash
-# Use defaults (scans ./public/websites and ./public/platforms)
+# Use defaults (scans entire ./public directory)
 pnpm run generate:media-metadata
 
-# Custom public directory and target directories
-pnpm run generate:media-metadata apps/myapp/public websites,platforms,images
+# Custom public directory
+pnpm run generate:media-metadata apps/myapp/public
 
 # From a specific app directory (will use that app's public directory)
 cd apps/infra.soubiran.dev
@@ -47,7 +46,9 @@ pnpm run generate:media-metadata
 
 ### What it does
 
-1. Scans specified directories recursively for supported media files:
+1. Scans the entire public directory recursively for supported media files using Node 24's glob API:
+   - Images: `.png`, `.jpg`, `.jpeg`
+   - Videos: `.mp4`
    - Images: `.png`, `.jpg`, `.jpeg`
    - Videos: `.mp4`
 
@@ -62,6 +63,6 @@ Example: `public/websites/image.png` → `public/websites/image.png.json`
 
 ### Requirements
 
-- **Node.js 24 or higher** (required for native TypeScript support)
+- **Node.js 24 or higher** (required for native TypeScript support and glob API)
 - `ffmpeg` and `ffprobe` must be installed for video processing
 - Dependencies: `@unpic/pixels`, `blurhash` (installed at root level)

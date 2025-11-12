@@ -15,17 +15,17 @@ pnpm run generate:media-metadata
 ```
 
 This script will:
-- Scan the `public/websites` and `public/platforms` directories recursively for media files (png, jpg, jpeg, mp4)
+- Scan the entire `public` directory recursively for media files (png, jpg, jpeg, mp4) using Node 24's glob API
 - Generate a JSON file next to each media file containing:
   - `width`: Image/video width in pixels
   - `height`: Image/video height in pixels
   - `blurhash`: Blurhash string for placeholder rendering
 - Process all files concurrently for better performance
 
-You can also customize the directories to scan by passing arguments:
+You can also customize the public directory to scan:
 
 ```sh
-pnpm run generate:media-metadata [publicDir] [targetDir1,targetDir2,...]
+pnpm run generate:media-metadata [publicDir]
 ```
 
 Example: `public/websites/image.png` => `public/websites/image.png.json`
