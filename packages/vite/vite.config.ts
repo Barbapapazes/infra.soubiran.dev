@@ -1,6 +1,6 @@
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -179,6 +179,19 @@ export default (title: string, hostname: string) => defineConfig({
           return
         }
 
+        function sanitizeMarkdown(content: string, title?: string): string {
+          // Remove HTML tags but keep content inside
+          let sanitized = content.replace(/<[^>]+>([^<]*)<\/[^>]+>/g, '$1')
+          sanitized = sanitized.replace(/<[^>]+>/g, '')
+
+          // Add title as H1 at the top if it exists
+          if (title) {
+            sanitized = `# ${title}\n\n${sanitized}`
+          }
+
+          return sanitized.trim()
+        }
+
         function copyMarkdownFiles(sourceDir: string, targetDir: string) {
           const entries = readdirSync(sourceDir)
 
@@ -199,7 +212,16 @@ export default (title: string, hostname: string) => defineConfig({
               if (!existsSync(targetDirPath)) {
                 mkdirSync(targetDirPath, { recursive: true })
               }
-              cpSync(sourcePath, targetPath)
+
+              // Read and parse markdown file
+              const fileContent = readFileSync(sourcePath, 'utf-8')
+              const { data, content } = matter(fileContent)
+
+              // Sanitize the content and add title
+              const sanitizedContent = sanitizeMarkdown(content, data.title)
+
+              // Write sanitized content to target
+              writeFileSync(targetPath, sanitizedContent, 'utf-8')
             }
           }
         }
