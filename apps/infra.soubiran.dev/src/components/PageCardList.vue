@@ -2,7 +2,7 @@
 const pageCardList = tv({
   slots: {
     base: 'space-y-6',
-    item: '',
+    item: 'slide-enter',
   },
 })
 
@@ -39,7 +39,7 @@ const ui = computed(() => pageCardList())
 
 <template>
   <ul :class="ui.base({ class: [props.ui?.base, props.class] })">
-    <li v-for="item in routes" :key="item.path" :class="ui.item({ class: props.ui?.item })">
+    <li v-for="(item, index) in routes" :key="item.path" :class="ui.item({ class: props.ui?.item })" :style="{ '--enter-stage': index }">
       <UPageCard
         as="article"
         :title="item.title"
