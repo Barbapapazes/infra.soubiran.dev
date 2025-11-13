@@ -89,31 +89,40 @@ async function processFile(filePath: string) {
 }
 
 async function main() {
-  // Parse command line arguments
-  // Usage: node generate-media-metadata.ts [publicDir]
-  const args = process.argv.slice(2)
-
-  // Default to 'public' directory in current working directory
-  const publicDir = args[0] ? resolve(args[0]) : resolve(process.cwd(), 'public')
+  // Scan all public directories in apps folder
+  const appsDir = resolve(process.cwd(), 'apps')
 
   // eslint-disable-next-line no-console
-  console.log(`Scanning for media files in ${publicDir}...`)
-
-  // Build glob patterns for all supported extensions
-  const patterns = SUPPORTED_EXTENSIONS.map(ext => `**/*${ext}`)
+  console.log(`Scanning for media files in all apps...`)
 
   const allMediaFiles: string[] = []
 
-  // Use Node 24's glob API to scan for all media files
-  for (const pattern of patterns) {
-    try {
-      for await (const file of glob(pattern, { cwd: publicDir })) {
-        allMediaFiles.push(join(publicDir, file))
+  // Find all public directories in apps
+  try {
+    for await (const appDir of glob('*/public', { cwd: appsDir })) {
+      const publicDir = join(appsDir, appDir)
+      // eslint-disable-next-line no-console
+      console.log(`  Scanning ${publicDir}...`)
+
+      // Build glob patterns for all supported extensions
+      const patterns = SUPPORTED_EXTENSIONS.map(ext => `**/*${ext}`)
+
+      // Use Node 24's glob API to scan for all media files
+      for (const pattern of patterns) {
+        try {
+          for await (const file of glob(pattern, { cwd: publicDir })) {
+            allMediaFiles.push(join(publicDir, file))
+          }
+        }
+        catch (error) {
+          console.warn(`Error scanning with pattern ${pattern}:`, error)
+        }
       }
     }
-    catch (error) {
-      console.warn(`Error scanning with pattern ${pattern}:`, error)
-    }
+  }
+  catch (error) {
+    console.error('Error scanning apps directory:', error)
+    process.exit(1)
   }
 
   // eslint-disable-next-line no-console

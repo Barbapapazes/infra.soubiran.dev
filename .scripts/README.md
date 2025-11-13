@@ -14,41 +14,9 @@ From the root directory:
 pnpm run generate:media-metadata
 ```
 
-Or with custom public directory:
-
-```bash
-pnpm run generate:media-metadata [publicDir]
-```
-
-From any app directory:
-
-```bash
-pnpm run generate:media-metadata
-```
-
-### Parameters
-
-- `publicDir` (optional): Path to the public directory to scan. Defaults to `./public` relative to the current working directory.
-
-### Examples
-
-```bash
-# Use defaults (scans entire ./public directory)
-pnpm run generate:media-metadata
-
-# Custom public directory
-pnpm run generate:media-metadata apps/myapp/public
-
-# From a specific app directory (will use that app's public directory)
-cd apps/infra.soubiran.dev
-pnpm run generate:media-metadata
-```
-
 ### What it does
 
-1. Scans the entire public directory recursively for supported media files using Node 24's glob API:
-   - Images: `.png`, `.jpg`, `.jpeg`
-   - Videos: `.mp4`
+1. Automatically scans all `public` directories in the `apps` folder for supported media files using Node 24's glob API:
    - Images: `.png`, `.jpg`, `.jpeg`
    - Videos: `.mp4`
 
