@@ -1,7 +1,8 @@
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import ui from '@nuxt/ui/vite'
 import { unheadVueComposablesImports } from '@unhead/vue'
@@ -165,6 +166,45 @@ export default (title: string, hostname: string) => defineConfig({
       name: 'extract-config',
       configResolved(resolvedConfig) {
         Object.assign(config, resolvedConfig)
+      },
+    },
+
+    {
+      name: 'copy-markdown-files',
+      closeBundle() {
+        const pagesDir = resolve(process.cwd(), 'pages')
+        const distDir = resolve(process.cwd(), 'dist')
+
+        if (!existsSync(pagesDir)) {
+          return
+        }
+
+        function copyMarkdownFiles(sourceDir: string, targetDir: string) {
+          const entries = readdirSync(sourceDir)
+
+          for (const entry of entries) {
+            const sourcePath = join(sourceDir, entry)
+            const stat = statSync(sourcePath)
+
+            if (stat.isDirectory()) {
+              const newTargetDir = join(targetDir, entry)
+              if (!existsSync(newTargetDir)) {
+                mkdirSync(newTargetDir, { recursive: true })
+              }
+              copyMarkdownFiles(sourcePath, newTargetDir)
+            }
+            else if (entry.endsWith('.md')) {
+              const targetPath = join(targetDir, entry)
+              const targetDirPath = dirname(targetPath)
+              if (!existsSync(targetDirPath)) {
+                mkdirSync(targetDirPath, { recursive: true })
+              }
+              cpSync(sourcePath, targetPath)
+            }
+          }
+        }
+
+        copyMarkdownFiles(pagesDir, distDir)
       },
     },
   ],
