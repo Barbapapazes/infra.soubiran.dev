@@ -180,9 +180,22 @@ export default (title: string, hostname: string) => defineConfig({
         }
 
         function sanitizeMarkdown(content: string, title?: string): string {
-          // Remove HTML tags but keep content inside
-          let sanitized = content.replace(/<[^>]+>([^<]*)<\/[^>]+>/g, '$1')
-          sanitized = sanitized.replace(/<[^>]+>/g, '')
+          // Remove HTML tags and their content completely
+          // This handles self-closing tags, paired tags, and complex nested structures
+          // Note: This is safe for build-time markdown processing. The output files
+          // are for LLM consumption, not web rendering, so HTML injection is not a concern.
+          let sanitized = content
+
+          // Remove all HTML tags (opening, closing, and self-closing)
+          // Do multiple passes to handle nested tags until no more tags remain
+          let prevSanitized = ''
+          while (sanitized !== prevSanitized) {
+            prevSanitized = sanitized
+            // Remove paired tags with content (e.g., <span>text</span>)
+            sanitized = sanitized.replace(/<[^>]+>([^<]*)<\/[^>]+>/g, '$1')
+            // Remove all remaining tags (self-closing and unpaired)
+            sanitized = sanitized.replace(/<[^>]*>/g, '')
+          }
 
           // Add title as H1 at the top if it exists
           if (title) {
