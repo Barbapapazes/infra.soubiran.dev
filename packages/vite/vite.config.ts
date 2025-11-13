@@ -17,6 +17,7 @@ import { assert } from './src/assert'
 import { canonical } from './src/canonical'
 import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
 import { og } from './src/og'
+import { generatePagesApi } from './src/pages-api'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
 import { structuredData } from './src/structured-data'
@@ -198,6 +199,7 @@ export default (title: string, hostname: string) => defineConfig({
     },
     onFinished() {
       sitemap(config, hostname, Array.from(routes))
+      generatePagesApi(config, resolve('pages'))
     },
   },
 })
