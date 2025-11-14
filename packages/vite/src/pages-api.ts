@@ -1,7 +1,7 @@
-import type { UserConfig } from 'vite'
+import type { Plugin, UserConfig } from 'vite'
 import { readdirSync, readFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import matter from 'gray-matter'
 
 export interface PageData {
@@ -60,7 +60,7 @@ function processMarkdownFile(filePath: string, category: 'websites' | 'platforms
 /**
  * Generates the pages API JSON files in dist/api directory
  */
-export async function generatePagesApi(config: UserConfig, pagesDir: string) {
+async function generatePagesApi(config: UserConfig, pagesDir: string) {
   const websitesDir = join(pagesDir, 'websites')
   const platformsDir = join(pagesDir, 'platforms')
 
@@ -83,4 +83,22 @@ export async function generatePagesApi(config: UserConfig, pagesDir: string) {
 
   // eslint-disable-next-line no-console
   console.log(`Generated pages API: ${websitesPath} (${websites.length} websites), ${platformsPath} (${platforms.length} platforms)`)
+}
+
+/**
+ * Vite plugin to generate pages API JSON files
+ */
+export function pagesApiPlugin(): Plugin {
+  let config: UserConfig
+
+  return {
+    name: 'pages-api',
+    configResolved(resolvedConfig) {
+      config = resolvedConfig
+    },
+    async closeBundle() {
+      const pagesDir = resolve('pages')
+      await generatePagesApi(config, pagesDir)
+    },
+  }
 }
