@@ -6,8 +6,7 @@
     "build": "vite-ssg build",
     "preview": "vite preview",
     "test": "playwright test",
-    "test:ui": "playwright test --ui",
-    "generate:media-metadata": "node .scripts/generate-media-metadata.ts"
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.8",
