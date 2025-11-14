@@ -5,6 +5,7 @@ import { join, parse, resolve } from 'node:path'
 import process from 'node:process'
 import { promisify } from 'node:util'
 import { getPixels } from '@unpic/pixels'
+import { cyan, dim, green, yellow } from 'ansis'
 import { encode } from 'blurhash'
 
 const execAsync = promisify(exec)
@@ -52,7 +53,22 @@ async function getVideoMetadata(filePath: string) {
   }
 }
 
+function formatPathForLog(filePath: string): string {
+  const relPath = filePath.replace(`${process.cwd()}/`, '')
+  const splitToken = '/public/'
+  const idx = relPath.indexOf(splitToken)
+  let left = relPath
+  let right = ''
+  if (idx !== -1) {
+    left = relPath.slice(0, idx + splitToken.length)
+    right = relPath.slice(idx + splitToken.length)
+  }
+  return `${dim(left)}${cyan(right)}`
+}
+
 async function processFile(filePath: string) {
+  const time = Date.now()
+
   const { ext, dir, name } = parse(filePath)
   const lowerExt = ext.toLowerCase()
 
@@ -63,7 +79,7 @@ async function processFile(filePath: string) {
   const metadataPath = join(dir, `${name}${ext}.json`)
 
   // eslint-disable-next-line no-console
-  console.log(`Processing: ${filePath}`)
+  console.info(`${dim('Processing')} ${formatPathForLog(filePath)}`)
 
   try {
     let metadata
@@ -81,7 +97,7 @@ async function processFile(filePath: string) {
 
     await writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`)
     // eslint-disable-next-line no-console
-    console.log(`Created metadata: ${metadataPath}`)
+    console.info(`${dim(`Created metadata`)} ${formatPathForLog(metadataPath)} ${dim(`(${Date.now() - time} ms)`)}`)
   }
   catch (error) {
     console.error(`Failed to process ${filePath}:`, error)
@@ -89,11 +105,14 @@ async function processFile(filePath: string) {
 }
 
 async function main() {
+  const time = Date.now()
+
+  const baseDir = process.cwd()
   // Scan all public directories in apps folder
-  const appsDir = resolve(process.cwd(), 'apps')
+  const appsDir = resolve(baseDir, 'apps')
 
   // eslint-disable-next-line no-console
-  console.log(`Scanning for media files in all apps...`)
+  console.info(yellow(`Scanning for media files in all apps...`))
 
   const allMediaFiles: string[] = []
 
@@ -102,7 +121,7 @@ async function main() {
     for await (const appDir of glob('*/public', { cwd: appsDir })) {
       const publicDir = join(appsDir, appDir)
       // eslint-disable-next-line no-console
-      console.log(`  Scanning ${publicDir}...`)
+      console.info(dim(`  Scanning ${publicDir.replace(`${baseDir}/`, '')}...`))
 
       // Build glob patterns for all supported extensions
       const patterns = SUPPORTED_EXTENSIONS.map(ext => `**/*${ext}`)
@@ -126,13 +145,13 @@ async function main() {
   }
 
   // eslint-disable-next-line no-console
-  console.log(`Found ${allMediaFiles.length} media file(s)`)
+  console.info(green(`✓ Found ${allMediaFiles.length} media file(s)`))
 
   // Process all files concurrently
   await Promise.all(allMediaFiles.map(file => processFile(file)))
 
   // eslint-disable-next-line no-console
-  console.log('\nDone!')
+  console.info(green(`✓ Done in ${((Date.now() - time) / 1000).toFixed(2)} seconds`))
 }
 
 main().catch((error) => {
