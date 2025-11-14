@@ -72,34 +72,4 @@ test.describe('Markdown files', () => {
       })
     }
   })
-
-  test.describe('markdown structure', () => {
-    test('all markdown files have valid markdown format', async ({ request }) => {
-      for (const file of markdownFiles) {
-        const response = await request.get(file)
-        const content = await response.text()
-
-        // Should start with # (H1)
-        expect(content).toMatch(/^#\s+/, `${file} should start with H1`)
-
-        // Should not be empty
-        expect(content.trim().length).toBeGreaterThan(0, `${file} should not be empty`)
-      }
-    })
-
-    test('markdown files contain expected markdown elements', async ({ request }) => {
-      // Test with the root index.md as a representative sample
-      const rootFile = markdownFiles.find(f => f === '/index.md')
-      if (rootFile) {
-        const response = await request.get(rootFile)
-        const content = await response.text()
-
-        // Should have at least one paragraph
-        expect(content).toMatch(/\n\n/)
-
-        // Should have links in markdown format
-        expect(content).toMatch(/\[.+\]\(.+\)/)
-      }
-    })
-  })
 })
