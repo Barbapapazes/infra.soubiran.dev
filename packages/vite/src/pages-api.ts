@@ -13,11 +13,6 @@ export interface PageData {
   [key: string]: any
 }
 
-export interface PagesApiData {
-  websites: PageData[]
-  platforms: PageData[]
-}
-
 /**
  * Recursively scan a directory for markdown files
  */
@@ -63,7 +58,7 @@ function processMarkdownFile(filePath: string, category: 'websites' | 'platforms
 }
 
 /**
- * Generates the pages API JSON file in dist/api directory
+ * Generates the pages API JSON files in dist/api directory
  */
 export async function generatePagesApi(config: UserConfig, pagesDir: string) {
   const websitesDir = join(pagesDir, 'websites')
@@ -77,18 +72,15 @@ export async function generatePagesApi(config: UserConfig, pagesDir: string) {
   const websites = websiteFiles.map(file => processMarkdownFile(file, 'websites'))
   const platforms = platformFiles.map(file => processMarkdownFile(file, 'platforms'))
 
-  const pagesData: PagesApiData = {
-    websites,
-    platforms,
-  }
-
-  // Create api directory and write JSON file
+  // Create api directory and write JSON files
   const apiDir = join(config.build!.outDir!, 'api')
-  const apiPath = join(apiDir, 'pages.json')
+  const websitesPath = join(apiDir, 'websites.json')
+  const platformsPath = join(apiDir, 'platforms.json')
 
   await mkdir(apiDir, { recursive: true })
-  await writeFile(apiPath, JSON.stringify(pagesData, null, 2))
+  await writeFile(websitesPath, JSON.stringify(websites, null, 2))
+  await writeFile(platformsPath, JSON.stringify(platforms, null, 2))
 
   // eslint-disable-next-line no-console
-  console.log(`Generated pages API: ${apiPath} (${websites.length} websites, ${platforms.length} platforms)`)
+  console.log(`Generated pages API: ${websitesPath} (${websites.length} websites), ${platformsPath} (${platforms.length} platforms)`)
 }
