@@ -13,6 +13,7 @@ import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 import soubiranResolver from '../ui/src/resolver'
+import { apiPlugin } from './src/api'
 import { assert } from './src/assert'
 import { canonical } from './src/canonical'
 import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
@@ -153,6 +154,8 @@ export default (title: string, hostname: string) => defineConfig({
     icons({
       autoInstall: true,
     }),
+
+    apiPlugin(),
 
     {
       name: 'await',
