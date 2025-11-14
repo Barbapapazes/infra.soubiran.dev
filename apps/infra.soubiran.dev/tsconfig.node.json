@@ -29,6 +29,7 @@
   },
   "include": [
     "vite.config.ts",
+    "tests/**/*.ts",
     ".scripts/*.ts"
   ]
 }

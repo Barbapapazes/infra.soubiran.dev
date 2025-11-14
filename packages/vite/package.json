@@ -10,6 +10,7 @@
     "@unhead/vue": "^2.0.19",
     "@unpic/placeholder": "^0.1.2",
     "@vitejs/plugin-vue": "^6.0.1",
+    "ansis": "^4.2.0",
     "fs-extra": "^11.3.2",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.1.0",
