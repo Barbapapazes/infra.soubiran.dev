@@ -28,7 +28,7 @@ export function structuredData(id: string, frontmatter: Record<string, any>, nam
   }, options)
 
   const page = extractPage(id)
-  if (page === 'platforms-show') {
+  if (page === 'platforms-show' || page === 'websites-show') {
     const articleData = article(
       id,
       { person: personData, webpage: webpageData },
@@ -48,9 +48,9 @@ export function structuredData(id: string, frontmatter: Record<string, any>, nam
         url: toUrl(hostname),
       },
       {
-        title: 'Platforms',
+        title: page === 'platforms-show' ? 'Platforms' : 'Websites',
         type: 'WebPage',
-        url: toUrl(hostname, 'platforms'),
+        url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
       },
       {
         title: frontmatter.title,
@@ -61,7 +61,7 @@ export function structuredData(id: string, frontmatter: Record<string, any>, nam
     graph['@graph'].push(breadcrumbData.data)
     webpageData.setBreadcrumb(breadcrumbData)
   }
-  else if (page === 'platforms-index') {
+  else if (page === 'platforms-index' || page === 'websites-index') {
     webpageData.setCollection()
   }
 
