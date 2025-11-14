@@ -23,4 +23,4 @@ jobs:
           node-version: 24
 
       - run: pnpm install
-      - run: pnpm build
+      - run: pnpm run -r build
