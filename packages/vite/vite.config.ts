@@ -1,8 +1,7 @@
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
-import { existsSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import ui from '@nuxt/ui/vite'
 import { unheadVueComposablesImports } from '@unhead/vue'
@@ -14,12 +13,12 @@ import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 import soubiranResolver from '../ui/src/resolver'
-import { apiPlugin } from './src/api'
 import { assert } from './src/assert'
 import { canonical } from './src/canonical'
-import { copyAndSanitizeMarkdownFiles } from './src/copy-markdown'
 import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
 import { og } from './src/og'
+import { apiPlugin } from './src/plugins/api'
+import { markdownPlugin } from './src/plugins/markdown'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
 import { structuredData } from './src/structured-data'
@@ -158,6 +157,7 @@ export default (title: string, hostname: string) => defineConfig({
     }),
 
     apiPlugin(),
+    markdownPlugin(),
 
     {
       name: 'await',
@@ -170,20 +170,6 @@ export default (title: string, hostname: string) => defineConfig({
       name: 'extract-config',
       configResolved(resolvedConfig) {
         Object.assign(config, resolvedConfig)
-      },
-    },
-
-    {
-      name: 'copy-markdown-files',
-      closeBundle() {
-        const pagesDir = resolve(process.cwd(), 'pages')
-        const distDir = resolve(process.cwd(), 'dist')
-
-        if (!existsSync(pagesDir)) {
-          return
-        }
-
-        copyAndSanitizeMarkdownFiles(pagesDir, distDir)
       },
     },
   ],

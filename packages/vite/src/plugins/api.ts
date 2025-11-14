@@ -2,6 +2,7 @@ import type { Plugin, ResolvedConfig } from 'vite'
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { cwd } from 'node:process'
+import { cyan, dim, green, yellow } from 'ansis'
 import matter from 'gray-matter'
 
 /**
@@ -53,6 +54,8 @@ function processMarkdownFile(filePath: string, category: string): Record<string,
  */
 async function api(config: ResolvedConfig) {
   const pagesDir = resolve(cwd(), 'pages')
+  const distDir = resolve(cwd(), config.build.outDir)
+
   const names = ['websites', 'platforms']
 
   for (const name of names) {
@@ -60,14 +63,13 @@ async function api(config: ResolvedConfig) {
 
     const processedFiles = scanMarkdownFiles(dir).map(file => processMarkdownFile(file, name))
 
-    const apiDir = join(config.build!.outDir!, 'api')
+    const apiDir = join(distDir, 'api')
     const path = join(apiDir, `${name}.json`)
 
     mkdirSync(apiDir, { recursive: true })
     writeFileSync(path, JSON.stringify(processedFiles, null, 2))
 
-    // eslint-disable-next-line no-console
-    console.log(`Generated API: ${path} (${processedFiles.length} ${name})`)
+    config.logger.info(`${dim(`${config.build.outDir}/`)}${cyan(path.replace(`${distDir}/`, ''))}`)
   }
 }
 
@@ -79,11 +81,17 @@ export function apiPlugin(): Plugin {
     configResolved(resolvedConfig) {
       config = resolvedConfig
     },
-    async closeBundle() {
-      if (this.environment.name !== 'client')
+    closeBundle() {
+      if (this.environment.name !== 'client') {
         return
+      }
+
+      const time = new Date()
+      config.logger.info(yellow('Generate API files'))
 
       api(config)
+
+      config.logger.info(green(`✓ generated in ${new Date().getTime() - time.getTime()}ms`))
     },
   }
 }

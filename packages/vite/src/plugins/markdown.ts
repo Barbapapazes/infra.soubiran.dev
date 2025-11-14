@@ -1,5 +1,8 @@
+import type { Plugin, ResolvedConfig } from 'vite'
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
-import { basename, dirname, join } from 'node:path'
+import { basename, dirname, join, resolve } from 'node:path'
+import { cwd } from 'node:process'
+import { cyan, dim, green, yellow } from 'ansis'
 import matter from 'gray-matter'
 
 /**
@@ -8,7 +11,7 @@ import matter from 'gray-matter'
  * - Adds title as H1 heading at the top
  * - Safe for build-time processing
  */
-export function sanitizeMarkdown(content: string, title?: string): string {
+function sanitizeMarkdown(content: string, title?: string): string {
   // Remove HTML tags and their content completely
   // This handles self-closing tags, paired tags, and complex nested structures
   // Note: This is safe for build-time markdown processing. The output files
@@ -41,7 +44,8 @@ export function sanitizeMarkdown(content: string, title?: string): string {
  * - Preserves directory structure
  * - Converts /<something>/index.md to /<something>.md (except for root /index.md)
  */
-export function copyAndSanitizeMarkdownFiles(sourceDir: string, targetDir: string, isRoot = true): void {
+function copyAndSanitizeMarkdownFiles(config: ResolvedConfig, sourceDir: string, targetDir: string, isRoot = true): void {
+  const outDir = join(resolve(cwd()), config.build.outDir)
   const entries = readdirSync(sourceDir)
 
   for (const entry of entries) {
@@ -53,7 +57,7 @@ export function copyAndSanitizeMarkdownFiles(sourceDir: string, targetDir: strin
       if (!existsSync(newTargetDir)) {
         mkdirSync(newTargetDir, { recursive: true })
       }
-      copyAndSanitizeMarkdownFiles(sourcePath, newTargetDir, false)
+      copyAndSanitizeMarkdownFiles(config, sourcePath, newTargetDir, false)
     }
     else if (entry.endsWith('.md')) {
       // Determine the target path
@@ -83,6 +87,34 @@ export function copyAndSanitizeMarkdownFiles(sourceDir: string, targetDir: strin
 
       // Write sanitized content to target
       writeFileSync(targetPath, sanitizedContent, 'utf-8')
+
+      config.logger.info(`${dim(`${config.build.outDir}/`)}${cyan(targetPath.replace(`${outDir}/`, ''))}`)
     }
+  }
+}
+
+export function markdownPlugin(): Plugin {
+  let config: ResolvedConfig
+
+  return {
+    name: 'markdown',
+    configResolved(resolvedConfig) {
+      config = resolvedConfig
+    },
+    closeBundle() {
+      if (this.environment.name !== 'client') {
+        return
+      }
+
+      const pagesDir = resolve(cwd(), 'pages')
+      const distDir = resolve(cwd(), config.build.outDir)
+
+      const time = new Date()
+      config.logger.info(yellow('Copy and Sanitize Markdown'))
+
+      copyAndSanitizeMarkdownFiles(config, pagesDir, distDir)
+
+      config.logger.info(green(`✓ copied in ${new Date().getTime() - time.getTime()}ms`))
+    },
   }
 }
