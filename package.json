@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "generate:media-metadata": "node --experimental-strip-types .scripts/generate-media-metadata.ts"
+    "generate:media-metadata": "node .scripts/generate-media-metadata.ts"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
