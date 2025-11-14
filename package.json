@@ -4,10 +4,16 @@
   "packageManager": "pnpm@10.20.0",
   "scripts": {
     "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "generate:media-metadata": "node .scripts/generate-media-metadata.ts"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
+    "@tsconfig/node-lts": "^22.0.3",
+    "@types/node": "^24.10.1",
+    "@unpic/pixels": "^1.3.0",
+    "ansis": "^4.2.0",
+    "blurhash": "^2.0.5",
     "eslint": "^9.39.1",
     "taze": "^19.9.0",
     "typescript": "^5.9.3"
