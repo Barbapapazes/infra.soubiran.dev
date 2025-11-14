@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { basename, dirname, join } from 'node:path'
 import matter from 'gray-matter'
 
 /**
@@ -39,8 +39,9 @@ export function sanitizeMarkdown(content: string, title?: string): string {
  * - Parses frontmatter and removes it
  * - Sanitizes HTML tags
  * - Preserves directory structure
+ * - Converts /<something>/index.md to /<something>.md (except for root /index.md)
  */
-export function copyAndSanitizeMarkdownFiles(sourceDir: string, targetDir: string): void {
+export function copyAndSanitizeMarkdownFiles(sourceDir: string, targetDir: string, isRoot = true): void {
   const entries = readdirSync(sourceDir)
 
   for (const entry of entries) {
@@ -52,10 +53,22 @@ export function copyAndSanitizeMarkdownFiles(sourceDir: string, targetDir: strin
       if (!existsSync(newTargetDir)) {
         mkdirSync(newTargetDir, { recursive: true })
       }
-      copyAndSanitizeMarkdownFiles(sourcePath, newTargetDir)
+      copyAndSanitizeMarkdownFiles(sourcePath, newTargetDir, false)
     }
     else if (entry.endsWith('.md')) {
-      const targetPath = join(targetDir, entry)
+      // Determine the target path
+      let targetPath: string
+
+      // Convert /<something>/index.md to /<something>.md (except for root /index.md)
+      if (entry === 'index.md' && !isRoot) {
+        // For non-root index.md files, place them one level up with the parent directory name
+        const parentDirName = basename(sourceDir)
+        targetPath = join(dirname(targetDir), `${parentDirName}.md`)
+      }
+      else {
+        targetPath = join(targetDir, entry)
+      }
+
       const targetDirPath = dirname(targetPath)
       if (!existsSync(targetDirPath)) {
         mkdirSync(targetDirPath, { recursive: true })
