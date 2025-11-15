@@ -3,14 +3,14 @@
   "private": true,
   "dependencies": {
     "@nuxt/ui": "^4.1.0",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "@vue/tsconfig": "^0.8.1",
     "partysocket": "^1.1.6",
     "tailwind-variants": "^3.1.1",
     "typescript": "~5.9.3",
     "unplugin-icons": "^22.5.0",
     "unplugin-vue-components": "^30.0.0",
-    "vite": "npm:rolldown-vite@7.1.20",
+    "vite": "npm:rolldown-vite@7.2.5",
     "vue": "^3.5.22"
   }
 }
