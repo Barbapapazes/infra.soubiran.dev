@@ -30,7 +30,7 @@ function generateContentHash(content: string): string {
 }
 
 /**
- * Recursively scan all markdown and vue files and extract metadata
+ * Recursively scan all markdown files and extract metadata
  */
 function scanPagesForMeta(pagesDir: string, baseUri = ''): PageData[] {
   const pages: PageData[] = []
@@ -68,32 +68,6 @@ function scanPagesForMeta(pagesDir: string, baseUri = ''): PageData[] {
         title: data.title,
         description: data.description,
         content: markdownContent,
-      })
-    }
-    else if (entry.endsWith('.vue')) {
-      // Process Vue file - extract title from definePageMeta or route meta
-      const content = readFileSync(fullPath, 'utf-8')
-
-      // Generate URI from file path
-      const fileName = entry.replace(/\.vue$/, '')
-      const uri = baseUri ? `${baseUri}/${fileName}` : `/${fileName}`
-
-      // Try to extract title from route meta or comments
-      // For now, we'll use a simple approach - the file name as fallback
-      let title = fileName.charAt(0).toUpperCase() + fileName.slice(1)
-
-      // Try to find title in route meta (simple match)
-      const titleMatch = content.match(/\btitle:\s*['"]([^'"]+)['"]/)
-
-      if (titleMatch) {
-        title = titleMatch[1].trim()
-      }
-
-      pages.push({
-        uri: uri.replace(/^\/+/, '/').replace(/\/$/, '') || '/',
-        title,
-        description: undefined,
-        content,
       })
     }
   }

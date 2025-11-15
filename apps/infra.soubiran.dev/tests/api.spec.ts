@@ -220,10 +220,9 @@ test.describe('API JSON files', () => {
 
       const uris = pages.map((p: any) => p.uri)
 
-      // Expected URIs that should exist
+      // Expected URIs that should exist (markdown files only, excluding vue files)
       const expectedUris = [
         '/',
-        '/ecosystem',
         '/platforms',
         '/websites',
       ]
