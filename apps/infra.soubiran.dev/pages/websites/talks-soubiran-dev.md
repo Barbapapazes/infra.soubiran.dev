@@ -1,8 +1,10 @@
 ---
 title: talks.soubiran.dev
-description: My collection of talks given at conferences and meetups over the years. Automatically listed on my personal website.
-url: https://talks.soubiran.dev
-repository: https://github.com/barbapapazes/talks
+description: >-
+  My collection of talks given at conferences and meetups over the years.
+  Automatically listed on my personal website.
+url: 'https://talks.soubiran.dev'
+repository: 'https://github.com/barbapapazes/talks'
 ecosystem:
   - type: deployment
     id: talks-soubiran-dev
@@ -18,11 +20,11 @@ ecosystem:
             id: talks-soubiran-dev
             name: GitHub
             description: Source code of the website.
-            href: https://github.com/barbapapazes/talks
+            href: 'https://github.com/barbapapazes/talks'
             ecosystem:
               - type: stack
                 name: Slidev
-                href: https://sli.dev
+                href: 'https://sli.dev'
   - type: object-storage
     id: talks-soubiran-dev
     name: Cloudflare R2
@@ -30,6 +32,7 @@ ecosystem:
   - type: domain
     name: Cloudflare Domains
     description: Manage the DNS records.
+id: a1a1a745-8ba1-47a9-9b02-9ed1f55fd3a8
 ---
 
 The website [talks.soubiran.dev](https://talks.soubiran.dev) contains all the talks I've given at conferences and meetups over the years. The root redirects to the page listing all talks: [soubiran.dev/talks](https://soubiran.dev/talks).

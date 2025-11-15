@@ -152,9 +152,9 @@ test.describe('API JSON files', () => {
       const pages = await response.json()
 
       for (const page of pages) {
-        // ID should be a positive integer
-        expect(typeof page.id).toBe('number')
-        expect(page.id).toBeGreaterThan(0)
+        // ID should be a valid UUIDv4
+        expect(typeof page.id).toBe('string')
+        expect(page.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
 
         // Title should be present and non-empty
         expect(page.title).toBeTruthy()
@@ -182,15 +182,19 @@ test.describe('API JSON files', () => {
       }
     })
 
-    test('all IDs in meta.json are sequential starting from 1', async ({ request }) => {
+    test('all IDs in meta.json are unique UUIDs', async ({ request }) => {
       const response = await request.get('/api/meta.json')
       const pages = await response.json()
 
       const ids = pages.map((p: any) => p.id)
 
-      // IDs should be sequential from 1 to length
-      for (let i = 0; i < ids.length; i++) {
-        expect(ids[i]).toBe(i + 1)
+      // All IDs should be unique
+      const uniqueIds = new Set(ids)
+      expect(ids.length).toBe(uniqueIds.size)
+
+      // All IDs should be valid UUIDs
+      for (const id of ids) {
+        expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
       }
     })
 

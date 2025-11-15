@@ -1,5 +1,5 @@
 import type { Plugin, ResolvedConfig } from 'vite'
-import { createHash } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { cwd } from 'node:process'
@@ -7,7 +7,7 @@ import { cyan, dim, green, yellow } from 'ansis'
 import matter from 'gray-matter'
 
 interface PageMeta {
-  id: number
+  id: string
   title: string
   uri: string
   url: string
@@ -20,6 +20,8 @@ interface PageData {
   title?: string
   description?: string
   content: string
+  id: string
+  filePath: string
 }
 
 /**
@@ -53,7 +55,23 @@ function scanPagesForMeta(pagesDir: string, baseUri = ''): PageData[] {
     else if (entry.endsWith('.md')) {
       // Process markdown file
       const content = readFileSync(fullPath, 'utf-8')
-      const { data, content: markdownContent } = matter(content)
+      const parsed = matter(content)
+
+      // Check if frontmatter has an id, if not generate one
+      let id = parsed.data.id as string | undefined
+      let needsUpdate = false
+
+      if (!id) {
+        id = randomUUID()
+        parsed.data.id = id
+        needsUpdate = true
+      }
+
+      // Update the file if we added an id
+      if (needsUpdate) {
+        const updatedContent = matter.stringify(parsed.content, parsed.data)
+        writeFileSync(fullPath, updatedContent, 'utf-8')
+      }
 
       // Generate URI from file path
       let uri = baseUri
@@ -65,9 +83,11 @@ function scanPagesForMeta(pagesDir: string, baseUri = ''): PageData[] {
 
       pages.push({
         uri,
-        title: data.title,
-        description: data.description,
-        content: markdownContent,
+        title: parsed.data.title,
+        description: parsed.data.description,
+        content: parsed.content,
+        id,
+        filePath: fullPath,
       })
     }
   }
@@ -89,7 +109,7 @@ async function generateMeta(config: ResolvedConfig, hostname: string) {
   const pages: PageMeta[] = pagesData
     .filter(page => page.title)
     .map(page => ({
-      id: 0, // Will be set later
+      id: page.id,
       title: page.title!,
       uri: page.uri,
       url: `https://${hostname}${page.uri}`,
@@ -99,11 +119,6 @@ async function generateMeta(config: ResolvedConfig, hostname: string) {
 
   // Sort pages by URI for consistent ordering
   pages.sort((a, b) => a.uri.localeCompare(b.uri))
-
-  // Assign sequential IDs starting from 1
-  pages.forEach((page, index) => {
-    page.id = index + 1
-  })
 
   // Write to dist/api/meta.json
   const apiDir = join(distDir, 'api')

@@ -1,9 +1,9 @@
 ---
 title: eats.soubiran.dev
-description:
-url: https://eats.soubiran.dev
+description: null
+url: 'https://eats.soubiran.dev'
 repository:
-  url: https://github.com/barbapapazes/eats.soubiran.dev
+  url: 'https://github.com/barbapapazes/eats.soubiran.dev'
   private: true
 ecosystem:
   - type: auth
@@ -31,23 +31,23 @@ ecosystem:
             id: eats-soubiran-dev
             name: GitHub
             description: Source code for the platform.
-            href: https://github.com/barbapapazes/eats.soubiran.dev
+            href: 'https://github.com/barbapapazes/eats.soubiran.dev'
             ecosystem:
               - type: stack
                 name: Laravel
-                href: https://laravel.com
+                href: 'https://laravel.com'
               - type: stack
                 name: Inertia.js
-                href: https://inertiajs.com
+                href: 'https://inertiajs.com'
               - type: stack
                 name: Nuxt UI
-                href: https://ui.nuxt.com
+                href: 'https://ui.nuxt.com'
               - type: stack
                 name: Vue
-                href: https://vuejs.org
+                href: 'https://vuejs.org'
               - type: stack
                 name: Vite
-                href: https://vite.dev
+                href: 'https://vite.dev'
       - type: object-storage
         id: eats-soubiran-dev
         name: Cloudflare R2
@@ -65,6 +65,7 @@ ecosystem:
             id: backups
             name: Cloudflare R2
             description: Store the database backups.
+id: af1ffd28-9a46-4a9e-994d-628bb992d375
 ---
 
 > [!WARNING]

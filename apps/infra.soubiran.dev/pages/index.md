@@ -1,6 +1,9 @@
 ---
 title: Estéban's Infra
-description: The wiki about the infrastructure of the ecosystem of Estéban Soubiran. Learn about platforms, tools, and technical decisions behind his projects.
+description: >-
+  The wiki about the infrastructure of the ecosystem of Estéban Soubiran. Learn
+  about platforms, tools, and technical decisions behind his projects.
+id: 2c520cc7-66b0-4490-876c-ad45261b2334
 ---
 
 Hey! I'm **Estéban Soubiran**, from [soubiran.dev](https://soubiran.dev).
