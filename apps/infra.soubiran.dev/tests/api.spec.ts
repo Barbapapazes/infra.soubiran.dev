@@ -125,7 +125,7 @@ test.describe('API JSON files', () => {
 
   test.describe('meta', () => {
     test('meta.json exists and has valid structure', async ({ request }) => {
-      const response = await request.get('/api/meta.json')
+      const response = await request.get('/meta.json')
 
       expect(response.ok()).toBeTruthy()
       expect(response.status()).toBe(200)
@@ -148,7 +148,7 @@ test.describe('API JSON files', () => {
     })
 
     test('meta.json contains expected metadata fields', async ({ request }) => {
-      const response = await request.get('/api/meta.json')
+      const response = await request.get('/meta.json')
       const pages = await response.json()
 
       for (const page of pages) {
@@ -183,7 +183,7 @@ test.describe('API JSON files', () => {
     })
 
     test('all IDs in meta.json are unique UUIDs', async ({ request }) => {
-      const response = await request.get('/api/meta.json')
+      const response = await request.get('/meta.json')
       const pages = await response.json()
 
       const ids = pages.map((p: any) => p.id)
@@ -199,7 +199,7 @@ test.describe('API JSON files', () => {
     })
 
     test('all URIs in meta.json are unique', async ({ request }) => {
-      const response = await request.get('/api/meta.json')
+      const response = await request.get('/meta.json')
       const pages = await response.json()
 
       const uris = pages.map((p: any) => p.uri)
@@ -209,7 +209,7 @@ test.describe('API JSON files', () => {
     })
 
     test('all hashes in meta.json are valid SHA-256 hashes', async ({ request }) => {
-      const response = await request.get('/api/meta.json')
+      const response = await request.get('/meta.json')
       const pages = await response.json()
 
       for (const page of pages) {
