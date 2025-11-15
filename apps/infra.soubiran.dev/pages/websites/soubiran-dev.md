@@ -1,4 +1,5 @@
 ---
+id: 6ea85ef4-62a7-49ab-b9c5-d1c28ae70808
 title: soubiran.dev
 description: >-
   This is my personal website and main domain. It is the entry point to my
@@ -52,7 +53,6 @@ ecosystem:
   - type: realtime
     name: PartyKit
     description: Provide real-time viewer count.
-id: 6ea85ef4-62a7-49ab-b9c5-d1c28ae70808
 ---
 
 The website [soubiran.dev](https://soubiran.dev) is my personal website and main domain. It serves as the entry point to my writings, projects, talks, and more.

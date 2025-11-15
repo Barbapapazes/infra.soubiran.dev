@@ -1,4 +1,5 @@
 ---
+id: a1a1a745-8ba1-47a9-9b02-9ed1f55fd3a8
 title: talks.soubiran.dev
 description: >-
   My collection of talks given at conferences and meetups over the years.
@@ -32,7 +33,6 @@ ecosystem:
   - type: domain
     name: Cloudflare Domains
     description: Manage the DNS records.
-id: a1a1a745-8ba1-47a9-9b02-9ed1f55fd3a8
 ---
 
 The website [talks.soubiran.dev](https://talks.soubiran.dev) contains all the talks I've given at conferences and meetups over the years. The root redirects to the page listing all talks: [soubiran.dev/talks](https://soubiran.dev/talks).

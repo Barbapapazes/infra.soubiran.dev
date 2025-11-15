@@ -1,10 +1,11 @@
 import type { Plugin, ResolvedConfig } from 'vite'
-import { createHash, randomUUID } from 'node:crypto'
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { cwd } from 'node:process'
 import { cyan, dim, green, yellow } from 'ansis'
 import matter from 'gray-matter'
+import { joinURL, withoutTrailingSlash } from 'ufo'
 
 interface PageMeta {
   id: string
@@ -57,36 +58,19 @@ function scanPagesForMeta(pagesDir: string, baseUri = ''): PageData[] {
       const content = readFileSync(fullPath, 'utf-8')
       const parsed = matter(content)
 
-      // Check if frontmatter has an id, if not generate one
-      let id = parsed.data.id as string | undefined
-      let needsUpdate = false
-
-      if (!id) {
-        id = randomUUID()
-        parsed.data.id = id
-        needsUpdate = true
-      }
-
-      // Update the file if we added an id
-      if (needsUpdate) {
-        const updatedContent = matter.stringify(parsed.content, parsed.data)
-        writeFileSync(fullPath, updatedContent, 'utf-8')
-      }
-
       // Generate URI from file path
       let uri = baseUri
       if (entry !== 'index.md') {
-        uri = `${baseUri}/${entry.replace(/\.md$/, '')}`
+        uri = joinURL(baseUri, entry.replace(/\.md$/, ''))
       }
-      // Normalize URI (remove leading slash for root, ensure single slash)
-      uri = uri.replace(/^\/+/, '/').replace(/\/$/, '') || '/'
+      uri = withoutTrailingSlash(uri)
 
       pages.push({
         uri,
         title: parsed.data.title,
         description: parsed.data.description,
         content: parsed.content,
-        id,
+        id: parsed.data.id,
         filePath: fullPath,
       })
     }
@@ -111,20 +95,16 @@ async function generateMeta(config: ResolvedConfig, hostname: string) {
     .map(page => ({
       id: page.id,
       title: page.title!,
+      description: page.description,
       uri: page.uri,
-      url: `https://${hostname}${page.uri}`,
-      ...(page.description ? { description: page.description } : {}),
+      url: joinURL(`https://${hostname}`, page.uri),
       hash: generateContentHash(page.content),
     }))
 
   // Sort pages by URI for consistent ordering
   pages.sort((a, b) => a.uri.localeCompare(b.uri))
 
-  // Write to dist/api/meta.json
-  const apiDir = join(distDir, 'api')
-  const metaPath = join(apiDir, 'meta.json')
-
-  mkdirSync(apiDir, { recursive: true })
+  const metaPath = join(distDir, 'meta.json')
   writeFileSync(metaPath, JSON.stringify(pages, null, 2))
 
   config.logger.info(`${dim(`${config.build.outDir}/`)}${cyan(metaPath.replace(`${distDir}/`, ''))}`)
@@ -135,7 +115,7 @@ export function metaPlugin(hostname: string): Plugin {
 
   return {
     name: 'meta',
-    configResolved(resolvedConfig) {
+    configResolved(resolvedConfig: ResolvedConfig) {
       config = resolvedConfig
     },
     closeBundle() {

@@ -1,4 +1,5 @@
 ---
+id: eb77373d-1d0f-42c2-8714-6e7e05c3ad11
 title: infra.soubiran.dev
 url: 'https://infra.soubiran.dev'
 repository: 'https://github.com/barbapapazes/infra.soubiran.dev'
@@ -35,6 +36,4 @@ ecosystem:
   - type: realtime
     name: PartyKit
     description: Provide real-time viewer count.
-id: eb77373d-1d0f-42c2-8714-6e7e05c3ad11
 ---
-

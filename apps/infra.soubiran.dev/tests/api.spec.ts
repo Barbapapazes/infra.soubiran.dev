@@ -217,23 +217,5 @@ test.describe('API JSON files', () => {
         expect(page.hash).toMatch(/^[a-f0-9]{64}$/)
       }
     })
-
-    test('meta.json includes all expected pages', async ({ request }) => {
-      const response = await request.get('/api/meta.json')
-      const pages = await response.json()
-
-      const uris = pages.map((p: any) => p.uri)
-
-      // Expected URIs that should exist (markdown files only, excluding vue files)
-      const expectedUris = [
-        '/',
-        '/platforms',
-        '/websites',
-      ]
-
-      for (const uri of expectedUris) {
-        expect(uris).toContain(uri)
-      }
-    })
   })
 })

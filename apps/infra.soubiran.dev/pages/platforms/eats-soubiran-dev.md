@@ -1,4 +1,5 @@
 ---
+id: af1ffd28-9a46-4a9e-994d-628bb992d375
 title: eats.soubiran.dev
 description: null
 url: 'https://eats.soubiran.dev'
@@ -65,7 +66,6 @@ ecosystem:
             id: backups
             name: Cloudflare R2
             description: Store the database backups.
-id: af1ffd28-9a46-4a9e-994d-628bb992d375
 ---
 
 > [!WARNING]
