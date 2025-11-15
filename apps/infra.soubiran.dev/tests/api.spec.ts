@@ -122,4 +122,100 @@ test.describe('API JSON files', () => {
       expect(paths.length).toBe(uniquePaths.size)
     })
   })
+
+  test.describe('meta', () => {
+    test('meta.json exists and has valid structure', async ({ request }) => {
+      const response = await request.get('/meta.json')
+
+      expect(response.ok()).toBeTruthy()
+      expect(response.status()).toBe(200)
+
+      const pages = await response.json()
+
+      // Should be an array
+      expect(Array.isArray(pages)).toBe(true)
+
+      // Should have at least one page
+      expect(pages.length).toBeGreaterThan(0)
+
+      // Validate first page has required fields
+      const firstPage = pages[0]
+      expect(firstPage).toHaveProperty('id')
+      expect(firstPage).toHaveProperty('title')
+      expect(firstPage).toHaveProperty('uri')
+      expect(firstPage).toHaveProperty('url')
+      expect(firstPage).toHaveProperty('hash')
+    })
+
+    test('meta.json contains expected metadata fields', async ({ request }) => {
+      const response = await request.get('/meta.json')
+      const pages = await response.json()
+
+      for (const page of pages) {
+        // ID should be a valid UUIDv4
+        expect(typeof page.id).toBe('string')
+        expect(page.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
+
+        // Title should be present and non-empty
+        expect(page.title).toBeTruthy()
+        expect(typeof page.title).toBe('string')
+
+        // URI should be present and start with /
+        expect(page.uri).toBeTruthy()
+        expect(typeof page.uri).toBe('string')
+        expect(page.uri).toMatch(/^\//)
+
+        // URL should be a valid HTTPS URL
+        expect(page.url).toBeTruthy()
+        expect(typeof page.url).toBe('string')
+        expect(page.url).toMatch(/^https:\/\//)
+
+        // Description is optional
+        if (page.description) {
+          expect(typeof page.description).toBe('string')
+        }
+
+        // Hash should be present and be a SHA-256 hash (64 hex characters)
+        expect(page.hash).toBeTruthy()
+        expect(typeof page.hash).toBe('string')
+        expect(page.hash).toMatch(/^[a-f0-9]{64}$/)
+      }
+    })
+
+    test('all IDs in meta.json are unique UUIDs', async ({ request }) => {
+      const response = await request.get('/meta.json')
+      const pages = await response.json()
+
+      const ids = pages.map((p: any) => p.id)
+
+      // All IDs should be unique
+      const uniqueIds = new Set(ids)
+      expect(ids.length).toBe(uniqueIds.size)
+
+      // All IDs should be valid UUIDs
+      for (const id of ids) {
+        expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
+      }
+    })
+
+    test('all URIs in meta.json are unique', async ({ request }) => {
+      const response = await request.get('/meta.json')
+      const pages = await response.json()
+
+      const uris = pages.map((p: any) => p.uri)
+      const uniqueUris = new Set(uris)
+
+      expect(uris.length).toBe(uniqueUris.size)
+    })
+
+    test('all hashes in meta.json are valid SHA-256 hashes', async ({ request }) => {
+      const response = await request.get('/meta.json')
+      const pages = await response.json()
+
+      for (const page of pages) {
+        // SHA-256 hash should be 64 hexadecimal characters
+        expect(page.hash).toMatch(/^[a-f0-9]{64}$/)
+      }
+    })
+  })
 })

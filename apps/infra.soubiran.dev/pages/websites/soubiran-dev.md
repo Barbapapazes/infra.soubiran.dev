@@ -1,9 +1,12 @@
 ---
+id: 6ea85ef4-62a7-49ab-b9c5-d1c28ae70808
 title: soubiran.dev
-description: This is my personal website and main domain. It is the entry point to my writings, projects, talks, and other content.
-url: https://soubiran.dev
+description: >-
+  This is my personal website and main domain. It is the entry point to my
+  writings, projects, talks, and other content.
+url: 'https://soubiran.dev'
 repository:
-  url: https://github.com/barbapapazes/soubiran.dev
+  url: 'https://github.com/barbapapazes/soubiran.dev'
   private: true
 ecosystem:
   - type: deployment
@@ -20,14 +23,14 @@ ecosystem:
             id: soubiran.dev
             name: GitHub
             description: Source code for the website.
-            href: https://github.com/barbapapazes/soubiran.dev
+            href: 'https://github.com/barbapapazes/soubiran.dev'
             ecosystem:
               - type: stack
                 name: VitePress
-                href: https://vitepress.dev
+                href: 'https://vitepress.dev'
               - type: stack
                 name: Pinia Colada
-                href: https://pinia-colada.esm.dev
+                href: 'https://pinia-colada.esm.dev'
           - type: ci/cd
             name: GitHub Actions
             description: Trigger a build every day.
@@ -39,7 +42,7 @@ ecosystem:
             id: projects
             name: GitHub
             description: Fetch projects data.
-            href: https://github.com/barbapapazes?tab=repositories
+            href: 'https://github.com/barbapapazes?tab=repositories'
   - type: object-storage
     id: soubiran-dev
     name: Cloudflare R2

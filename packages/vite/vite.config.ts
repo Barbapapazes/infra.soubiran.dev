@@ -19,6 +19,7 @@ import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttribu
 import { og } from './src/og'
 import { apiPlugin } from './src/plugins/api'
 import { markdownPlugin } from './src/plugins/markdown'
+import { metaPlugin } from './src/plugins/meta'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
 import { structuredData } from './src/structured-data'
@@ -158,6 +159,7 @@ export default (title: string, hostname: string) => defineConfig({
 
     apiPlugin(),
     markdownPlugin(),
+    metaPlugin(hostname),
 
     {
       name: 'await',

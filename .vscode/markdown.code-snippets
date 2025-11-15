@@ -6,6 +6,7 @@
 		"prefix": "new:md:infra",
 		"body": [
 			"---",
+			"id: $UUID",
 			"title: $1",
 			"description: ",
 			"url: ",
