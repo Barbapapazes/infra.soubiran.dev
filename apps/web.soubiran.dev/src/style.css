@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+@import "@soubiran/ui/styles.css";
+
+@plugin "@tailwindcss/typography";
+
+@source "../../../packages/vite/vite.config.ts";
+
+@theme {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-sofia: 'Sofia sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+:root {
+  --ui-primary: black;
+  --ui-text-highlighted: var(--ui-color-neutral-950);
+}
+
+.dark {
+  --ui-primary: white;
+  --ui-text-highlighted: var(--ui-color-neutral-200);
+}

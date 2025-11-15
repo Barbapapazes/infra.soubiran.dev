@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "@soubiran/ui/styles.css";
 
 @plugin "@tailwindcss/typography";
 
