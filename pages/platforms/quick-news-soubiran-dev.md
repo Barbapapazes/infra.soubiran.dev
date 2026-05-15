@@ -60,53 +60,40 @@ ecosystem:
     description: Manage the DNS records.
 ---
 
-The platform [quick-news.soubiran.dev](https://quick-news.soubiran.dev) is an internal tool I use for technical monitoring. It takes a URL as input, ingests the article, searches for related content on the web, and produces both a summary and a critical analysis.
+The platform [quick-news.soubiran.dev](https://quick-news.soubiran.dev) is an internal tool.
 
-The result is then published to my Discord server and to [news.soubiran.dev](/websites/news-soubiran-dev), so I can revisit it later and share it with other people.
+It is used for technical monitoring and to keep track of articles I've read. It's mainly composed of a form where I can submit a URL, and then it generates a summary and a critical analysis of the article. Those are then published to my Discord server and made public on [news.soubiran.dev](/websites/news-soubiran-dev).
 
 ![Screenshot of quick-news.soubiran.dev](/platforms/quick-news-soubiran-dev/homepage.png)
 
-![Screenshot of Quick News page on quick-news.soubiran.dev](/platforms/quick-news-soubiran-dev/quick-news-page.png)
+> [!INFO]
+> For a better context understanding, read the announcement blog post: [Building a Curated Technical Monitoring Feed is Hard](https://soubiran.dev/posts/building-a-curated-technical-monitoring-feed-is-hard).
 
-![Screenshot of configuration page on quick-news.soubiran.dev](/platforms/quick-news-soubiran-dev/configuration-page.png)
+## Tech Stack
 
-## Why it exists
+This website is a SPA built with [Vite](https://vitejs.dev/) and [Vue](https://vuejs.org/), and a custom plugin `@soubiran/vite` to ensure a cohesive stack across all the platforms and websites of the ecosystem. Under the hood, the custom plugin provides [Vue Router](https://router.vuejs.org/) for routing, [Nuxt UI](https://ui.nuxt.com/) for UI and [Cloudflare Vite plugin](https://developers.cloudflare.com/workers/vite-plugin/) to integrate a Worker for the server part.
 
-I spend a significant amount of time following the tech ecosystem, and blog posts are one of my main sources of information.
+The central part of this platform is the workflow, named `quick-news-workflow`, triggered when a news is submitted.
 
-The problem starts once I finish reading an article. If it is insightful, I still need a reliable way to remember it and find it again later. For a long time, my process was simply to close the tab and hope future me would magically remember it.
+Now than [news.soubiran.dev](/websites/news-soubiran-dev) is live, pages are mainly dedicated to the workflow configuration and management. For example, there is a page dedicated to set the available categories and their associated Discord channels, which are used to post the summaries and analyses.
 
-That approach failed regularly. I would remember that I had read something valuable, but not where it was, and I often ended up searching for the same article again or rereading it from scratch.
+![Screenshot of quick-news.soubiran.dev showing the categories and channels configuration within a dedicated page](/platforms/quick-news.soubiran-dev/categories-configuration.png)
 
-So I built [quick-news.soubiran.dev](https://quick-news.soubiran.dev) to keep a record of the articles I read, make them easy to find again, and attach a summary that helps me remember why they mattered.
+Another page is dedicated to the list of articles to track them, their status, and to accept or reject the analysis when the news has been submitted by a [news.soubiran.dev](/websites/news-soubiran-dev) users.
 
-Publishing the summary and critical analysis publicly on both my Discord server and [news.soubiran.dev](/websites/news-soubiran-dev) also makes the work useful beyond my own notes. It gives my community a place to react, add context, and share their own perspective.
+![Screenshot of quick-news.soubiran.dev showing the list of articles within a dedicated page](/platforms/quick-news-soubiran-dev/articles-list.png)
 
-## How it fits into the ecosystem
+### The Workflow
 
-Because [quick-news.soubiran.dev](https://quick-news.soubiran.dev) is personal software, it is protected by Cloudflare One so only I can access the interface directly. Other apps, such as [news.soubiran.dev](/websites/news-soubiran-dev), can still interact with it through the API by using service authentication.
+The workflow is, by far, the most interesting part of the platform. It is built with [Cloudflare Workflows](https://developers.cloudflare.com/workers/platform/workflows/) to ensure its durability and reliability.
 
-This makes the platform both private and reusable. It stays behind access control for day-to-day usage, while still acting as a backend service for the rest of my ecosystem.
+<!-- input -->
+<!-- all steps of the workflow mostly in details with some code -->
 
-## How it runs
+At the end, the workflow looks like this:
 
-Under the hood, [quick-news.soubiran.dev](https://quick-news.soubiran.dev) is a Vite application built with Vue and Nuxt UI. I use the Cloudflare Vite plugin for the server part so I can integrate a Worker easily, and Hono keeps the HTTP layer simple to work with.
+<!-- TODO: integrate a workflow chart (similar to the one on soubiran.dev (and maybe create a dedicated component in @soubiran.dev/ui)) -->
 
-When I submit a quick news, the Worker starts a multi-step workflow. That workflow fetches the article content with Browser Run, asks the OpenAI API for a structured output, stores metadata in D1 and the generated payload in R2, publishes the summary and analysis to Discord, and finally triggers a redeployment of [news.soubiran.dev](/websites/news-soubiran-dev) so the new entry appears on the website.
+### Authorization
 
-On Discord, multiple channels have been set up to post the summaries and analyses, depending on the topic. This configuration is stored in D1 and can be updated through the platform interface. A description field is used to help the AI to choose the correct channel for each article as only one channel is used for posting. To post, a webhook URL is stored in the configuration and used at the end of the workflow.
-
-![Screenshot of quick-news.soubiran.dev configuration page showing the Discord channel configuration](/platforms/quick-news-soubiran-dev/discord-configuration.png)
-
-There is also a retry workflow for articles that failed during analysis, for example when Browser Run returns an empty page without raising an error.
-
-
-## Notes for Future Me
-
-<!-- remove this section -->
-
-The platform is still very early, and YouTube video analysis is still a work in progress.
-
-The overall design should eventually move to my custom design system instead of relying directly on Nuxt UI.
-
-External users will also be able to submit quick news in the future. Most of the infrastructure for that is already in place, but the public-facing experience is not ready yet.
+The website is protected by [Cloudflare One](https://www.cloudflare.com/teams/cloudflare-one/) so only I can access the interface directly. Other apps, such as [news.soubiran.dev](/websites/news-soubiran-dev), can still interact with it through the API by using a [service binding](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/) for the runtime access or a [service token](https://developers.cloudflare.com/cloudflare-one/access-controls/service-credentials/service-tokens/) for the build time plugin.

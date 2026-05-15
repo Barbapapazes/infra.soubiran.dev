@@ -21,11 +21,11 @@ It contains all the news entries, with links to access the article or the Discor
 
 <!-- screenshot of the create page -->
 
-## Tech stack
+## Tech Stack
 
 This website is a combination of both a static website and an API server on the same domain thanks to the power of [Cloudflare Workers](https://workers.cloudflare.com/). The static website is served from the root domain, while the API is served from the `/api` subpath.
 
-### Static website
+### Static Website
 
 The static website is built using [Vite](https://vitejs.dev/), [Vue](https://vuejs.org/) and a custom plugin `@soubiran/vite` to ensure a cohesive stack across all the platforms and websites of the ecosystem. Under the hood, the custom plugin provides [Vue Router](https://router.vuejs.org/) for routing, [Nuxt UI](https://ui.nuxt.com/) for UI and [Vite SSG](https://github.com/antfu-collective/vite-ssg) for static site generation.
 
