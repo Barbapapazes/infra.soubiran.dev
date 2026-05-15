@@ -100,7 +100,10 @@ On Discord, multiple channels have been set up to post the summaries and analyse
 
 There is also a retry workflow for articles that failed during analysis, for example when Browser Run returns an empty page without raising an error.
 
+
 ## Notes for Future Me
+
+<!-- remove this section -->
 
 The platform is still very early, and YouTube video analysis is still a work in progress.
 

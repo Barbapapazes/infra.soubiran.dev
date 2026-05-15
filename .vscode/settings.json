@@ -47,5 +47,11 @@
     "scss",
     "pcss",
     "postcss"
+  ],
+  "cSpell.words": [
+    "dagre",
+    "dagrejs",
+    "scule",
+    "soubiran"
   ]
 }

@@ -4,96 +4,105 @@ import { getUri, toUrl } from '@soubiran/vite/utils'
 import { defineConfig } from 'vite'
 
 const hostname = 'infra.soubiran.dev'
-const name = 'Estéban\'s Infra'
+const title = 'Estéban\'s Infra'
 
 export default defineConfig({
-  plugins: [soubiran(name, hostname, {
-    extractPage,
-    markdown: {
-      transforms: {
-        before: (code: string, id: string) => {
-          const page = extractPage(id)
-
-          if (page?.endsWith('-show')) {
-            return `${code}\n\n## Ecosystem`
-          }
-
-          return code
-        },
+  plugins: [
+    soubiran({
+      title,
+      hostname,
+      router: {
+        extractPage,
       },
-      wrapperComponent: (id) => {
-        const page = extractPage(id)
+      markdown: {
+        extractPage,
+        options: {
+          transforms: {
+            before: (code: string, id: string) => {
+              const page = extractPage(id)
 
-        if (page === 'platforms-index') {
-          return 'WrapperPlatforms'
-        }
+              if (page?.endsWith('-show')) {
+                return `${code}\n\n## Ecosystem`
+              }
 
-        if (page === 'websites-index') {
-          return 'WrapperWebsites'
-        }
+              return code
+            },
+          },
+          wrapperComponent: (id) => {
+            const page = extractPage(id)
 
-        return 'WrapperContent'
-      },
-    },
-    seo: {
-      assert: {
-        rules: (id, frontmatter) => {
-          // Check if this is a platform or website page (not index pages)
-          const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
-            && !id.endsWith('index.md')
-
-          // Validate url field for platform/website pages
-          if (isPlatformOrWebsite && !frontmatter.url) {
-            throw new Error(
-              `Missing required field 'url' in frontmatter for file: ${id}`,
-            )
-          }
-
-          // Validate repository field for platform/website pages
-          if (isPlatformOrWebsite && !frontmatter.repository) {
-            throw new Error(
-              `Missing required field 'repository' in frontmatter for file: ${id}`,
-            )
-          }
-        },
-      },
-      structuredData: {
-        pageConfig: (page, frontmatter): StructuredDataPageConfig => {
-          if (page === 'platforms-show' || page === 'websites-show') {
-            const breadcrumbItems: BreadcrumbItem[] = [
-              {
-                title: name,
-                type: 'WebSite',
-                url: toUrl(hostname),
-              },
-              {
-                title: page === 'platforms-show' ? 'Platforms' : 'Websites',
-                type: 'WebPage',
-                url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
-              },
-              {
-                title: frontmatter.title,
-              },
-            ]
-
-            return {
-              type: 'article',
-              breadcrumbItems,
+            if (page === 'platforms-index') {
+              return 'WrapperPlatforms'
             }
-          }
 
-          if (page === 'platforms-index' || page === 'websites-index') {
-            return { type: 'collection' }
-          }
+            if (page === 'websites-index') {
+              return 'WrapperWebsites'
+            }
 
-          return { type: 'default' }
+            return 'WrapperContent'
+          },
         },
       },
-    },
-    api: {
-      categories: ['websites', 'platforms'],
-    },
-  })],
+      seo: {
+        assert: {
+          rules: (id, frontmatter) => {
+          // Check if this is a platform or website page (not index pages)
+            const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
+              && !id.endsWith('index.md')
+
+            // Validate url field for platform/website pages
+            if (isPlatformOrWebsite && !frontmatter.url) {
+              throw new Error(
+                `Missing required field 'url' in frontmatter for file: ${id}`,
+              )
+            }
+
+            // Validate repository field for platform/website pages
+            if (isPlatformOrWebsite && !frontmatter.repository) {
+              throw new Error(
+                `Missing required field 'repository' in frontmatter for file: ${id}`,
+              )
+            }
+          },
+        },
+        structuredData: {
+          pageConfig: (page, frontmatter): StructuredDataPageConfig => {
+            if (page === 'platforms-show' || page === 'websites-show') {
+              const breadcrumbItems: BreadcrumbItem[] = [
+                {
+                  title,
+                  type: 'WebSite',
+                  url: toUrl(hostname),
+                },
+                {
+                  title: page === 'platforms-show' ? 'Platforms' : 'Websites',
+                  type: 'WebPage',
+                  url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
+                },
+                {
+                  title: frontmatter.title,
+                },
+              ]
+
+              return {
+                type: 'article',
+                breadcrumbItems,
+              }
+            }
+
+            if (page === 'platforms-index' || page === 'websites-index') {
+              return { type: 'collection' }
+            }
+
+            return { type: 'default' }
+          },
+        },
+      },
+      api: {
+        categories: ['websites', 'platforms'],
+      },
+    }),
+  ],
   optimizeDeps: {
     include: [
       '@dagrejs/dagre',
