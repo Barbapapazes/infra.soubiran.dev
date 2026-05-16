@@ -40,6 +40,7 @@ export interface EcosystemItem {
   id?: string
   name: EcosystemName
   description?: string
+  descriptions?: string[]
   href?: string
   ecosystem?: EcosystemItem[]
 }

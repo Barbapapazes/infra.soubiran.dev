@@ -120,6 +120,11 @@ const props = defineProps<EcosystemNodeProps>()
 defineEmits<EcosystemNodeEmits>()
 defineSlots<EcosystemNodeSlots>()
 
+const descriptions = computed(() => Array.from(new Set([
+  props.data.description,
+  ...(props.data.descriptions ?? []),
+].filter((description): description is string => !!description))))
+
 const isCloudflare = (name: EcosystemName) => name.includes('Cloudflare') || name.includes('Wrangler')
 const isGithub = (name: EcosystemName) => name.includes('GitHub')
 const isSoubiran = (name: EcosystemName) => name.includes('soubiran.dev')
@@ -261,16 +266,28 @@ const ui = computed(() => ecosystemNode({
       </component>
     </template>
 
-    <template v-if="props.data.description" #popover>
+    <template v-if="descriptions.length" #popover>
       <UPageCard
-        :description="props.data.description"
+        :title="props.data.name"
         :to="props.data.href"
         :ui="{
           container: 'p-2 sm:p-2',
           title: 'text-sm',
           description: 'text-sm',
         }"
-      />
+      >
+        <template #description>
+          <p v-if="descriptions.length === 1">
+            {{ descriptions[0] }}
+          </p>
+
+          <ul v-else class="space-y-1 list-disc pl-4">
+            <li v-for="description in descriptions" :key="description">
+              {{ description }}
+            </li>
+          </ul>
+        </template>
+      </UPageCard>
     </template>
   </BaseFlowNode>
 </template>
