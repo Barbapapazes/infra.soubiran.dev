@@ -5,6 +5,49 @@ description: null
 url: https://news.soubiran.dev
 repository: https://github.com/barbapapazes/news.soubiran.dev
 ecosystem:
+  - type: deployment
+    id: news-soubiran-dev
+    name: Cloudflare Workers
+    description: Serve the static website and the `/api` Worker worldwide.
+    ecosystem:
+      - type: build
+        id: news-soubiran-dev
+        name: Cloudflare Build
+        description: Build and deploy the website automatically.
+        ecosystem:
+          - type: repository
+            id: news.soubiran.dev
+            name: GitHub
+            description: Source code for the website and its API.
+            href: https://github.com/barbapapazes/news.soubiran.dev
+            ecosystem:
+              - type: stack
+                name: Vite
+                href: https://vite.dev
+              - type: stack
+                name: Vue
+                href: https://vuejs.org
+              - type: stack
+                name: Nuxt UI
+                href: https://ui.nuxt.com
+              - type: stack
+                name: Hono
+                href: https://hono.dev
+          - type: data
+            name: quick-news.soubiran.dev
+            description: Fetch published entries at build time to generate pages, the RSS feed, and the JSON API.
+            href: /platforms/quick-news-soubiran-dev
+      - type: auth
+        name: api.soubiran.dev
+        description: Resolve the current user from forwarded cookies before accepting a news submission.
+        href: /platforms/api-soubiran-dev
+      - type: data
+        name: quick-news.soubiran.dev
+        description: Proxy submissions and notification actions to the internal platform through service bindings.
+        href: /platforms/quick-news-soubiran-dev
+  - type: domain
+    name: Cloudflare Domains
+    description: Manage the DNS records.
 ---
 
 The website [news.soubiran.dev](https://news.soubiran.dev) is the public facing website of the [quick-news.soubiran.dev](/platforms/quick-news-soubiran-dev) platform.
