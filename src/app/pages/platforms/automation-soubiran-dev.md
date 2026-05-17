@@ -11,22 +11,22 @@ repository:
 ecosystem:
   - type: auth
     name: Cloudflare One
-    description: Secure the endpoints with service tokens.
+    description: Protect the automation endpoints so only my CLI can trigger them.
     ecosystem:
     - type: deployment
       id: automation-soubiran-dev
       name: Cloudflare Workers
-      description: Host the platform and handle HTTP requests.
+      description: Expose the automation endpoints and trigger workflows from incoming requests.
       ecosystem:
         - type: build
           id: automation-soubiran-dev
           name: Cloudflare Build
-          description: Deploy the platform automatically.
+          description: Deploy the worker and workflows automatically on each push.
           ecosystem:
             - type: repository
               id: platform
               name: GitHub
-              description: Private source code for the platform.
+              description: Host the private source code for this internal automation platform.
               ecosystem:
                 - type: stack
                   name: Wrangler
@@ -36,10 +36,10 @@ ecosystem:
                   href: https://evlog.dev
         - type: workflows
           name: Cloudflare Workflows
-          description: Automate tasks through background processes.
+          description: Run background jobs for the automation tasks handled by the platform.
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description: Manage the DNS records that route `automation.soubiran.dev` to the worker.
 ---
 
 The platform [automation.soubiran.dev](https://automation.soubiran.dev) is an internal tool that helps me automate various tasks by relying on [Cloudflare Workflows](https://developers.cloudflare.com/workflows/).

@@ -10,28 +10,28 @@ ecosystem:
   - type: auth
     id: bipbip.boo
     name: Authentik
-    description: Provide authentication for the platform.
+    description: Authenticate access to the pastry platform.
   - type: object-storage
     id: eats-soubiran-dev
     name: Cloudflare R2
-    description: Store images of the pastries.
+    description: Store uploaded pastry images outside the application server.
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description: Manage the DNS records that route `eats.soubiran.dev` to the platform.
   - type: deployment
     id: perso
     name: Hetzner
-    description: Host the platform.
+    description: Host the Laravel application on a Hetzner VPS.
     ecosystem:
       - type: build
         id: perso
         name: Forge
-        description: Deploy the platform automatically.
+        description: Deploy the Laravel application automatically to the server.
         ecosystem:
           - type: repository
             id: eats-soubiran-dev
             name: GitHub
-            description: Source code for the platform.
+            description: Host the private source code for the pastry portfolio.
             href: 'https://github.com/barbapapazes/eats.soubiran.dev'
             ecosystem:
               - type: stack
@@ -52,20 +52,20 @@ ecosystem:
       - type: object-storage
         id: eats-soubiran-dev
         name: Cloudflare R2
-        description: Store images of the pastries.
+        description: Store the media files served by the platform.
       - type: database
         id: eats-soubiran-dev
         name: SQLite
-        description: Store the platform data.
+        description: Store recipes, metadata, and other platform content.
       - type: backup
         id: eats-soubiran-dev
         name: Litestream
-        description: Backup the SQLite database to Cloudflare R2.
+        description: Replicate the SQLite database backups to Cloudflare R2.
         ecosystem:
           - type: object-storage
             id: backups
             name: Cloudflare R2
-            description: Store the database backups.
+            description: Store off-site backups of the production database.
 ---
 
 > [!WARNING]

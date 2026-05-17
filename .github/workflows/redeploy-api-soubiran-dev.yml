@@ -1,0 +1,31 @@
+name: Redeploy api.soubiran.dev
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  redeploy:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Trigger
+        run: |
+          curl --fail-with-body --silent --show-error -X POST https://redeploy.soubiran.dev/url \
+            -H "Content-Type: application/json" \
+            -H "CF-Access-Client-Id: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_ID }}" \
+            -H "CF-Access-Client-Secret: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}" \
+            -H "x-service: infra.soubiran.dev" \
+            -d '{
+              "deploy_hook_url": "${{ secrets.API_DEPLOY_URL }}",
+              "cloudflare": {
+                "to_wait": {
+                  "worker": "infra-soubiran-dev"
+                }
+              }
+            }'
