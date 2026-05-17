@@ -14,6 +14,7 @@ interface EcosystemPage {
   route: string
   title: string
   publicUrl: string
+  hostname: string
 }
 
 interface ValidationError {
@@ -140,6 +141,10 @@ async function validateMarkdownLink(
   }
 
   if (absoluteTarget && isCrossInternalSiteReference(absoluteTarget, page.publicUrl)) {
+    if (shouldAllowPublicContentLink(label, absoluteTarget, linkedPage)) {
+      return null
+    }
+
     return createValidationError(
       page,
       location,
@@ -261,6 +266,7 @@ function createEcosystemPage(
     route: `/${kind}/${slug}`,
     title,
     publicUrl,
+    hostname: new URL(publicUrl).hostname,
   }
 }
 
@@ -283,6 +289,34 @@ function isCurrentPageSubjectLink(page: EcosystemPage, label: string | undefined
 
 function isCrossInternalSiteReference(absoluteTarget: string, currentPublicUrl: string): boolean {
   return absoluteTarget !== currentPublicUrl && isInternalAbsoluteSite(absoluteTarget)
+}
+
+function shouldAllowPublicContentLink(
+  label: string | undefined,
+  absoluteTarget: string,
+  linkedPage: EcosystemPage | null,
+): boolean {
+  if (!label || !linkedPage) {
+    return false
+  }
+
+  const normalizedLabel = normalizeText(label)
+
+  if (!normalizedLabel) {
+    return false
+  }
+
+  const siteIdentifiers = new Set([
+    normalizeText(linkedPage.title),
+    normalizeText(linkedPage.hostname),
+    normalizeText(absoluteTarget),
+  ])
+
+  if (siteIdentifiers.has(normalizedLabel)) {
+    return false
+  }
+
+  return true
 }
 
 async function fileExists(filePath: string): Promise<boolean> {
@@ -398,6 +432,10 @@ function normalizeRoute(value: string): string {
   }
 
   return value.replace(/\/+$/, '')
+}
+
+function normalizeText(value: string): string {
+  return value.trim().toLowerCase().replace(/\/+$/, '')
 }
 
 function getLineAndColumn(source: string, index: number): { line: number, column: number } {

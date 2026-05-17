@@ -23,6 +23,7 @@ The revised content should:
 - Keep the intended meaning and navigation purpose of each link
 - Use the real absolute public URL for the page's own subject
 - Use internal documentation page routes for other websites or platforms from the same ecosystem
+- Keep public content links external when the prose intentionally points to a public article, talk, post, or other published content experience
 - Keep canonical frontmatter website URLs absolute when they represent a real deployed site
 - Keep repository URLs external
 - Leave non-ecosystem links untouched unless they are clearly wrong
@@ -52,6 +53,8 @@ The revised content should:
    - For other websites or platforms from the same ecosystem, use the internal documentation page route.
    - Prefer routes such as `/websites/news-soubiran-dev` or `/platforms/quick-news-soubiran-dev`.
    - Keep these links internal even when the public website exists, because the goal is cross-navigation inside the infrastructure documentation.
+   - Exception: if the prose intentionally points to a public piece of content or public experience hosted on that site, keep the public external URL.
+   - Typical examples of allowed public URLs include blog posts, talks, conference pages, videos, demos, or pages where the label clearly refers to the published content rather than the infrastructure documentation page itself.
 
 5. Preserve structured URLs correctly.
    - Keep frontmatter `url` fields absolute when they represent the actual public website or platform URL.
@@ -60,6 +63,7 @@ The revised content should:
 
 6. Leave unrelated links alone.
    - Keep links to third-party documentation, products, standards, articles, and tools external.
+   - Keep links to first-party public content external too when the target is the content itself rather than the infrastructure documentation entry for the hosting website.
    - Do not rewrite links inside code examples unless the example itself is being corrected intentionally.
 
 7. Review the result.
@@ -74,6 +78,7 @@ The revised content should:
 - If multiple ecosystem sites seem equally central, prefer the one named in the title or frontmatter `url`.
 - If a link exists only to identify the current site itself, use the absolute public URL.
 - If a link is a cross-reference to another ecosystem page for explanation or navigation, use the internal page route.
+- If a link is meant to send the reader to public content published on an ecosystem site, prefer the public URL instead of the infrastructure documentation route.
 - If a URL appears in frontmatter as canonical metadata, keep it absolute.
 - If a repository is referenced, keep the repository URL external.
 - If it is unclear whether a target belongs to the documented ecosystem, infer cautiously from nearby files or ask for clarification.
@@ -83,6 +88,7 @@ The revised content should:
 Before considering the work done, verify that:
 - The file's own website or platform uses its real absolute public URL in prose
 - Other `soubiran.dev` ecosystem websites and platforms use internal documentation page links
+- Public-content links that intentionally point to articles, talks, posts, or similar published material remain external
 - Frontmatter canonical URLs remain absolute where appropriate
 - Repository URLs remain external
 - Non-ecosystem external links were not incorrectly rewritten

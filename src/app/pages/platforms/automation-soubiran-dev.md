@@ -35,6 +35,7 @@ ecosystem:
                   name: Evlog
                   href: https://evlog.dev
         - type: workflows
+          id: automation-soubiran-dev
           name: Cloudflare Workflows
           description: Run background jobs for the automation tasks handled by the platform.
   - type: domain

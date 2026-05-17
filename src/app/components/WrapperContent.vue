@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { TableOfContentsItem } from '@soubiran/ui/components/TableOfContents.vue'
-import type { Ecosystem } from '@/types/ecosystem'
+import type { Ecosystem } from '@/app/types/ecosystem'
 import { useHead } from '@unhead/vue'
 import { motion } from 'motion-v'
 

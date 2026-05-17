@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { Edge, Node } from '@vue-flow/core'
-import type { Ecosystem, EcosystemItem } from '@/app/types/ecosystem'
+import type { Ecosystem, EcosystemDescriptionEntry, EcosystemItem, EcosystemNodeItem } from '@/app/types/ecosystem'
 import { kebabCase } from 'scule'
 
 const ecosystem = tv({
@@ -26,62 +26,99 @@ const props = defineProps<EcosystemProps>()
 defineEmits<EcosystemEmits>()
 defineSlots<EcosystemSlots>()
 
-function getNodeId(item: EcosystemItem, parentNode?: Node<EcosystemItem>) {
-  const localId = kebabCase(`${item.name}-${item.type}${item.id ? `-${item.id}` : ''}`.replace(/\s+/g, '-'))
-
-  return parentNode ? `${parentNode.id}-${localId}` : localId
+function getRootNodeId(name: string) {
+  return `root-${kebabCase(name)}`
 }
 
-function getDescriptions(item: EcosystemItem) {
-  return Array.from(new Set([
-    item.description,
-    ...(item.descriptions ?? []),
-  ].filter((description): description is string => !!description)))
+function getNodeId(item: EcosystemItem) {
+  return kebabCase(`${item.name}-${item.type}${item.id ? `-${item.id}` : ''}`.replace(/\s+/g, '-'))
 }
 
-function toNodeData(item: EcosystemItem): EcosystemItem {
+function mergeDescriptionEntries(entries: EcosystemDescriptionEntry[]): EcosystemDescriptionEntry[] {
+  const mergedEntries = new Map<string, EcosystemDescriptionEntry>()
+
+  for (const entry of entries) {
+    if (!entry.text) {
+      continue
+    }
+
+    const existing = mergedEntries.get(entry.text)
+    const from = Array.from(new Set([
+      ...(existing?.from ?? []),
+      ...(entry.from ?? []),
+    ]))
+
+    mergedEntries.set(entry.text, {
+      text: entry.text,
+      from: from.length ? from : undefined,
+    })
+  }
+
+  return [...mergedEntries.values()]
+}
+
+function getDescriptionEntries(item: EcosystemItem, from?: string): EcosystemDescriptionEntry[] {
+  if (!item.description) {
+    return []
+  }
+
+  return [{
+    text: item.description,
+    from: from ? [from] : undefined,
+  }]
+}
+
+function toNodeData(item: EcosystemItem, from?: string): EcosystemNodeItem {
+  const descriptionEntries = getDescriptionEntries(item, from)
   const { ecosystem: _ecosystem, ...nodeData } = item
 
   return {
     ...nodeData,
-    descriptions: getDescriptions(item),
+    descriptionEntries,
   }
 }
 
-function mergeEcosystemItems(existing: EcosystemItem, incoming: EcosystemItem): EcosystemItem {
-  const descriptions = Array.from(new Set([
-    ...getDescriptions(existing),
-    ...getDescriptions(incoming),
-  ]))
+function mergeEcosystemItems(existing: EcosystemNodeItem, incoming: EcosystemItem, from?: string): EcosystemNodeItem {
+  const descriptionEntries = mergeDescriptionEntries([
+    ...existing.descriptionEntries,
+    ...getDescriptionEntries(incoming, from),
+  ])
 
-  const { ecosystem: _existingEcosystem, ...existingNodeData } = existing
   const { ecosystem: _incomingEcosystem, ...incomingNodeData } = incoming
 
   return {
-    ...existingNodeData,
+    ...existing,
     ...incomingNodeData,
     href: existing.href ?? incoming.href,
-    description: descriptions[0],
-    descriptions,
+    descriptionEntries,
   }
 }
 
-const initialNode: Node<EcosystemItem> = {
-  id: kebabCase(props.name),
+const initialNode: Node<EcosystemNodeItem> = {
+  id: getRootNodeId(props.name),
   type: 'ecosystem',
   data: {
     name: props.name,
+    descriptionEntries: [],
   },
   position: { x: 0, y: 0 },
 }
 
+function getDescriptionSource(parentNode?: Node<EcosystemNodeItem>) {
+  if (!parentNode || parentNode.id === initialNode.id) {
+    return undefined
+  }
+
+  return parentNode.data?.name
+}
+
 const { nodes: initialNodes, edges: initialEdges } = createNodesEdges(initialNode)
 
-const nodes = shallowRef<Node<EcosystemItem>[]>(initialNodes)
+const nodes = shallowRef<Node<EcosystemNodeItem>[]>(initialNodes)
 const edges = shallowRef<Edge[]>(initialEdges)
 
-function createNodesEdges(initialNode: Node<EcosystemItem>): { nodes: Node<EcosystemItem>[], edges: Edge[] } {
-  const nodes = new Map<string, Node<EcosystemItem>>()
+function createNodesEdges(initialNode: Node<EcosystemNodeItem>): { nodes: Node<EcosystemNodeItem>[], edges: Edge[] } {
+  const nodes = new Map<string, Node<EcosystemNodeItem>>()
   const edges = new Map<string, Edge>()
 
   ecosystemToNodesEdges(props.ecosystem, nodes, edges, initialNode)
@@ -94,21 +131,22 @@ function createNodesEdges(initialNode: Node<EcosystemItem>): { nodes: Node<Ecosy
 
 function ecosystemToNodesEdges(
   ecosystem: Ecosystem,
-  nodes: Map<string, Node<EcosystemItem>>,
+  nodes: Map<string, Node<EcosystemNodeItem>>,
   edges: Map<string, Edge>,
-  parentNode?: Node<EcosystemItem>,
+  parentNode?: Node<EcosystemNodeItem>,
 ) {
   for (const item of ecosystem) {
-    const id = getNodeId(item, parentNode)
+    const id = getNodeId(item)
+    const from = getDescriptionSource(parentNode)
 
-    const currentNode: Node<EcosystemItem> = nodes.get(id) ?? {
+    const currentNode: Node<EcosystemNodeItem> = nodes.get(id) ?? {
       id,
       type: 'ecosystem',
       position: { x: 0, y: 0 },
-      data: toNodeData(item),
+      data: toNodeData(item, from),
     }
 
-    currentNode.data = mergeEcosystemItems(currentNode.data ?? item, item)
+    currentNode.data = mergeEcosystemItems(currentNode.data ?? toNodeData(item, from), item, from)
     nodes.set(id, currentNode)
 
     if (parentNode) {

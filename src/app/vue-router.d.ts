@@ -1,4 +1,4 @@
-import type { Ecosystem } from '@/types/ecosystem'
+import type { Ecosystem } from '@/app/types/ecosystem'
 import 'vue-router'
 
 declare module 'vue-router' {

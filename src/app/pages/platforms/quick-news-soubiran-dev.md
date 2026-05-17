@@ -24,7 +24,7 @@ ecosystem:
             description: Deploy the platform automatically.
             ecosystem:
               - type: repository
-                id: quick-news-soubiran-dev
+                id: quick-news.soubiran.dev
                 name: GitHub
                 description: Source code for the platform.
                 href: https://github.com/barbapapazes/quick-news.soubiran.dev
@@ -39,36 +39,48 @@ ecosystem:
                     name: Nuxt UI
                     href: https://ui.nuxt.com
                   - type: stack
+                    name: Pinia Colada
+                    href: 'https://pinia-colada.esm.dev'
+                  - type: stack
                     name: Hono
                     href: https://hono.dev
+                  - type: stack
+                    name: Wrangler
+                    href: https://developers.cloudflare.com/workers/wrangler
+                  - type: stack
+                    name: Evlog
+                    href: https://evlog.dev
           - type: workflows
+            id: quick-news-soubiran-dev
             name: Cloudflare Workflows
             description: Run the article analysis pipeline in the background.
             ecosystem:
-              - type: stack
-                name: Browser Run
+              - type: services
+                name: Cloudflare Browser Run
                 description: Fetch article content during the analysis workflow.
               - type: database
+                id: quick-news-soubiran-dev
                 name: Cloudflare D1
-                description: Store metadata for submitted articles and the Discord channel configuration.
+                description: Store metadata for submitted URLs.
               - type: object-storage
                 name: Cloudflare R2
                 description: Store the generated analysis payloads.
           - type: database
+            id: quick-news-soubiran-dev
             name: Cloudflare D1
-            description: Store metadata for submitted articles and the Discord channel configuration.
+            description: Store submitted URLs and the Discord channel configuration.
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description: Manage the DNS records that route `quick-news.soubiran.dev` to the worker.
 ---
 
 The platform [quick-news.soubiran.dev](https://quick-news.soubiran.dev) is an internal tool.
 
 It is used for technical monitoring and to keep track of articles I've read. It's mainly composed of a form where I can submit a URL, and then it generates a summary and a critical analysis of the article. Those are then published to my Discord server and made public on [news.soubiran.dev](/websites/news-soubiran-dev).
 
-![Screenshot of quick-news.soubiran.dev](/platforms/quick-news-soubiran-dev/homepage.png)
+<!-- ![Screenshot of quick-news.soubiran.dev](/platforms/quick-news-soubiran-dev/homepage.png) -->
 
-> [!INFO]
+> [!NOTE]
 > For a better context understanding, read the announcement blog post: [Building a Curated Technical Monitoring Feed is Hard](https://soubiran.dev/posts/building-a-curated-technical-monitoring-feed-is-hard).
 
 ## Tech Stack
@@ -79,11 +91,11 @@ The central part of this platform is the workflow, named `quick-news-workflow`, 
 
 Now than [news.soubiran.dev](/websites/news-soubiran-dev) is live, pages are mainly dedicated to the workflow configuration and management. For example, there is a page dedicated to set the available categories and their associated Discord channels, which are used to post the summaries and analyses.
 
-![Screenshot of quick-news.soubiran.dev showing the categories and channels configuration within a dedicated page](/platforms/quick-news.soubiran-dev/categories-configuration.png)
+<!-- ![Screenshot of quick-news.soubiran.dev showing the categories and channels configuration within a dedicated page](/platforms/quick-news.soubiran-dev/categories-configuration.png) -->
 
 Another page is dedicated to the list of articles to track them, their status, and to accept or reject the analysis when the news has been submitted by a [news.soubiran.dev](/websites/news-soubiran-dev) users.
 
-![Screenshot of quick-news.soubiran.dev showing the list of articles within a dedicated page](/platforms/quick-news-soubiran-dev/articles-list.png)
+<!-- ![Screenshot of quick-news.soubiran.dev showing the list of articles within a dedicated page](/platforms/quick-news-soubiran-dev/articles-list.png) -->
 
 ### The Workflow
 
@@ -256,7 +268,72 @@ At step 5, the sleep isn't necessary for the workflow to work but it helps to re
 
 At the end, the workflow looks like this:
 
-<!-- TODO: integrate a workflow chart (similar to the one on soubiran.dev (and maybe create a dedicated component in @soubiran.dev/ui)) -->
+<Workflow
+  title="quick-news-workflow"
+  :ui="{ root: 'h-[56rem]' }"
+  :steps="[
+    {
+      key: 'mark-quick-news-generation-started',
+      verb: 'mark',
+      description: 'Mark the submitted entry as being processed so the management UI can track the generation state.'
+    },
+    {
+      key: 'get-quick-news',
+      verb: 'load',
+      description: 'Load the submitted article from D1 along with any previously stored Discord metadata.'
+    },
+    {
+      key: 'fetch-markdown',
+      verb: 'fetch',
+      description: 'Fetch the source article and normalize it to Markdown before sending it to the AI pipeline.'
+    },
+    {
+      key: 'create-quick-news-batch',
+      verb: 'create',
+      description: 'Create the OpenAI batch job with the structured output schema and the available categories.'
+    },
+    {
+      key: 'wait-before-poll-quick-news-batch',
+      verb: 'sleep',
+      description: 'Wait for ten minutes to avoid excessive polling while the batch usually completes in the background.'
+    },
+    {
+      key: 'poll-quick-news-batch',
+      verb: 'poll',
+      description: 'Poll OpenAI until the structured generation payload is available.'
+    },
+    {
+      key: 'share-discord-summary',
+      verb: 'share',
+      description: 'Publish or update the generated summary in the Discord channel that matches the inferred category.'
+    },
+    {
+      key: 'create-discord-thread',
+      verb: 'create',
+      description: 'Create the dedicated Discord thread that will host the critical analysis.'
+    },
+    {
+      key: 'share-discord-critical-analysis',
+      verb: 'share',
+      description: 'Post or update the critical analysis in the dedicated thread.'
+    },
+    {
+      key: 'store-quick-news',
+      verb: 'store',
+      description: 'Persist the generated title, summary, analysis, authors, and Discord identifiers in the platform state.'
+    },
+    {
+      key: 'mark-quick-news-as-processed',
+      verb: 'mark',
+      description: 'Mark the entry as processed so it disappears from the pending management list.'
+    },
+    {
+      key: 'trigger-news-soubiran-deploy-hook',
+      verb: 'trigger',
+      description: 'Trigger the deployment hook for news.soubiran.dev so the generated content becomes publicly visible.'
+    }
+  ]"
+/>
 
 ### Authorization
 

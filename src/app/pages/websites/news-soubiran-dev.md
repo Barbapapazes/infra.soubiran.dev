@@ -31,8 +31,17 @@ ecosystem:
                 name: Nuxt UI
                 href: https://ui.nuxt.com
               - type: stack
+                name: Pinia Colada
+                href: 'https://pinia-colada.esm.dev'
+              - type: stack
                 name: Hono
                 href: https://hono.dev
+              - type: stack
+                name: Wrangler
+                href: https://developers.cloudflare.com/workers/wrangler
+              - type: stack
+                name: Evlog
+                href: https://evlog.dev
           - type: data
             name: quick-news.soubiran.dev
             description: Fetch published entries at build time to generate pages, the RSS feed, and the JSON API.
@@ -47,7 +56,7 @@ ecosystem:
         href: /platforms/quick-news-soubiran-dev
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description:  Manage the DNS records that route `news.soubiran.dev` to the worker.
 ---
 
 The website [news.soubiran.dev](https://news.soubiran.dev) is the public facing website of the [quick-news.soubiran.dev](/platforms/quick-news-soubiran-dev) platform.
