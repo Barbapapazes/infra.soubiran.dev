@@ -30,6 +30,12 @@ interface MarkdownPage {
   publicUrl: string | null
 }
 
+interface InternalPageRoute {
+  kind: PageKind
+  slug: string
+  route: string
+}
+
 const FENCED_CODE_BLOCK_RE = /```[\s\S]*?```|~~~[\s\S]*?~~~/g
 const MARKDOWN_LINK_RE = /(?<!!)\[(?<label>[^\]]+)\]\((?<href>[^)\s]+)(?:\s+"[^"]*")?\)/g
 
@@ -110,6 +116,7 @@ async function validateMarkdownLink(
 
   const absoluteTarget = normalizeAbsoluteLink(href)
   const internalTarget = normalizeInternalLink(href)
+  const internalPageRoute = internalTarget ? parseInternalPageRoute(internalTarget) : null
   const location = getLineAndColumn(source, bodyOffset + (match.index ?? 0))
 
   if (isCurrentPageSubjectLink(page, label, href)) {
@@ -120,7 +127,17 @@ async function validateMarkdownLink(
     )
   }
 
-  const linkedPage = await resolveLinkedPage(href, root, pageCache)
+  const linkedPage = internalPageRoute
+    ? await loadPage(root, internalPageRoute.kind, internalPageRoute.slug, pageCache)
+    : await resolveAbsoluteLinkedPage(href, root, pageCache)
+
+  if (internalPageRoute && !linkedPage) {
+    return createValidationError(
+      page,
+      location,
+      `Internal documentation page route \`${internalPageRoute.route}\` does not exist.`,
+    )
+  }
 
   if (absoluteTarget && isCrossInternalSiteReference(absoluteTarget, page.publicUrl)) {
     return createValidationError(
@@ -155,25 +172,11 @@ function extractCurrentPage(filePath: string, markdownPage: MarkdownPage, root: 
   return createEcosystemPage(filePath, kind, slug, markdownPage.title, markdownPage.publicUrl)
 }
 
-async function resolveLinkedPage(
+async function resolveAbsoluteLinkedPage(
   href: string,
   root: string,
   pageCache: Map<string, Promise<EcosystemPage | null>>,
 ): Promise<EcosystemPage | null> {
-  const internalTarget = normalizeInternalLink(href)
-
-  if (internalTarget) {
-    const match = PAGE_ROUTE_RE.exec(internalTarget)
-
-    if (!match) {
-      return null
-    }
-
-    const [, kind, slug] = match
-
-    return loadPage(root, kind as PageKind, slug, pageCache)
-  }
-
   const absoluteTarget = normalizeAbsoluteLink(href)
 
   if (!absoluteTarget) {
@@ -191,6 +194,22 @@ async function resolveLinkedPage(
   }
 
   return null
+}
+
+function parseInternalPageRoute(value: string): InternalPageRoute | null {
+  const match = PAGE_ROUTE_RE.exec(value)
+
+  if (!match) {
+    return null
+  }
+
+  const [, kind, slug] = match
+
+  return {
+    kind: kind as PageKind,
+    slug,
+    route: value,
+  }
 }
 
 async function loadPage(
