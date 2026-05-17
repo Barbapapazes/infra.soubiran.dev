@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { NodeProps } from '@vue-flow/core'
-import type { EcosystemItem, EcosystemName, EcosystemType } from '@/types/ecosystem'
+import type { EcosystemItem, EcosystemName, EcosystemType } from '@/app/types/ecosystem'
 import { RouterLink } from 'vue-router'
 import nuxt from '~icons/logos/nuxt-icon'
 import slidev from '~icons/logos/slidev'

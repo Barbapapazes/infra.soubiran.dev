@@ -12,17 +12,17 @@ ecosystem:
   - type: deployment
     id: soubiran-dev
     name: Cloudflare Workers
-    description: Deploy the website worldwide.
+    description: Deploy my personal website worldwide on Cloudflare's edge.
     ecosystem:
       - type: build
         id: soubiran-dev
         name: Cloudflare Build
-        description: Build the website automatically.
+        description: Build and deploy the statically generated site automatically.
         ecosystem:
           - type: repository
             id: soubiran.dev
             name: GitHub
-            description: Source code for the website.
+            description: Host the private source code and content for my main website.
             href: 'https://github.com/barbapapazes/soubiran.dev'
             ecosystem:
               - type: stack
@@ -33,26 +33,26 @@ ecosystem:
                 href: 'https://pinia-colada.esm.dev'
           - type: ci/cd
             name: GitHub Actions
-            description: Trigger a build every day.
+            description: Rebuild the site every day to keep external data fresh.
           - type: data
             name: talks.soubiran.dev
-            description: Fetch talks data.
+            description: Fetch the talks metadata displayed in the talks section.
             href: /websites/talks-soubiran-dev
           - type: data
             id: projects
             name: GitHub
-            description: Fetch projects data.
+            description: Fetch repository data to populate the projects section.
             href: 'https://github.com/barbapapazes?tab=repositories'
   - type: object-storage
     id: soubiran-dev
     name: Cloudflare R2
-    description: Host videos.
+    description: Store the website's videos outside the Git repository.
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description: Manage the DNS records that route `soubiran.dev` to the website.
   - type: realtime
     name: PartyKit
-    description: Provide real-time viewer count.
+    description: Power the live viewer count displayed across the website.
 ---
 
 The website [soubiran.dev](https://soubiran.dev) is my personal website and main domain. It serves as the entry point to my writings, projects, talks, and more.

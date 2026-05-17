@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { Edge, Node } from '@vue-flow/core'
-import type { Ecosystem, EcosystemItem } from '@/types/ecosystem'
+import type { Ecosystem, EcosystemItem } from '@/app/types/ecosystem'
 import { kebabCase } from 'scule'
 
 const ecosystem = tv({
@@ -26,11 +26,26 @@ const props = defineProps<EcosystemProps>()
 defineEmits<EcosystemEmits>()
 defineSlots<EcosystemSlots>()
 
+function getNodeId(item: EcosystemItem, parentNode?: Node<EcosystemItem>) {
+  const localId = kebabCase(`${item.name}-${item.type}${item.id ? `-${item.id}` : ''}`.replace(/\s+/g, '-'))
+
+  return parentNode ? `${parentNode.id}-${localId}` : localId
+}
+
 function getDescriptions(item: EcosystemItem) {
   return Array.from(new Set([
     item.description,
     ...(item.descriptions ?? []),
   ].filter((description): description is string => !!description)))
+}
+
+function toNodeData(item: EcosystemItem): EcosystemItem {
+  const { ecosystem: _ecosystem, ...nodeData } = item
+
+  return {
+    ...nodeData,
+    descriptions: getDescriptions(item),
+  }
 }
 
 function mergeEcosystemItems(existing: EcosystemItem, incoming: EcosystemItem): EcosystemItem {
@@ -39,30 +54,33 @@ function mergeEcosystemItems(existing: EcosystemItem, incoming: EcosystemItem): 
     ...getDescriptions(incoming),
   ]))
 
+  const { ecosystem: _existingEcosystem, ...existingNodeData } = existing
+  const { ecosystem: _incomingEcosystem, ...incomingNodeData } = incoming
+
   return {
-    ...existing,
-    ...incoming,
+    ...existingNodeData,
+    ...incomingNodeData,
     href: existing.href ?? incoming.href,
     description: descriptions[0],
     descriptions,
   }
 }
 
-const initialNode = {
+const initialNode: Node<EcosystemItem> = {
   id: kebabCase(props.name),
   type: 'ecosystem',
   data: {
     name: props.name,
-  } satisfies EcosystemItem,
+  },
   position: { x: 0, y: 0 },
 }
 
 const { nodes: initialNodes, edges: initialEdges } = createNodesEdges(initialNode)
 
-const nodes = ref<Node<EcosystemItem>[]>(initialNodes)
-const edges = ref<Edge[]>(initialEdges)
+const nodes = shallowRef<Node<EcosystemItem>[]>(initialNodes)
+const edges = shallowRef<Edge[]>(initialEdges)
 
-function createNodesEdges(initialNode: Node<EcosystemItem>) {
+function createNodesEdges(initialNode: Node<EcosystemItem>): { nodes: Node<EcosystemItem>[], edges: Edge[] } {
   const nodes = new Map<string, Node<EcosystemItem>>()
   const edges = new Map<string, Edge>()
 
@@ -81,19 +99,16 @@ function ecosystemToNodesEdges(
   parentNode?: Node<EcosystemItem>,
 ) {
   for (const item of ecosystem) {
-    const id = kebabCase(`${item.name}-${item.type}${item.id ? `-${item.id}` : ''}`.replace(/\s+/g, '-'))
+    const id = getNodeId(item, parentNode)
 
-    const currentNode = nodes.get(id) ?? {
+    const currentNode: Node<EcosystemItem> = nodes.get(id) ?? {
       id,
       type: 'ecosystem',
       position: { x: 0, y: 0 },
-      data: {
-        ...item,
-        descriptions: getDescriptions(item),
-      },
-    } satisfies Node<EcosystemItem>
+      data: toNodeData(item),
+    }
 
-    currentNode.data = mergeEcosystemItems(currentNode.data, item)
+    currentNode.data = mergeEcosystemItems(currentNode.data ?? item, item)
     nodes.set(id, currentNode)
 
     if (parentNode) {
@@ -125,8 +140,8 @@ const ui = computed(() => ecosystem())
     :ui="{ root: ui.root({ class: props.ui?.root }) }"
   >
     <template v-if="props.inline" #overlays>
-      <div class="z-10 absolute top-0 h-4 inset-x-0 bg-linear-to-b from-(--ui-bg) to-(--ui-bg)/0" />
-      <div class="z-10 absolute bottom-0 h-4 inset-x-0 bg-linear-to-t from-(--ui-bg) to-(--ui-bg)/0" />
+      <div class="z-10 absolute top-0 h-4 inset-x-0 bg-linear-to-b from-default to-(--ui-bg)/0" />
+      <div class="z-10 absolute bottom-0 h-4 inset-x-0 bg-linear-to-t from-default to-(--ui-bg)/0" />
     </template>
 
     <template #node-ecosystem="nodeProps">
