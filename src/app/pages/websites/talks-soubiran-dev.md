@@ -10,17 +10,17 @@ ecosystem:
   - type: deployment
     id: talks-soubiran-dev
     name: Cloudflare Workers
-    description: Deploy the website worldwide.
+    description: Deploy the talks archive worldwide on Cloudflare's edge.
     ecosystem:
       - type: build
         id: talks-soubiran-dev
         name: Cloudflare Build
-        description: Build the website automatically.
+        description: Build all Slidev decks into a single static website automatically.
         ecosystem:
           - type: repository
             id: talks-soubiran-dev
             name: GitHub
-            description: Source code of the website.
+            description: Host the talks monorepo, including every deck and shared theme code.
             href: 'https://github.com/barbapapazes/talks'
             ecosystem:
               - type: stack
@@ -29,10 +29,10 @@ ecosystem:
   - type: object-storage
     id: talks-soubiran-dev
     name: Cloudflare R2
-    description: Host PDFs of the talks.
+    description: Store exported PDFs and thumbnails for the talks.
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description: Manage the DNS records that route `talks.soubiran.dev` to the archive.
 ---
 
 The website [talks.soubiran.dev](https://talks.soubiran.dev) contains all the talks I've given at conferences and meetups over the years. The root redirects to the page listing all talks: [soubiran.dev/talks](https://soubiran.dev/talks).

@@ -8,17 +8,17 @@ ecosystem:
   - type: deployment
     id: preview-soubiran-dev
     name: Cloudflare Workers
-    description: Deploy the website worldwide.
+    description: Deploy and protect this sponsor-only preview website at the edge.
     ecosystem:
       - type: build
         id: preview-soubiran-dev
         name: Cloudflare Build
-        description: Build the website automatically.
+        description: Build and deploy the Vite app and deploy the Worker-backed site automatically.
         ecosystem:
           - type: repository
             id: preview.soubiran.dev
             name: GitHub
-            description: Source code for the website.
+            description: Host the source code for the preview site and its authentication layer.
             href: https://github.com/barbapapazes/preview.soubiran.dev
             ecosystem:
               - type: stack
@@ -35,10 +35,10 @@ ecosystem:
                 href: https://developers.cloudflare.com/workers/wrangler
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description: Manage the DNS records that route `preview.soubiran.dev` to this site.
   - type: realtime
     name: PartyKit
-    description: Provide real-time viewer count.
+    description: Power the live viewer count shown on the preview site.
 ---
 
 The website [preview.soubiran.dev](https://preview.soubiran.dev) is dedicated to [my sponsors](https://soubiran.dev/sponsorship). I use it to share my upcoming writings before they are published publicly on my main website, [soubiran.dev](/websites/soubiran-dev), as it's one of the perks of sponsoring me. I also use it to centralize everything related to my **GitHub sponsorships**, such as announcements, exclusive articles, and more.

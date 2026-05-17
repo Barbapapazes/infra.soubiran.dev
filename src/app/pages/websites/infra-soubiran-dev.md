@@ -7,17 +7,17 @@ ecosystem:
   - type: deployment
     id: infra-soubiran-dev
     name: Cloudflare Workers
-    description: Deploy the website worldwide.
+    description: Deploy this infrastructure website to Cloudflare's edge worldwide.
     ecosystem:
       - type: build
         id: infra-soubiran-dev
         name: Cloudflare Build
-        description: Build the website automatically.
+        description: Build and deploy the Vite app automatically.
         ecosystem:
           - type: repository
             id: infra.soubiran.dev
             name: GitHub
-            description: Source code for the website.
+            description: Host the source code, content, and deployment configuration for this website.
             href: 'https://github.com/barbapapazes/infra.soubiran.dev'
             ecosystem:
               - type: stack
@@ -29,11 +29,11 @@ ecosystem:
   - type: object-storage
     id: infra-soubiran-dev
     name: Cloudflare R2
-    description: Host public assets.
+    description: Store this website's public assets.
   - type: domain
     name: Cloudflare Domains
-    description: Manage the DNS records.
+    description: Manage the DNS records that route `infra.soubiran.dev` to this website.
   - type: realtime
     name: PartyKit
-    description: Provide real-time viewer count.
+    description: Power the live viewer count shown on this website and across the rest of my ecosystem.
 ---
