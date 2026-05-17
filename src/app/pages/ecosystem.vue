@@ -5,7 +5,7 @@ import circlesFour from '~icons/ph/circles-four-duotone'
 import graph from '~icons/ph/graph-duotone'
 import house from '~icons/ph/house-duotone'
 import squaresFour from '~icons/ph/squares-four-duotone'
-import Ecosystem from '@/components/Ecosystem/Ecosystem.vue'
+import Ecosystem from '@/app/components/Ecosystem/Ecosystem.vue'
 
 const ecosystemTV = tv({
   slots: {

@@ -6,8 +6,7 @@
 @import 'markdown-it-github-alerts/styles/github-colors-dark-class.css';
 @import 'markdown-it-github-alerts/styles/github-base.css';
 
-@source "../node_modules/@soubiran/ui";
-@source "../node_modules/@soubiran/vite";
+@source "../../node_modules/@soubiran/ui";
 
 @plugin "@tailwindcss/typography";
 

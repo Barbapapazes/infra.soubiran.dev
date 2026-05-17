@@ -22,6 +22,7 @@ declare module 'vue-router' {
   interface TypesConfig {
     ParamParsers:
       | never
+    RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
   }
 }
 
@@ -47,6 +48,13 @@ declare module 'vue-router/auto-routes' {
     '/platforms/': RouteRecordInfo<
       '/platforms/',
       '/platforms',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/platforms/api-soubiran-dev': RouteRecordInfo<
+      '/platforms/api-soubiran-dev',
+      '/platforms/api-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -120,67 +128,73 @@ declare module 'vue-router/auto-routes' {
    * @internal
    */
   export interface _RouteFileInfoMap {
-    'pages/index.md': {
+    'src/app/pages/index.md': {
       routes:
         | '/'
       views:
         | never
     }
-    'pages/ecosystem.vue': {
+    'src/app/pages/ecosystem.vue': {
       routes:
         | '/ecosystem'
       views:
         | never
     }
-    'pages/platforms/index.md': {
+    'src/app/pages/platforms/index.md': {
       routes:
         | '/platforms/'
       views:
         | never
     }
-    'pages/platforms/automation-soubiran-dev.md': {
+    'src/app/pages/platforms/api-soubiran-dev.md': {
+      routes:
+        | '/platforms/api-soubiran-dev'
+      views:
+        | never
+    }
+    'src/app/pages/platforms/automation-soubiran-dev.md': {
       routes:
         | '/platforms/automation-soubiran-dev'
       views:
         | never
     }
-    'pages/platforms/chat-soubiran-dev.md': {
+    'src/app/pages/platforms/chat-soubiran-dev.md': {
       routes:
         | '/platforms/chat-soubiran-dev'
       views:
         | never
     }
-    'pages/platforms/eats-soubiran-dev.md': {
+    'src/app/pages/platforms/eats-soubiran-dev.md': {
       routes:
         | '/platforms/eats-soubiran-dev'
       views:
         | never
     }
-    'pages/websites/index.md': {
+    'src/app/pages/websites/index.md': {
       routes:
         | '/websites/'
       views:
         | never
     }
-    'pages/websites/infra-soubiran-dev.md': {
+    'src/app/pages/websites/infra-soubiran-dev.md': {
       routes:
         | '/websites/infra-soubiran-dev'
       views:
         | never
     }
-    'pages/websites/preview-soubiran-dev.md': {
+    'src/app/pages/websites/preview-soubiran-dev.md': {
       routes:
         | '/websites/preview-soubiran-dev'
       views:
         | never
     }
-    'pages/websites/soubiran-dev.md': {
+    'src/app/pages/websites/soubiran-dev.md': {
       routes:
         | '/websites/soubiran-dev'
       views:
         | never
     }
-    'pages/websites/talks-soubiran-dev.md': {
+    'src/app/pages/websites/talks-soubiran-dev.md': {
       routes:
         | '/websites/talks-soubiran-dev'
       views:

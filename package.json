@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8",
+  "packageManager": "pnpm@10.33.4",
   "scripts": {
     "dev": "vite",
     "build": "vite-ssg build",
@@ -13,50 +13,42 @@
   },
   "dependencies": {
     "@dagrejs/dagre": "^3.0.0",
-    "@iconify/vue": "^5.0.0",
-    "@nuxt/ui": "^4.7.0",
-    "@pinia/colada": "^1.0.0",
-    "@soubiran/ui": "^0.6.5",
-    "@unhead/vue": "^3.0.5",
+    "@iconify/vue": "^5.0.1",
+    "@nuxt/ui": "^4.7.1",
+    "@pinia/colada": "^1.3.0",
+    "@soubiran/ui": "^0.8.8",
+    "@unhead/vue": "^3.1.0",
     "@vue-flow/background": "^1.3.2",
     "@vue-flow/core": "^1.48.2",
     "@vueuse/core": "^14.3.0",
     "markdown-it-github-alerts": "^1.0.1",
-    "motion-v": "^2.0.1",
+    "motion-v": "^2.2.1",
     "ofetch": "^1.5.1",
     "pinia": "^3.0.4",
-    "reka-ui": "^2.9.6",
+    "reka-ui": "^2.9.7",
     "scule": "^1.3.0",
     "tailwind-variants": "^3.2.2",
-    "vue": "^3.5.33"
+    "vue": "^3.5.34"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^8.2.0",
+    "@antfu/eslint-config": "^9.0.0",
     "@iconify-json/logos": "^1.2.11",
     "@iconify-json/ph": "^1.2.2",
-    "@iconify-json/simple-icons": "^1.2.79",
-    "@playwright/test": "^1.59.1",
-    "@soubiran/vite": "^0.6.5",
+    "@iconify-json/simple-icons": "^1.2.81",
+    "@playwright/test": "^1.60.0",
+    "@soubiran/vite": "^0.8.8",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/node": "^24.12.2",
+    "@types/node": "^24.12.3",
     "@vue/tsconfig": "^0.9.1",
-    "eslint": "^10.2.1",
-    "tailwindcss": "^4.2.4",
-    "taze": "^19.11.0",
+    "eslint": "^10.3.0",
+    "gray-matter": "^4.0.3",
+    "tailwindcss": "^4.3.0",
+    "taze": "^19.12.0",
     "typescript": "~5.9.3",
     "unplugin-icons": "^23.0.1",
-    "vite": "^8.0.10",
+    "vite": "^8.0.11",
     "vite-ssg": "28.3.0",
-    "vue-router": "^5.0.6",
-    "wrangler": "^4.87.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "@unhead/vue": "npm:@unhead/vue@3.0.5",
-      "markdown-it": "npm:markdown-exit@1.0.0-beta.6"
-    },
-    "patchedDependencies": {
-      "vite-ssg": "patches/vite-ssg.patch"
-    }
+    "vue-router": "^5.0.7",
+    "wrangler": "^4.90.0"
   }
 }

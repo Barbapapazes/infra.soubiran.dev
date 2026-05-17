@@ -1,16 +1,22 @@
 import type { BreadcrumbItem, StructuredDataPageConfig } from '@soubiran/vite/types'
+import ui from '@soubiran/ui/ui'
 import soubiran from '@soubiran/vite'
 import { getUri, toUrl } from '@soubiran/vite/utils'
 import { defineConfig } from 'vite'
+import { verifyEcosystemLinks } from './plugins/verify-ecosystem-links'
 
 const title = 'Estéban\'s Infra'
 const hostname = 'infra.soubiran.dev'
 
 export default defineConfig({
   plugins: [
+    verifyEcosystemLinks(),
     soubiran({
       title,
       hostname,
+      ui: {
+        ui,
+      },
       router: {
         extractPage,
       },
