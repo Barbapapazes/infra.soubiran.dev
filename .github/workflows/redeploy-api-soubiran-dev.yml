@@ -20,7 +20,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "CF-Access-Client-Id: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_ID }}" \
             -H "CF-Access-Client-Secret: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}" \
-            -H "x-service: soubiran.dev" \
+            -H "x-service: infra.soubiran.dev" \
             -d '{
               "deploy_hook_url": "${{ secrets.API_DEPLOY_URL }}",
               "cloudflare": {
