@@ -99,6 +99,9 @@ importers:
       eslint:
         specifier: ^10.3.0
         version: 10.3.0(jiti@2.7.0)
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
       tailwindcss:
         specifier: ^4.3.0
         version: 4.3.0

@@ -52,6 +52,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/platforms/api-soubiran-dev': RouteRecordInfo<
+      '/platforms/api-soubiran-dev',
+      '/platforms/api-soubiran-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/platforms/automation-soubiran-dev': RouteRecordInfo<
       '/platforms/automation-soubiran-dev',
       '/platforms/automation-soubiran-dev',
@@ -136,6 +143,12 @@ declare module 'vue-router/auto-routes' {
     'src/app/pages/platforms/index.md': {
       routes:
         | '/platforms/'
+      views:
+        | never
+    }
+    'src/app/pages/platforms/api-soubiran-dev.md': {
+      routes:
+        | '/platforms/api-soubiran-dev'
       views:
         | never
     }
