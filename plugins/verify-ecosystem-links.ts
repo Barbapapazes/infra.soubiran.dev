@@ -1,14 +1,18 @@
 import type { Plugin } from 'vite'
 import { access, readFile } from 'node:fs/promises'
 import path from 'node:path'
-import process from 'node:process'
+import matter from 'gray-matter'
 
 type PageKind = 'platforms' | 'websites'
+
+const PAGE_KINDS = ['platforms', 'websites'] as const
+const PAGE_ROUTE_RE = /^\/(platforms|websites)\/([^/]+)$/
 
 interface EcosystemPage {
   filePath: string
   kind: PageKind
   route: string
+  title: string
   publicUrl: string
 }
 
@@ -19,12 +23,25 @@ interface ValidationError {
   message: string
 }
 
-const FRONTMATTER_RE = /^---\n([\s\S]*?)\n---\n?/
-const FENCED_CODE_BLOCK_RE = /```[\s\S]*?```|~~~[\s\S]*?~~~/g
-const MARKDOWN_LINK_RE = /(?<!!)\[[^\]]+\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g
+interface MarkdownPage {
+  body: string
+  bodyOffset: number
+  title: string | null
+  publicUrl: string | null
+}
 
+const FENCED_CODE_BLOCK_RE = /```[\s\S]*?```|~~~[\s\S]*?~~~/g
+const MARKDOWN_LINK_RE = /(?<!!)\[(?<label>[^\]]+)\]\((?<href>[^)\s]+)(?:\s+"[^"]*")?\)/g
+
+/**
+ * Verifies ecosystem markdown links during the Vite transform step.
+ *
+ * Rules:
+ * - the current page subject must use its public `url` frontmatter value
+ * - root links to other internal `*.soubiran.dev` sites must use their internal doc routes
+ */
 export function verifyEcosystemLinks(): Plugin {
-  let root = process.cwd()
+  let root: string
   const pageCache = new Map<string, Promise<EcosystemPage | null>>()
 
   return {
@@ -33,20 +50,24 @@ export function verifyEcosystemLinks(): Plugin {
     configResolved(config) {
       root = config.root
     },
-    async transform(code, id) {
-      const filePath = normalizeFileId(id)
+    transform: {
+      filter: {
+        id: /\.md$/,
+      },
+      async handler(code, id) {
+        const filePath = normalizeFileId(id)
+        if (!isEcosystemMarkdownPage(filePath, root)) {
+          return null
+        }
 
-      if (!isEcosystemMarkdownPage(filePath, root)) {
+        const errors = await validateMarkdownFile(filePath, code, root, pageCache)
+
+        if (errors.length > 0) {
+          this.error(formatErrors(errors, root))
+        }
+
         return null
-      }
-
-      const errors = await validateMarkdownFile(filePath, code, root, pageCache)
-
-      if (errors.length > 0) {
-        this.error(formatErrors(errors, root))
-      }
-
-      return null
+      },
     },
   }
 }
@@ -57,77 +78,81 @@ async function validateMarkdownFile(
   root: string,
   pageCache: Map<string, Promise<EcosystemPage | null>>,
 ): Promise<ValidationError[]> {
-  const page = extractCurrentPage(filePath, source, root)
+  const markdownPage = parseMarkdownPage(source)
+  const page = extractCurrentPage(filePath, markdownPage, root)
 
   if (!page) {
     return []
   }
 
-  const errors: ValidationError[] = []
-  const { body } = splitFrontmatter(source)
-  const bodyWithoutCode = body.replaceAll(FENCED_CODE_BLOCK_RE, '')
+  const bodyWithoutCode = maskFencedCodeBlocks(markdownPage.body)
+  const errors = await Promise.all(
+    [...bodyWithoutCode.matchAll(MARKDOWN_LINK_RE)].map(match => validateMarkdownLink(match, source, markdownPage.bodyOffset, page, root, pageCache)),
+  )
 
-  for (const match of bodyWithoutCode.matchAll(MARKDOWN_LINK_RE)) {
-    const href = match[1]
-
-    if (!href) {
-      continue
-    }
-
-    const absoluteTarget = normalizeAbsoluteLink(href)
-    const internalTarget = normalizeInternalLink(href)
-    const linkedPage = await resolveLinkedPage(href, root, pageCache)
-
-    if (!linkedPage) {
-      continue
-    }
-
-    const location = getLineAndColumn(bodyWithoutCode, match.index ?? 0)
-
-    if (linkedPage.filePath === page.filePath && internalTarget) {
-      errors.push({
-        filePath: page.filePath,
-        line: location.line,
-        column: location.column,
-        message: `Current page subject must use its public URL \`${page.publicUrl}\`, not internal route \`${linkedPage.route}\`.`,
-      })
-    }
-
-    if (linkedPage.filePath !== page.filePath && absoluteTarget) {
-      errors.push({
-        filePath: page.filePath,
-        line: location.line,
-        column: location.column,
-        message: `Cross-ecosystem reference to \`${linkedPage.publicUrl}\` must use internal page route \`${linkedPage.route}\`.`,
-      })
-    }
-  }
-
-  return errors
+  return errors.filter((error): error is ValidationError => error !== null)
 }
 
-function extractCurrentPage(filePath: string, source: string, root: string): EcosystemPage | null {
-  const pageMatch = getPageMatch(filePath, root)
+async function validateMarkdownLink(
+  match: RegExpMatchArray,
+  source: string,
+  bodyOffset: number,
+  page: EcosystemPage,
+  root: string,
+  pageCache: Map<string, Promise<EcosystemPage | null>>,
+): Promise<ValidationError | null> {
+  const href = match.groups?.href
+  const label = match.groups?.label?.trim()
 
-  if (!pageMatch) {
+  if (!href) {
     return null
   }
 
-  const frontmatter = splitFrontmatter(source).frontmatter
-  const publicUrl = extractTopLevelScalar(frontmatter, 'url')
+  const absoluteTarget = normalizeAbsoluteLink(href)
+  const internalTarget = normalizeInternalLink(href)
+  const location = getLineAndColumn(source, bodyOffset + (match.index ?? 0))
 
-  if (!publicUrl) {
+  if (isCurrentPageSubjectLink(page, label, href)) {
+    return createValidationError(
+      page,
+      location,
+      `Current page subject must use its public URL \`${page.publicUrl}\`, not \`${href}\`.`,
+    )
+  }
+
+  const linkedPage = await resolveLinkedPage(href, root, pageCache)
+
+  if (absoluteTarget && isCrossInternalSiteReference(absoluteTarget, page.publicUrl)) {
+    return createValidationError(
+      page,
+      location,
+      linkedPage
+        ? `Cross-ecosystem reference to \`${linkedPage.publicUrl}\` must use internal page route \`${linkedPage.route}\`.`
+        : `Internal site \`${absoluteTarget}\` must use its documentation page route, not an absolute URL.`,
+    )
+  }
+
+  if (linkedPage?.filePath === page.filePath && internalTarget) {
+    return createValidationError(
+      page,
+      location,
+      `Current page subject must use its public URL \`${page.publicUrl}\`, not internal route \`${linkedPage.route}\`.`,
+    )
+  }
+
+  return null
+}
+
+function extractCurrentPage(filePath: string, markdownPage: MarkdownPage, root: string): EcosystemPage | null {
+  const pageMatch = getPageMatch(filePath, root)
+
+  if (!pageMatch || !markdownPage.publicUrl || !markdownPage.title) {
     return null
   }
 
   const { kind, slug } = pageMatch
 
-  return {
-    filePath,
-    kind,
-    route: `/${kind}/${slug}`,
-    publicUrl: normalizePublicUrl(publicUrl),
-  }
+  return createEcosystemPage(filePath, kind, slug, markdownPage.title, markdownPage.publicUrl)
 }
 
 async function resolveLinkedPage(
@@ -138,7 +163,7 @@ async function resolveLinkedPage(
   const internalTarget = normalizeInternalLink(href)
 
   if (internalTarget) {
-    const match = /^\/(platforms|websites)\/([^/]+)$/.exec(internalTarget)
+    const match = PAGE_ROUTE_RE.exec(internalTarget)
 
     if (!match) {
       return null
@@ -155,7 +180,7 @@ async function resolveLinkedPage(
     return null
   }
 
-  for (const kind of ['platforms', 'websites'] as const) {
+  for (const kind of PAGE_KINDS) {
     for (const slug of getCandidateSlugs(absoluteTarget)) {
       const page = await loadPage(root, kind, slug, pageCache)
 
@@ -188,25 +213,57 @@ async function loadPage(
 }
 
 async function loadPageUncached(root: string, kind: PageKind, slug: string): Promise<EcosystemPage | null> {
-  const filePath = path.join(root, 'pages', kind, `${slug}.md`)
+  const filePath = path.join(getPagesDir(root), kind, `${slug}.md`)
 
   if (!await fileExists(filePath)) {
     return null
   }
 
   const source = await readFile(filePath, 'utf8')
-  const publicUrl = extractTopLevelScalar(splitFrontmatter(source).frontmatter, 'url')
+  const { publicUrl, title } = parseMarkdownPage(source)
 
-  if (!publicUrl) {
+  if (!publicUrl || !title) {
     return null
   }
 
+  return createEcosystemPage(filePath, kind, slug, title, publicUrl)
+}
+
+function createEcosystemPage(
+  filePath: string,
+  kind: PageKind,
+  slug: string,
+  title: string,
+  publicUrl: string,
+): EcosystemPage {
   return {
     filePath,
     kind,
     route: `/${kind}/${slug}`,
-    publicUrl: normalizePublicUrl(publicUrl),
+    title,
+    publicUrl,
   }
+}
+
+function createValidationError(
+  page: EcosystemPage,
+  location: { line: number, column: number },
+  message: string,
+): ValidationError {
+  return {
+    filePath: page.filePath,
+    line: location.line,
+    column: location.column,
+    message,
+  }
+}
+
+function isCurrentPageSubjectLink(page: EcosystemPage, label: string | undefined, href: string): boolean {
+  return label === page.title && href !== page.publicUrl
+}
+
+function isCrossInternalSiteReference(absoluteTarget: string, currentPublicUrl: string): boolean {
+  return absoluteTarget !== currentPublicUrl && isInternalAbsoluteSite(absoluteTarget)
 }
 
 async function fileExists(filePath: string): Promise<boolean> {
@@ -238,8 +295,12 @@ function isEcosystemMarkdownPage(filePath: string, root: string): boolean {
   return getPageMatch(filePath, root) !== null
 }
 
+function getPagesDir(root: string): string {
+  return path.join(root, 'src', 'app', 'pages')
+}
+
 function getPageMatch(filePath: string, root: string): { kind: PageKind, slug: string } | null {
-  const pagesDir = path.join(root, 'pages')
+  const pagesDir = getPagesDir(root)
   const relativePath = path.relative(pagesDir, filePath)
   const normalizedPath = relativePath.split(path.sep).join('/')
   const match = /^(platforms|websites)\/([^/]+)\.md$/.exec(normalizedPath)
@@ -254,35 +315,23 @@ function getPageMatch(filePath: string, root: string): { kind: PageKind, slug: s
   }
 }
 
-function splitFrontmatter(source: string): { frontmatter: string, body: string } {
-  const match = FRONTMATTER_RE.exec(source)
-
-  if (!match) {
-    return { frontmatter: '', body: source }
-  }
+function parseMarkdownPage(source: string): MarkdownPage {
+  const parsed = matter(source)
 
   return {
-    frontmatter: match[1],
-    body: source.slice(match[0].length),
+    body: parsed.content,
+    bodyOffset: source.length - parsed.content.length,
+    title: typeof parsed.data.title === 'string'
+      ? parsed.data.title.trim()
+      : null,
+    publicUrl: typeof parsed.data.url === 'string'
+      ? normalizePublicUrl(parsed.data.url)
+      : null,
   }
 }
 
-function extractTopLevelScalar(frontmatter: string, key: string): string | null {
-  const match = new RegExp(`^${key}:\\s*(.+)$`, 'm').exec(frontmatter)
-
-  if (!match) {
-    return null
-  }
-
-  return stripWrappingQuotes(match[1].trim())
-}
-
-function stripWrappingQuotes(value: string): string {
-  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith('\'') && value.endsWith('\''))) {
-    return value.slice(1, -1)
-  }
-
-  return value
+function maskFencedCodeBlocks(source: string): string {
+  return source.replaceAll(FENCED_CODE_BLOCK_RE, block => block.replace(/[^\n]/g, ' '))
 }
 
 function normalizePublicUrl(value: string): string {
@@ -298,6 +347,20 @@ function normalizeAbsoluteLink(value: string): string | null {
   }
 
   return normalizePublicUrl(value)
+}
+
+function isInternalAbsoluteSite(value: string): boolean {
+  const url = new URL(value)
+
+  return isRootPath(url.pathname) && isInternalSoubiranHostname(url.hostname)
+}
+
+function isInternalSoubiranHostname(value: string): boolean {
+  return value === 'soubiran.dev' || value.endsWith('.soubiran.dev')
+}
+
+function isRootPath(value: string): boolean {
+  return value === '' || value === '/'
 }
 
 function normalizeInternalLink(value: string): string | null {
