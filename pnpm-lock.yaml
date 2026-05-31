@@ -30,8 +30,8 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))
       '@soubiran/ui':
-        specifier: ^0.8.8
-        version: 0.8.8(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-it@14.1.1)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)
+        specifier: ^0.9.0
+        version: 0.9.0(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-it@14.1.1)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)
       '@unhead/vue':
         specifier: npm:@unhead/vue@3.0.5
         version: 3.0.5(esbuild@0.27.7)(lightningcss@1.32.0)(rolldown@1.0.1)(typescript@5.9.3)(vite@8.0.13(@types/node@24.12.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.47.1)(yaml@2.9.0))(vue@3.5.34(typescript@5.9.3))
@@ -85,8 +85,8 @@ importers:
         specifier: ^1.60.0
         version: 1.60.0
       '@soubiran/vite':
-        specifier: ^0.8.8
-        version: 0.8.8(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@pinia/colada@1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@vue/compiler-sfc@3.5.34)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(valibot@1.4.0(typescript@5.9.3))(vue@3.5.34(typescript@5.9.3))(workerd@1.20260511.1)(wrangler@4.91.0)(yaml@2.9.0)(yjs@13.6.30)
+        specifier: ^0.9.0
+        version: 0.9.0(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@pinia/colada@1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@vue/compiler-sfc@3.5.34)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(valibot@1.4.0(typescript@5.9.3))(vue@3.5.34(typescript@5.9.3))(workerd@1.20260511.1)(wrangler@4.91.0)(yaml@2.9.0)(yjs@13.6.30)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.3.0)
@@ -1557,11 +1557,11 @@ packages:
     resolution: {integrity: sha512-P1Cz1dWaFfR4IR+U13mqqiGsLFf1KbayybWwdd2vfctdV6hDpUkgCY0nKOLLTMSoRd/jJNjtbqzf13K8DCCXQw==}
     engines: {node: '>=18'}
 
-  '@soubiran/ui@0.8.8':
-    resolution: {integrity: sha512-wlW2emxPNfzovrlg7RZhQqSiKjMt5802oL/r/LQPow2fPIVZXlY1eKR+xuFSTDgPDi8Gs3nP7WmHuND7qhztzA==}
+  '@soubiran/ui@0.9.0':
+    resolution: {integrity: sha512-keZh37KzaMMSce5Kh3LWn3jgswSdZC/p8vn3qwPrYgZFwHqfiwJQIxJ2vxbrZZbvSl6sWDu3c/rlIxXhLgaPyg==}
 
-  '@soubiran/vite@0.8.8':
-    resolution: {integrity: sha512-UjEIr1/4SI04F8CPP2hKrDos+PTU2MizX2krORjg4GgCC5g5dXo0zQDenH744TTR8MpBqfk+HbjSz0+h7DWpdQ==}
+  '@soubiran/vite@0.9.0':
+    resolution: {integrity: sha512-sczbp5OXjRF1mG1falvDCEFRiTT7OHJM7OUtfvcCcYy/nTJERa9ROKplPyk493oeFTkJrpEMpNAvkmzFGltvFg==}
 
   '@speed-highlight/core@1.2.15':
     resolution: {integrity: sha512-BMq1K3DsElxDWawkX6eLg9+CKJrTVGCBAWVuHXVUV2u0s2711qiChLSId6ikYPfxhdYocLNt3wWwSvDiTvFabw==}
@@ -5889,7 +5889,7 @@ snapshots:
 
   '@sindresorhus/is@7.2.0': {}
 
-  '@soubiran/ui@0.8.8(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-exit@1.0.0-beta.6)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)':
+  '@soubiran/ui@0.9.0(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-exit@1.0.0-beta.6)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)':
     dependencies:
       '@nuxt/ui': 4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(lightningcss@1.32.0)(rolldown@1.0.1)(tailwindcss@4.3.0)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(vite@8.0.13(@types/node@24.12.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.47.1)(yaml@2.9.0))(vue-router@5.0.7(@pinia/colada@1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))(yjs@13.6.30)
       '@pinia/colada': 1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))
@@ -5978,7 +5978,7 @@ snapshots:
       - yup
       - zod
 
-  '@soubiran/ui@0.8.8(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-it@14.1.1)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)':
+  '@soubiran/ui@0.9.0(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-it@14.1.1)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)':
     dependencies:
       '@nuxt/ui': 4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(lightningcss@1.32.0)(rolldown@1.0.1)(tailwindcss@4.3.0)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(vite@8.0.13(@types/node@24.12.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.47.1)(yaml@2.9.0))(vue-router@5.0.7(@pinia/colada@1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))(yjs@13.6.30)
       '@pinia/colada': 1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))
@@ -6067,12 +6067,12 @@ snapshots:
       - yup
       - zod
 
-  '@soubiran/vite@0.8.8(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@pinia/colada@1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@vue/compiler-sfc@3.5.34)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(valibot@1.4.0(typescript@5.9.3))(vue@3.5.34(typescript@5.9.3))(workerd@1.20260511.1)(wrangler@4.91.0)(yaml@2.9.0)(yjs@13.6.30)':
+  '@soubiran/vite@0.9.0(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@pinia/colada@1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@vue/compiler-sfc@3.5.34)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(valibot@1.4.0(typescript@5.9.3))(vue@3.5.34(typescript@5.9.3))(workerd@1.20260511.1)(wrangler@4.91.0)(yaml@2.9.0)(yjs@13.6.30)':
     dependencies:
       '@cloudflare/vite-plugin': 1.37.0(vite@8.0.13(@types/node@24.12.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.47.1)(yaml@2.9.0))(workerd@1.20260511.1)(wrangler@4.91.0)
       '@nuxt/ui': 4.7.1(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(lightningcss@1.32.0)(rolldown@1.0.1)(tailwindcss@4.3.0)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(vite@8.0.13(@types/node@24.12.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.47.1)(yaml@2.9.0))(vue-router@5.0.7(@pinia/colada@1.3.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))(yjs@13.6.30)
       '@shikijs/markdown-it': 4.0.2(markdown-it-async@2.2.0)
-      '@soubiran/ui': 0.8.8(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-exit@1.0.0-beta.6)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)
+      '@soubiran/ui': 0.9.0(@internationalized/date@3.12.1)(@internationalized/number@3.6.6)(@nuxt/kit@4.4.5)(@tiptap/extensions@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@tiptap/y-tiptap@3.0.3(prosemirror-model@1.25.5)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.30))(yjs@13.6.30))(@types/node@24.12.4)(change-case@5.4.4)(embla-carousel@8.6.0)(esbuild@0.27.7)(jiti@2.7.0)(lightningcss@1.32.0)(markdown-exit@1.0.0-beta.6)(rolldown@1.0.1)(tailwind-merge@3.6.0)(tailwindcss@4.3.0)(terser@5.47.1)(typescript@5.9.3)(valibot@1.4.0(typescript@5.9.3))(yaml@2.9.0)(yjs@13.6.30)
       '@types/fs-extra': 11.0.4
       '@types/markdown-it': 14.1.2
       '@types/markdown-it-link-attributes': 3.0.5
