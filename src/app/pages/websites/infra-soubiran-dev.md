@@ -26,6 +26,12 @@ ecosystem:
               - type: stack
                 name: Vue
                 href: 'https://vuejs.org'
+              - type: stack
+                name: Nuxt UI
+                href: https://ui.nuxt.com
+              - type: stack
+                name: Pinia Colada
+                href: 'https://pinia-colada.esm.dev'
   - type: object-storage
     id: infra-soubiran-dev
     name: Cloudflare R2

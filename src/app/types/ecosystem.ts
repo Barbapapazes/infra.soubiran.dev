@@ -4,6 +4,8 @@ export type EcosystemType
     | 'data'
     | 'deployment'
     | 'domain'
+    | 'services'
+    | 'database'
     | 'object-storage'
     | 'platform'
     | 'repository'
@@ -16,6 +18,8 @@ export type EcosystemName
   = | 'Cloudflare Workers'
     | 'Cloudflare Build'
     | 'Cloudflare R2'
+    | 'Cloudflare D1'
+    | 'Cloudflare Browser Run'
     | 'Cloudflare Domains'
     | 'Cloudflare Workflows'
     | 'Forge'
@@ -26,6 +30,7 @@ export type EcosystemName
     | 'PartyKit'
     | 'Vue'
     | 'Nuxt'
+    | 'Hono'
     | 'VitePress'
     | 'Slidev'
     | 'Pinia Colada'
@@ -35,14 +40,25 @@ export type EcosystemName
     | 'Litestream'
     | ({} & string)
 
-export interface EcosystemItem {
+export interface EcosystemDescriptionEntry {
+  text: string
+  from?: string[]
+}
+
+export interface BaseEcosystemItem {
   type?: EcosystemType
   id?: string
   name: EcosystemName
-  description?: string
-  descriptions?: string[]
   href?: string
+}
+
+export interface EcosystemItem extends BaseEcosystemItem {
+  description?: string
   ecosystem?: EcosystemItem[]
+}
+
+export interface EcosystemNodeItem extends BaseEcosystemItem {
+  descriptionEntries: EcosystemDescriptionEntry[]
 }
 
 export type Ecosystem = EcosystemItem[]

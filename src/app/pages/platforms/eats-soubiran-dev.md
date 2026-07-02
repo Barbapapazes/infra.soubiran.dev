@@ -14,7 +14,7 @@ ecosystem:
   - type: object-storage
     id: eats-soubiran-dev
     name: Cloudflare R2
-    description: Store uploaded pastry images outside the application server.
+    description: Serve the media files uploaded by users.
   - type: domain
     name: Cloudflare Domains
     description: Manage the DNS records that route `eats.soubiran.dev` to the platform.
@@ -52,7 +52,7 @@ ecosystem:
       - type: object-storage
         id: eats-soubiran-dev
         name: Cloudflare R2
-        description: Store the media files served by the platform.
+        description: Store the media files uploaded by users.
       - type: database
         id: eats-soubiran-dev
         name: SQLite

@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { EcosystemItem } from '@/types/ecosystem'
+import type { EcosystemItem } from '@/app/types/ecosystem'
 import { motion } from 'motion-v'
 import circlesFour from '~icons/ph/circles-four-duotone'
 import graph from '~icons/ph/graph-duotone'
