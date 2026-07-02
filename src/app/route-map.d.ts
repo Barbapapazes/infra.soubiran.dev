@@ -80,6 +80,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/platforms/quick-news-soubiran-dev': RouteRecordInfo<
+      '/platforms/quick-news-soubiran-dev',
+      '/platforms/quick-news-soubiran-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/websites/': RouteRecordInfo<
       '/websites/',
       '/websites',
@@ -90,6 +97,13 @@ declare module 'vue-router/auto-routes' {
     '/websites/infra-soubiran-dev': RouteRecordInfo<
       '/websites/infra-soubiran-dev',
       '/websites/infra-soubiran-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/websites/news-soubiran-dev': RouteRecordInfo<
+      '/websites/news-soubiran-dev',
+      '/websites/news-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -170,6 +184,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/app/pages/platforms/quick-news-soubiran-dev.md': {
+      routes:
+        | '/platforms/quick-news-soubiran-dev'
+      views:
+        | never
+    }
     'src/app/pages/websites/index.md': {
       routes:
         | '/websites/'
@@ -179,6 +199,12 @@ declare module 'vue-router/auto-routes' {
     'src/app/pages/websites/infra-soubiran-dev.md': {
       routes:
         | '/websites/infra-soubiran-dev'
+      views:
+        | never
+    }
+    'src/app/pages/websites/news-soubiran-dev.md': {
+      routes:
+        | '/websites/news-soubiran-dev'
       views:
         | never
     }
