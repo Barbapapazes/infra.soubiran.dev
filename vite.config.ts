@@ -3,6 +3,9 @@ import ui from '@soubiran/ui/ui'
 import soubiran from '@soubiran/vite'
 import { getUri, toUrl } from '@soubiran/vite/utils'
 import { defineConfig } from 'vite'
+import { automationGraphPlugin } from './plugins/automation-graph'
+import { quickNewsGraphPlugin } from './plugins/quick-news-graph'
+import { redeployGraphPlugin } from './plugins/redeploy-graph'
 import { verifyEcosystemLinks } from './plugins/verify-ecosystem-links'
 
 const title = 'Estéban\'s Infra'
@@ -11,6 +14,9 @@ const hostname = 'infra.soubiran.dev'
 export default defineConfig({
   plugins: [
     verifyEcosystemLinks(),
+    quickNewsGraphPlugin(),
+    automationGraphPlugin(),
+    redeployGraphPlugin(),
     soubiran({
       title,
       hostname,

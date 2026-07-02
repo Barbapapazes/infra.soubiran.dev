@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { NodeProps } from '@vue-flow/core'
-import type { EcosystemItem, EcosystemName, EcosystemType } from '@/app/types/ecosystem'
+import type { EcosystemDescriptionEntry, EcosystemName, EcosystemNodeItem, EcosystemType } from '@/app/types/ecosystem'
 import { RouterLink } from 'vue-router'
 import nuxt from '~icons/logos/nuxt-icon'
 import slidev from '~icons/logos/slidev'
@@ -103,11 +103,15 @@ const ecosystemNode = tv({
         base: 'border-evlog',
         type: 'bg-evlog/15 text-evlog',
       },
+      'hono': {
+        base: 'border-hono',
+        type: 'bg-hono/15 text-hono',
+      },
     },
   },
 })
 
-export interface EcosystemNodeProps extends NodeProps<EcosystemItem> {
+export interface EcosystemNodeProps extends NodeProps<EcosystemNodeItem> {
   class?: any
   ui?: Partial<typeof ecosystemNode.slots>
 }
@@ -120,15 +124,30 @@ const props = defineProps<EcosystemNodeProps>()
 defineEmits<EcosystemNodeEmits>()
 defineSlots<EcosystemNodeSlots>()
 
-const descriptions = computed(() => Array.from(new Set([
-  props.data.description,
-  ...(props.data.descriptions ?? []),
-].filter((description): description is string => !!description))))
+const descriptionEntries = computed<EcosystemDescriptionEntry[]>(() => props.data.descriptionEntries)
 
 const isCloudflare = (name: EcosystemName) => name.includes('Cloudflare') || name.includes('Wrangler')
 const isGithub = (name: EcosystemName) => name.includes('GitHub')
 const isSoubiran = (name: EcosystemName) => name.includes('soubiran.dev')
 const isNuxt = (name: EcosystemName) => name.includes('Nuxt')
+
+const typeLabels: Record<EcosystemType, string> = {
+  'auth': 'Auth',
+  'build': 'Build',
+  'ci/cd': 'CI/CD',
+  'data': 'Data',
+  'database': 'Database',
+  'deployment': 'Deployment',
+  'domain': 'Domain',
+  'object-storage': 'Object Storage',
+  'platform': 'Platform',
+  'realtime': 'Realtime',
+  'repository': 'Repository',
+  'services': 'Service',
+  'stack': 'Stack',
+  'website': 'Website',
+  'workflows': 'Workflow',
+}
 
 function getTypeIcon(name: EcosystemName, type?: EcosystemType): string | object | undefined {
   if (isCloudflare(name)) {
@@ -142,6 +161,10 @@ function getTypeIcon(name: EcosystemName, type?: EcosystemType): string | object
         return 'cloudflare:one'
       case 'object-storage':
         return 'cloudflare:r2'
+      case 'database':
+        return 'cloudflare:d1'
+      case 'services':
+        return 'cloudflare:browser-run'
       case 'domain':
         return cloudflare
     }
@@ -215,6 +238,8 @@ function getTypeLogo(name: EcosystemName): string | undefined {
       return 'https://litestream.io/favicon-16x16.png'
     case 'Evlog':
       return 'https://evlog.dev/favicon.ico'
+    case 'Hono':
+      return 'https://hono.dev/favicon.ico'
     default:
       return undefined
   }
@@ -222,6 +247,27 @@ function getTypeLogo(name: EcosystemName): string | undefined {
 
 const icon = computed(() => getTypeIcon(props.data.name, props.data.type))
 const logo = computed(() => getTypeLogo(props.data.name))
+const typeLabel = computed(() => props.data.type ? typeLabels[props.data.type] : undefined)
+
+function formatSources(sources: string[]) {
+  if (sources.length <= 1) {
+    return sources[0] ?? ''
+  }
+
+  if (sources.length === 2) {
+    return `${sources[0]} and ${sources[1]}`
+  }
+
+  return `${sources.slice(0, -1).join(', ')}, and ${sources.at(-1)}`
+}
+
+function formatDescription(entry: EcosystemDescriptionEntry, isMultiple: boolean) {
+  if (!isMultiple || !entry.from?.length) {
+    return entry.text
+  }
+
+  return `From ${formatSources(entry.from)}: ${entry.text}`
+}
 
 function genericName(name: EcosystemName) {
   switch (true) {
@@ -259,14 +305,14 @@ const ui = computed(() => ecosystemNode({
         <span v-if="props.data.type" :class="ui.type({ class: props.ui?.type })">
           <UIcon v-if="icon" :name="icon" :class="ui.typeIcon({ class: props.ui?.typeIcon })" />
           <img v-else-if="logo" :src="logo" :alt="props.data.name" :class="ui.typeIcon({ class: props.ui?.typeIcon })">
-          {{ props.data.type }}
+          {{ typeLabel }}
         </span>
 
         <span :class="ui.name({ class: props.ui?.name })">{{ props.data.name }}</span>
       </component>
     </template>
 
-    <template v-if="descriptions.length" #popover>
+    <template v-if="descriptionEntries.length" #popover>
       <UPageCard
         :title="props.data.name"
         :to="props.data.href"
@@ -277,13 +323,13 @@ const ui = computed(() => ecosystemNode({
         }"
       >
         <template #description>
-          <p v-if="descriptions.length === 1">
-            {{ descriptions[0] }}
+          <p v-if="descriptionEntries.length === 1">
+            {{ formatDescription(descriptionEntries[0], false) }}
           </p>
 
           <ul v-else class="space-y-1 list-disc pl-4">
-            <li v-for="description in descriptions" :key="description">
-              {{ description }}
+            <li v-for="entry in descriptionEntries" :key="`${entry.text}-${entry.from?.join('-')}`">
+              {{ formatDescription(entry, true) }}
             </li>
           </ul>
         </template>

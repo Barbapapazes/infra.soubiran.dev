@@ -15,6 +15,12 @@ export interface BaseFlowProps<TData = any> {
   nodes: Node<TData>[]
   edges: Edge[]
   direction?: 'TB' | 'RL' | 'LR'
+  centerNodes?: boolean
+  fitViewOptions?: {
+    minZoom?: number
+    maxZoom?: number
+    padding?: number
+  }
   class?: any
   ui?: Partial<typeof baseFlow.slots>
 }
@@ -23,6 +29,7 @@ export interface BaseFlowProps<TData = any> {
 <script lang="ts" setup generic="TData">
 const props = withDefaults(defineProps<BaseFlowProps<TData>>(), {
   direction: 'RL',
+  centerNodes: false,
 })
 
 const { fitView } = useVueFlow()
@@ -32,12 +39,31 @@ const layoutEdges = ref<Edge[]>(props.edges)
 
 const { layout } = useLayout()
 
-onMounted(() => {
-  nextTick(() => {
-    layoutNodes.value = layout(layoutNodes.value, layoutEdges.value, props.direction)
-    fitView({ minZoom: 1 })
+function layoutAndFit() {
+  layoutNodes.value = layout(props.nodes, props.edges, props.direction, {
+    centerNodes: props.centerNodes,
   })
-})
+  layoutEdges.value = props.edges
+
+  nextTick(() => {
+    fitView({
+      padding: props.fitViewOptions?.padding ?? 0.2,
+      minZoom: props.fitViewOptions?.minZoom,
+      maxZoom: props.fitViewOptions?.maxZoom,
+    })
+  })
+}
+
+watch(
+  () => [props.nodes, props.edges, props.direction, props.centerNodes],
+  () => {
+    layoutAndFit()
+  },
+  { deep: true },
+)
+
+const vueFlowNodes = computed(() => layoutNodes.value as Node[])
+const vueFlowEdges = computed(() => layoutEdges.value as Edge[])
 
 const ui = computed(() => baseFlow())
 </script>
@@ -47,14 +73,14 @@ const ui = computed(() => baseFlow())
     <slot name="overlays" />
 
     <VueFlow
-      fit-view-on-init
       :default-viewport="{ zoom: 1 }"
       :nodes-draggable="false"
       :min-zoom="0.5"
       :max-zoom="1"
-      :nodes="layoutNodes"
-      :edges="layoutEdges"
+      :nodes="vueFlowNodes"
+      :edges="vueFlowEdges"
       :class="ui.base({ class: [props.ui?.base, props.class] })"
+      @nodes-initialized="layoutAndFit()"
     >
       <template v-for="(_, name) in $slots" :key="name" #[name]="slotData">
         <slot :name="name" v-bind="slotData || {}" />

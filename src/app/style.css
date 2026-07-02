@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @import "@soubiran/ui";
+@import "@cloudflare-graph/vue";
 
 @import 'markdown-it-github-alerts/styles/github-colors-light.css';
 @import 'markdown-it-github-alerts/styles/github-colors-dark-class.css';
@@ -29,4 +30,9 @@
   --color-sqlite: #3C9EDB;
   --color-litestream: #0053FA;
   --color-evlog: #2853ff;
+  --color-hono: #F63;
+}
+
+.scrollable-viewport [style*="--color-background"] {
+  --color-background: var(--ui-bg) !important;
 }

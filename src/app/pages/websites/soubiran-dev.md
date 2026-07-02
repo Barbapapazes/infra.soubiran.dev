@@ -32,6 +32,7 @@ ecosystem:
                 name: Pinia Colada
                 href: 'https://pinia-colada.esm.dev'
           - type: ci/cd
+            id: redeploy-soubiran-dev
             name: GitHub Actions
             description: Rebuild the site every day to keep external data fresh.
           - type: data
