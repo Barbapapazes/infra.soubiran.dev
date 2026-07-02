@@ -35,6 +35,7 @@ ecosystem:
                   name: Evlog
                   href: https://evlog.dev
         - type: workflows
+          id: automation-soubiran-dev
           name: Cloudflare Workflows
           description: Run background jobs for the automation tasks handled by the platform.
   - type: domain
@@ -42,15 +43,19 @@ ecosystem:
     description: Manage the DNS records that route `automation.soubiran.dev` to the worker.
 ---
 
-The platform [automation.soubiran.dev](https://automation.soubiran.dev) is an internal tool that helps me automate various tasks by relying on [Cloudflare Workflows](https://developers.cloudflare.com/workflows/).
+The platform [automation.soubiran.dev](https://automation.soubiran.dev) is an internal tool.
 
-There is no public access to this platform or frontend interface, as the endpoint is only used to receive calls and trigger workflows.
+It helps me to schedule messages to be sent to Discord, in a dedicated reminder channel, to remind me to publish scheduled tweets.
 
-## Development
+## Tech Stack
 
-The platform is based on a Cloudflare Worker that receives HTTP requests from my local CLI tool. Depending on the endpoint called, different Cloudflare Workflows are triggered to perform specific tasks.
+The platform is pretty simple as it is based on a single [Cloudflare Worker](https://www.cloudflare.com/products/workers/) that receives HTTP requests and triggers [Cloudflare Workflows](https://developers.cloudflare.com/workflows/) to perform the actual tasks.
 
-For example, I have a workflow that I use to remind myself to publish scheduled tweets.
+As I access the platform using my local CLI tool, the platform does not have a user interface.
+
+## The Workflow
+
+The workflow is the heart of this platform. When a request is received, the worker triggers a workflow that will wait until the scheduled time and then send a message to Discord.
 
 ```ts [src/index.ts]
 import type { WorkflowEvent, WorkflowStep } from 'cloudflare:workers'
@@ -70,33 +75,34 @@ export default {
     return new Response('Scheduled', { status: 201 })
   },
 }
-
-export class Automation extends WorkflowEntrypoint<Env, any> {
-  async run(event: WorkflowEvent<any>, step: WorkflowStep) {
-    await step.sleepUntil('trigger time', event.payload.scheduleAt)
-
-    await step.do('trigger action', async () => {
-      await fetch(this.env.DISCORD_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content: event.payload.content }),
-      })
-    })
-  }
-}
 ```
 
-> [!NOTE]
-> The code is simplified for clarity. The actual implementation includes error handling, logging, and other production-ready features.
+Once triggered, the workflow runs the following steps:
 
-The worker itself does not authenticate requests, even though it is exposed to the public internet. Instead, I rely on [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) with a [service token](https://developers.cloudflare.com/cloudflare-one/access-controls/service-credentials/service-tokens/) to ensure that only my CLI tool can call the endpoints.
+1. `trigger-time`: Wait until the scheduled time.
 
-This makes the development and maintenance of the platform easier while maintaining a good level of security. Also, this avoids triggering the worker from unauthorized sources, which could lead to unexpected costs.
+  ```ts
+  await step.sleepUntil('trigger-time', event.payload.scheduleAt)
+  ```
 
-## Deployment
+2. `trigger-action`: Send the message to Discord.
 
-The platform is deployed automatically using [Cloudflare Builds](https://developers.cloudflare.com/workers/ci-cd/builds/). Every push to the main branch triggers a new deployment of the worker and the workflows.
+  ```ts
+  await step.do('trigger-action', async () => {
+    await fetch(this.env.DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content: event.payload.content }),
+    })
+  })
+  ```
 
-Thanks to Cloudflare's observability tools, I can monitor workflow executions and worker metrics directly from the Cloudflare dashboard.
+At the end, the workflow looks like this:
+
+<AutomationGraph />
+
+## Authorization
+
+The platform is protected by [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) and a [service token](https://developers.cloudflare.com/cloudflare-one/access-controls/service-credentials/service-tokens/) that allows only my CLI tool to call the endpoints.
