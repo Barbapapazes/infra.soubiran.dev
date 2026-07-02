@@ -87,6 +87,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/platforms/redeploy-soubiran-dev': RouteRecordInfo<
+      '/platforms/redeploy-soubiran-dev',
+      '/platforms/redeploy-soubiran-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/websites/': RouteRecordInfo<
       '/websites/',
       '/websites',
@@ -187,6 +194,12 @@ declare module 'vue-router/auto-routes' {
     'src/app/pages/platforms/quick-news-soubiran-dev.md': {
       routes:
         | '/platforms/quick-news-soubiran-dev'
+      views:
+        | never
+    }
+    'src/app/pages/platforms/redeploy-soubiran-dev.md': {
+      routes:
+        | '/platforms/redeploy-soubiran-dev'
       views:
         | never
     }
