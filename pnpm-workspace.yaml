@@ -8,7 +8,7 @@ allowBuilds:
   vue-demi: false
   workerd: false
 overrides:
-  '@unhead/vue': npm:@unhead/vue@3.0.5
-  markdown-it: npm:markdown-exit@1.0.0-beta.6
+  '@unhead/vue': npm:@unhead/vue@3.2.3
+  markdown-it: npm:markdown-exit@1.0.0-beta.9
 patchedDependencies:
   vite-ssg: patches/vite-ssg.patch
