@@ -218,4 +218,55 @@ test.describe('API JSON files', () => {
       }
     })
   })
+
+  test.describe('pages', () => {
+    test('pages.json contains raw frontmatter with explicit URLs', async ({ request }) => {
+      const [pagesResponse, metaResponse] = await Promise.all([
+        request.get('/pages.json'),
+        request.get('/meta.json'),
+      ])
+
+      expect(pagesResponse.ok()).toBeTruthy()
+      expect(pagesResponse.status()).toBe(200)
+
+      const pages = await pagesResponse.json()
+      const meta = await metaResponse.json()
+
+      expect(Array.isArray(pages)).toBe(true)
+      expect(pages).toHaveLength(meta.length)
+
+      const pageUrls = pages.map((page: any) => page.pageUrl)
+      expect(new Set(pageUrls).size).toBe(pageUrls.length)
+      expect(new Set(pageUrls)).toEqual(new Set(meta.map((page: any) => page.url)))
+
+      for (const page of pages) {
+        expect(page).not.toHaveProperty('uri')
+        expect(page).not.toHaveProperty('url')
+        expect(page.pageUrl).toMatch(/^https:\/\/infra\.soubiran\.dev/)
+      }
+    })
+
+    test('pages.json separates project and documentation URLs', async ({ request }) => {
+      const response = await request.get('/pages.json')
+      const pages = await response.json()
+      const home = pages.find((page: any) => page.id === '2c520cc7-66b0-4490-876c-ad45261b2334')
+      const eats = pages.find((page: any) => page.id === 'af1ffd28-9a46-4a9e-994d-628bb992d375')
+
+      expect(home).toMatchObject({
+        title: 'Estéban\'s Infra',
+        projectUrl: null,
+        pageUrl: 'https://infra.soubiran.dev',
+      })
+      expect(eats).toMatchObject({
+        description: null,
+        projectUrl: 'https://eats.soubiran.dev',
+        pageUrl: 'https://infra.soubiran.dev/platforms/eats-soubiran-dev',
+        repository: {
+          url: 'https://github.com/barbapapazes/eats.soubiran.dev',
+          private: true,
+        },
+      })
+      expect(eats.ecosystem).toEqual(expect.any(Array))
+    })
+  })
 })
