@@ -10,7 +10,7 @@ export interface GeneratePagesJsonOptions {
   outputFile: string
 }
 
-/** Generates a JSON representation of the raw frontmatter for every Markdown page. */
+/** Generates a JSON data envelope containing the raw frontmatter for every Markdown page. */
 export function generatePagesJson(options: GeneratePagesJsonOptions): Plugin {
   let root: string
   let outDir: string
@@ -29,7 +29,7 @@ export function generatePagesJson(options: GeneratePagesJsonOptions): Plugin {
       const outputPath = path.resolve(outDir, options.outputFile)
 
       await mkdir(path.dirname(outputPath), { recursive: true })
-      await writeFile(outputPath, `${JSON.stringify(pages, null, 2)}\n`)
+      await writeFile(outputPath, `${JSON.stringify({ data: pages })}\n`)
     },
   }
 }

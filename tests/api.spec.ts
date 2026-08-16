@@ -229,7 +229,7 @@ test.describe('API JSON files', () => {
       expect(pagesResponse.ok()).toBeTruthy()
       expect(pagesResponse.status()).toBe(200)
 
-      const pages = await pagesResponse.json()
+      const { data: pages } = await pagesResponse.json()
       const meta = await metaResponse.json()
 
       expect(Array.isArray(pages)).toBe(true)
@@ -248,7 +248,7 @@ test.describe('API JSON files', () => {
 
     test('pages.json separates project and documentation URLs', async ({ request }) => {
       const response = await request.get('/pages.json')
-      const pages = await response.json()
+      const { data: pages } = await response.json()
       const home = pages.find((page: any) => page.id === '2c520cc7-66b0-4490-876c-ad45261b2334')
       const eats = pages.find((page: any) => page.id === 'af1ffd28-9a46-4a9e-994d-628bb992d375')
 
