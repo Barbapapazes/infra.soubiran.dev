@@ -220,7 +220,7 @@ test.describe('API JSON files', () => {
   })
 
   test.describe('pages', () => {
-    test('pages.json contains raw frontmatter with explicit URLs', async ({ request }) => {
+    test('pages.json contains normalized documentation records', async ({ request }) => {
       const [pagesResponse, metaResponse] = await Promise.all([
         request.get('/pages.json'),
         request.get('/meta.json'),
@@ -229,24 +229,37 @@ test.describe('API JSON files', () => {
       expect(pagesResponse.ok()).toBeTruthy()
       expect(pagesResponse.status()).toBe(200)
 
-      const { data: pages } = await pagesResponse.json()
+      const catalog = await pagesResponse.json()
       const meta = await metaResponse.json()
+      const { data: pages } = catalog
 
+      expect(catalog).toMatchObject({
+        schemaVersion: '1.0',
+        site: {
+          id: 'infra.soubiran.dev',
+          url: 'https://infra.soubiran.dev',
+        },
+      })
+      expect(new Date(catalog.generatedAt).toISOString()).toBe(catalog.generatedAt)
       expect(Array.isArray(pages)).toBe(true)
       expect(pages).toHaveLength(meta.length)
 
-      const pageUrls = pages.map((page: any) => page.pageUrl)
+      const pageUrls = pages.map((page: any) => page.url)
       expect(new Set(pageUrls).size).toBe(pageUrls.length)
       expect(new Set(pageUrls)).toEqual(new Set(meta.map((page: any) => page.url)))
 
       for (const page of pages) {
         expect(page).not.toHaveProperty('uri')
-        expect(page).not.toHaveProperty('url')
-        expect(page.pageUrl).toMatch(/^https:\/\/infra\.soubiran\.dev/)
+        expect(page).not.toHaveProperty('pageUrl')
+        expect(page).not.toHaveProperty('projectUrl')
+        expect(page).not.toHaveProperty('repository')
+        expect(page.url).toMatch(/^https:\/\/infra\.soubiran\.dev/)
+        expect(page.language).toBe('en')
+        expect(['documentation', 'platform', 'website']).toContain(page.type)
       }
     })
 
-    test('pages.json separates project and documentation URLs', async ({ request }) => {
+    test('pages.json uses named links and preserves the ecosystem graph', async ({ request }) => {
       const response = await request.get('/pages.json')
       const { data: pages } = await response.json()
       const home = pages.find((page: any) => page.id === '2c520cc7-66b0-4490-876c-ad45261b2334')
@@ -254,18 +267,22 @@ test.describe('API JSON files', () => {
 
       expect(home).toMatchObject({
         title: 'Estéban\'s Infra',
-        projectUrl: null,
-        pageUrl: 'https://infra.soubiran.dev',
+        type: 'documentation',
+        url: 'https://infra.soubiran.dev',
       })
+      expect(home).not.toHaveProperty('links')
       expect(eats).toMatchObject({
-        description: null,
-        projectUrl: 'https://eats.soubiran.dev',
-        pageUrl: 'https://infra.soubiran.dev/platforms/eats-soubiran-dev',
-        repository: {
-          url: 'https://github.com/barbapapazes/eats.soubiran.dev',
-          private: true,
+        type: 'platform',
+        url: 'https://infra.soubiran.dev/platforms/eats-soubiran-dev',
+        links: {
+          project: 'https://eats.soubiran.dev',
+          repository: {
+            url: 'https://github.com/barbapapazes/eats.soubiran.dev',
+            private: true,
+          },
         },
       })
+      expect(eats).not.toHaveProperty('description')
       expect(eats.ecosystem).toEqual(expect.any(Array))
     })
   })
