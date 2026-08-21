@@ -10,6 +10,6 @@ test('ecosystem page has overlay header', async ({ page }) => {
   // Verify navigation buttons are present
   await expect(page.getByRole('link', { name: 'Home' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Websites' })).toBeVisible()
-  await expect(page.getByRole('link', { name: 'Platforms' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Services' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Ecosystem' })).toBeVisible()
 })

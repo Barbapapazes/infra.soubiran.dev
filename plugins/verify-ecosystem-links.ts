@@ -3,10 +3,10 @@ import { access, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import matter from 'gray-matter'
 
-type PageKind = 'platforms' | 'websites'
+type PageKind = 'services' | 'websites'
 
-const PAGE_KINDS = ['platforms', 'websites'] as const
-const PAGE_ROUTE_RE = /^\/(platforms|websites)\/([^/]+)$/
+const PAGE_KINDS = ['services', 'websites'] as const
+const PAGE_ROUTE_RE = /^\/(services|websites)\/([^/]+)$/
 
 interface EcosystemPage {
   filePath: string
@@ -322,7 +322,7 @@ function getPageMatch(filePath: string, root: string): { kind: PageKind, slug: s
   const pagesDir = getPagesDir(root)
   const relativePath = path.relative(pagesDir, filePath)
   const normalizedPath = relativePath.split(path.sep).join('/')
-  const match = /^(platforms|websites)\/([^/]+)\.md$/.exec(normalizedPath)
+  const match = /^(services|websites)\/([^/]+)\.md$/.exec(normalizedPath)
 
   if (!match || match[2] === 'index') {
     return null

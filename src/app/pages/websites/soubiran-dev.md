@@ -72,7 +72,7 @@ The website is statically generated. The build process is automated with [Cloudf
 
 At build time, the website fetches data from [talks.soubiran.dev](/websites/talks-soubiran-dev) to display the list of talks I've given over the years. GitHub data is also fetched to populate the projects section with up-to-date information about my open source repositories.
 
-The website accesses [the API](/platforms/api-soubiran-dev) only on the client side to fetch dynamic data, such as comments, reactions, and more.
+The website accesses [the API](/services/api-soubiran-dev) only on the client side to fetch dynamic data, such as comments, reactions, and more.
 
 Videos are hosted on [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/) using [rclone](https://rclone.org/) to optimize performance and avoid bloating the Git repository with large files. All images are converted to WebP to reduce their size and improve loading times.
 
@@ -87,4 +87,4 @@ To reduce maintenance, keep a single source of truth, and focus on creating cont
 
 1. Every day, a GitHub Action rebuilds and deploys the website to Cloudflare Workers, ensuring the data is always up to date.
 2. Every time I publish a new talk, the website is rebuilt and deployed automatically.
-3. For every commit on the main branch, a GitHub Action triggers a new deployment of [the API](/platforms/api-soubiran-dev) to ensure it is always in sync with the website content.
+3. For every commit on the main branch, a GitHub Action triggers a new deployment of [the API](/services/api-soubiran-dev) to ensure it is always in sync with the website content.

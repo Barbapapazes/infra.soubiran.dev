@@ -62,64 +62,42 @@ test.describe('API JSON files', () => {
     })
   })
 
-  test.describe('platforms', () => {
-    test('platforms.json exists and has valid structure', async ({ request }) => {
-      const response = await request.get('/api/platforms.json')
+  test.describe('services', () => {
+    test('services.json contains the expected services', async ({ request }) => {
+      const response = await request.get('/api/services.json')
 
       expect(response.ok()).toBeTruthy()
       expect(response.status()).toBe(200)
 
-      const platforms = await response.json()
+      const services = await response.json()
+      expect(Array.isArray(services)).toBe(true)
+      expect(services.map((service: any) => service.path)).toEqual([
+        '/services/api-soubiran-dev',
+        '/services/automation-soubiran-dev',
+        '/services/mcp-soubiran-dev',
+        '/services/redeploy-soubiran-dev',
+      ])
 
-      // Should be an array
-      expect(Array.isArray(platforms)).toBe(true)
-
-      // Should have at least one platform
-      expect(platforms.length).toBeGreaterThan(0)
-
-      // Validate first platform has required fields
-      const firstPlatform = platforms[0]
-      expect(firstPlatform).toHaveProperty('path')
-      expect(firstPlatform.path).toMatch(/^\/platforms\//)
-      expect(firstPlatform).toHaveProperty('title')
-      expect(typeof firstPlatform.title).toBe('string')
+      const mcp = services.find((service: any) => service.path === '/services/mcp-soubiran-dev')
+      const redeploy = services.find((service: any) => service.path === '/services/redeploy-soubiran-dev')
+      expect(mcp).toMatchObject({
+        title: 'mcp.soubiran.dev',
+        url: 'https://mcp.soubiran.dev/mcp',
+        repository: 'https://github.com/barbapapazes/mcp.soubiran.dev',
+      })
+      expect(redeploy).toMatchObject({
+        title: 'redeploy.soubiran.dev',
+        url: 'https://redeploy.soubiran.dev',
+        repository: 'https://github.com/barbapapazes/redeploy.soubiran.dev',
+      })
     })
 
-    test('platforms.json contains expected metadata fields', async ({ request }) => {
-      const response = await request.get('/api/platforms.json')
-      const platforms = await response.json()
+    test('all paths in services.json are unique', async ({ request }) => {
+      const response = await request.get('/api/services.json')
+      const services = await response.json()
+      const paths = services.map((service: any) => service.path)
 
-      for (const platform of platforms) {
-      // Each platform should have a path
-        expect(platform.path).toBeTruthy()
-        expect(typeof platform.path).toBe('string')
-
-        // Title should be present
-        expect(platform.title).toBeTruthy()
-        expect(typeof platform.title).toBe('string')
-
-        // Optional fields that may be present
-        if (platform.url) {
-          expect(typeof platform.url).toBe('string')
-          expect(platform.url).toMatch(/^https?:\/\//)
-        }
-
-        if (platform.repository) {
-          const isString = typeof platform.repository === 'string'
-          const isObject = typeof platform.repository === 'object' && platform.repository !== null
-          expect(isString || isObject).toBe(true)
-        }
-      }
-    })
-
-    test('all paths in platforms.json are unique', async ({ request }) => {
-      const response = await request.get('/api/platforms.json')
-      const platforms = await response.json()
-
-      const paths = platforms.map((p: any) => p.path)
-      const uniquePaths = new Set(paths)
-
-      expect(paths.length).toBe(uniquePaths.size)
+      expect(new Set(paths).size).toBe(paths.length)
     })
   })
 
@@ -255,7 +233,7 @@ test.describe('API JSON files', () => {
         expect(page).not.toHaveProperty('repository')
         expect(page.url).toMatch(/^https:\/\/infra\.soubiran\.dev/)
         expect(page.language).toBe('en')
-        expect(['documentation', 'platform', 'website']).toContain(page.type)
+        expect(['documentation', 'service', 'website']).toContain(page.type)
       }
     })
 
@@ -263,7 +241,7 @@ test.describe('API JSON files', () => {
       const response = await request.get('/pages.json')
       const { data: pages } = await response.json()
       const home = pages.find((page: any) => page.id === '2c520cc7-66b0-4490-876c-ad45261b2334')
-      const eats = pages.find((page: any) => page.id === 'af1ffd28-9a46-4a9e-994d-628bb992d375')
+      const mcp = pages.find((page: any) => page.id === 'cf208554-4904-4184-8ddb-05a8201c4347')
 
       expect(home).toMatchObject({
         title: 'Estéban\'s Infra',
@@ -271,19 +249,18 @@ test.describe('API JSON files', () => {
         url: 'https://infra.soubiran.dev',
       })
       expect(home).not.toHaveProperty('links')
-      expect(eats).toMatchObject({
-        type: 'platform',
-        url: 'https://infra.soubiran.dev/platforms/eats-soubiran-dev',
+      expect(mcp).toMatchObject({
+        type: 'service',
+        url: 'https://infra.soubiran.dev/services/mcp-soubiran-dev',
         links: {
-          project: 'https://eats.soubiran.dev',
+          project: 'https://mcp.soubiran.dev/mcp',
           repository: {
-            url: 'https://github.com/barbapapazes/eats.soubiran.dev',
-            private: true,
+            url: 'https://github.com/barbapapazes/mcp.soubiran.dev',
           },
         },
       })
-      expect(eats).not.toHaveProperty('description')
-      expect(eats.ecosystem).toEqual(expect.any(Array))
+      expect(mcp.description).toContain('MCP server')
+      expect(mcp.ecosystem).toEqual(expect.any(Array))
     })
   })
 })

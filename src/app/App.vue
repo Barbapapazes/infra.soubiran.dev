@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { motion } from 'motion-v'
-import circlesFour from '~icons/ph/circles-four-duotone'
 import graph from '~icons/ph/graph-duotone'
 import house from '~icons/ph/house-duotone'
 import squaresFour from '~icons/ph/squares-four-duotone'
+import stack from '~icons/ph/stack-duotone'
 
 const route = useRoute()
 
 const links = [
   { icon: house, label: 'Home', to: '/' },
   { icon: squaresFour, label: 'Websites', to: '/websites' },
-  { icon: circlesFour, label: 'Platforms', to: '/platforms' },
+  { icon: stack, label: 'Services', to: '/services' },
   { icon: graph, label: 'Ecosystem', to: '/ecosystem' },
 ]
 </script>

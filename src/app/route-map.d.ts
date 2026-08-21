@@ -45,37 +45,37 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/platforms/': RouteRecordInfo<
-      '/platforms/',
-      '/platforms',
+    '/services/': RouteRecordInfo<
+      '/services/',
+      '/services',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/platforms/api-soubiran-dev': RouteRecordInfo<
-      '/platforms/api-soubiran-dev',
-      '/platforms/api-soubiran-dev',
+    '/services/api-soubiran-dev': RouteRecordInfo<
+      '/services/api-soubiran-dev',
+      '/services/api-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/platforms/automation-soubiran-dev': RouteRecordInfo<
-      '/platforms/automation-soubiran-dev',
-      '/platforms/automation-soubiran-dev',
+    '/services/automation-soubiran-dev': RouteRecordInfo<
+      '/services/automation-soubiran-dev',
+      '/services/automation-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/platforms/chat-soubiran-dev': RouteRecordInfo<
-      '/platforms/chat-soubiran-dev',
-      '/platforms/chat-soubiran-dev',
+    '/services/mcp-soubiran-dev': RouteRecordInfo<
+      '/services/mcp-soubiran-dev',
+      '/services/mcp-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/platforms/eats-soubiran-dev': RouteRecordInfo<
-      '/platforms/eats-soubiran-dev',
-      '/platforms/eats-soubiran-dev',
+    '/services/redeploy-soubiran-dev': RouteRecordInfo<
+      '/services/redeploy-soubiran-dev',
+      '/services/redeploy-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -87,16 +87,16 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/websites/infra-soubiran-dev': RouteRecordInfo<
-      '/websites/infra-soubiran-dev',
-      '/websites/infra-soubiran-dev',
+    '/websites/code-soubiran-dev': RouteRecordInfo<
+      '/websites/code-soubiran-dev',
+      '/websites/code-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/websites/preview-soubiran-dev': RouteRecordInfo<
-      '/websites/preview-soubiran-dev',
-      '/websites/preview-soubiran-dev',
+    '/websites/infra-soubiran-dev': RouteRecordInfo<
+      '/websites/infra-soubiran-dev',
+      '/websites/infra-soubiran-dev',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -140,33 +140,33 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/app/pages/platforms/index.md': {
+    'src/app/pages/services/index.md': {
       routes:
-        | '/platforms/'
+        | '/services/'
       views:
         | never
     }
-    'src/app/pages/platforms/api-soubiran-dev.md': {
+    'src/app/pages/services/api-soubiran-dev.md': {
       routes:
-        | '/platforms/api-soubiran-dev'
+        | '/services/api-soubiran-dev'
       views:
         | never
     }
-    'src/app/pages/platforms/automation-soubiran-dev.md': {
+    'src/app/pages/services/automation-soubiran-dev.md': {
       routes:
-        | '/platforms/automation-soubiran-dev'
+        | '/services/automation-soubiran-dev'
       views:
         | never
     }
-    'src/app/pages/platforms/chat-soubiran-dev.md': {
+    'src/app/pages/services/mcp-soubiran-dev.md': {
       routes:
-        | '/platforms/chat-soubiran-dev'
+        | '/services/mcp-soubiran-dev'
       views:
         | never
     }
-    'src/app/pages/platforms/eats-soubiran-dev.md': {
+    'src/app/pages/services/redeploy-soubiran-dev.md': {
       routes:
-        | '/platforms/eats-soubiran-dev'
+        | '/services/redeploy-soubiran-dev'
       views:
         | never
     }
@@ -176,15 +176,15 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/app/pages/websites/infra-soubiran-dev.md': {
+    'src/app/pages/websites/code-soubiran-dev.md': {
       routes:
-        | '/websites/infra-soubiran-dev'
+        | '/websites/code-soubiran-dev'
       views:
         | never
     }
-    'src/app/pages/websites/preview-soubiran-dev.md': {
+    'src/app/pages/websites/infra-soubiran-dev.md': {
       routes:
-        | '/websites/preview-soubiran-dev'
+        | '/websites/infra-soubiran-dev'
       views:
         | never
     }
