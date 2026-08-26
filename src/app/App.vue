@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { App } from '@soubiran/ui'
 import { motion } from 'motion-v'
 import circlesFour from '~icons/ph/circles-four-duotone'
 import graph from '~icons/ph/graph-duotone'
@@ -24,9 +25,11 @@ const links = [
       <Header v-if="route.meta.frontmatter.page !== 'ecosystem'" :links="links" />
     </motion.div>
 
-    <UMain>
-      <RouterView />
-    </UMain>
+    <App>
+      <UMain>
+        <RouterView />
+      </UMain>
+    </App>
 
     <ViewersCounter class="fixed bottom-4 right-4 z-10 bg-white bg-opacity-90 shadow-sm backdrop-blur-sm dark:bg-neutral-900" />
   </UApp>

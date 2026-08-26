@@ -1,5 +1,4 @@
 import type { BreadcrumbItem, StructuredDataPageConfig } from '@soubiran/vite/types'
-import ui from '@soubiran/ui/ui'
 import soubiran from '@soubiran/vite'
 import { getUri, toUrl } from '@soubiran/vite/utils'
 import { defineConfig } from 'vite'
@@ -20,9 +19,6 @@ export default defineConfig({
     soubiran({
       title,
       hostname,
-      ui: {
-        ui,
-      },
       router: {
         extractPage,
       },

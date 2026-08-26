@@ -1,0 +1,3 @@
+<template>
+  <LoginCallback />
+</template>
