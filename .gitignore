@@ -9,6 +9,6 @@ playwright-report
 test-results
 public/og
 public/websites
-public/platforms
+public/services
 auto-imports.d.ts
 components.d.ts

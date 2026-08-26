@@ -2,7 +2,7 @@
 id: 640cabcb-1bd2-4960-b25b-df4f4eb2e9de
 title: automation.soubiran.dev
 description: >-
-  An internal tool for automating tasks using Cloudflare Workflows and secured
+  An internal service for automating tasks using Cloudflare Workflows and secured
   by Cloudflare One to ensure only authorized access.
 url: https://automation.soubiran.dev
 repository:
@@ -24,9 +24,9 @@ ecosystem:
           description: Deploy the worker and workflows automatically on each push.
           ecosystem:
             - type: repository
-              id: platform
+              id: automation-repository
               name: GitHub
-              description: Host the private source code for this internal automation platform.
+              description: Host the private source code for this internal automation service.
               ecosystem:
                 - type: stack
                   name: Wrangler
@@ -36,19 +36,19 @@ ecosystem:
                   href: https://evlog.dev
         - type: workflows
           name: Cloudflare Workflows
-          description: Run background jobs for the automation tasks handled by the platform.
+          description: Run background jobs for the automation tasks handled by the service.
   - type: domain
     name: Cloudflare Domains
     description: Manage the DNS records that route `automation.soubiran.dev` to the worker.
 ---
 
-The platform [automation.soubiran.dev](https://automation.soubiran.dev) is an internal tool that helps me automate various tasks by relying on [Cloudflare Workflows](https://developers.cloudflare.com/workflows/).
+[automation.soubiran.dev](https://automation.soubiran.dev) is an internal service that helps me automate various tasks with [Cloudflare Workflows](https://developers.cloudflare.com/workflows/).
 
-There is no public access to this platform or frontend interface, as the endpoint is only used to receive calls and trigger workflows.
+There is no public access or frontend interface. The endpoint only receives calls and triggers workflows.
 
 ## Development
 
-The platform is based on a Cloudflare Worker that receives HTTP requests from my local CLI tool. Depending on the endpoint called, different Cloudflare Workflows are triggered to perform specific tasks.
+The service runs on a Cloudflare Worker that receives HTTP requests from my local CLI tool. Each endpoint triggers a different Cloudflare Workflow.
 
 For example, I have a workflow that I use to remind myself to publish scheduled tweets.
 
@@ -93,10 +93,10 @@ export class Automation extends WorkflowEntrypoint<Env, any> {
 
 The worker itself does not authenticate requests, even though it is exposed to the public internet. Instead, I rely on [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) with a [service token](https://developers.cloudflare.com/cloudflare-one/access-controls/service-credentials/service-tokens/) to ensure that only my CLI tool can call the endpoints.
 
-This makes the development and maintenance of the platform easier while maintaining a good level of security. Also, this avoids triggering the worker from unauthorized sources, which could lead to unexpected costs.
+This keeps authentication outside the worker and prevents unauthorized requests from triggering workflows and generating costs.
 
 ## Deployment
 
-The platform is deployed automatically using [Cloudflare Builds](https://developers.cloudflare.com/workers/ci-cd/builds/). Every push to the main branch triggers a new deployment of the worker and the workflows.
+Cloudflare Builds deploys the service automatically. Every push to the main branch triggers a new deployment of the worker and its workflows.
 
-Thanks to Cloudflare's observability tools, I can monitor workflow executions and worker metrics directly from the Cloudflare dashboard.
+Cloudflare's observability tools expose workflow executions and worker metrics in the dashboard.

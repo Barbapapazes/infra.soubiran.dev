@@ -159,7 +159,8 @@ function getTypeIcon(name: EcosystemName, type?: EcosystemType): string | object
 
   if (isSoubiran(name)) {
     switch (type) {
-      case 'platform':
+      case 'internal-tool':
+      case 'service':
       case 'website':
       case 'data':
         return globeSimple
@@ -238,7 +239,24 @@ function genericName(name: EcosystemName) {
   }
 }
 
-const isWebsiteOrPlatform = computed(() => props.data.type === 'website' || props.data.type === 'platform')
+function getProductCategory(type?: EcosystemType) {
+  switch (type) {
+    case 'internal-tool':
+      return 'internal-tools'
+    case 'service':
+      return 'services'
+    case 'website':
+      return 'websites'
+    default:
+      return undefined
+  }
+}
+
+const productRoute = computed(() => {
+  const category = getProductCategory(props.data.type)
+
+  return category ? `/${category}/${props.data.name.replace(/\./g, '-')}` : undefined
+})
 
 const ui = computed(() => ecosystemNode({
   type: !!props.data.type,
@@ -253,7 +271,7 @@ const ui = computed(() => ecosystemNode({
   >
     <template #content>
       <component
-        :is="isWebsiteOrPlatform ? RouterLink : 'div'" :to="isWebsiteOrPlatform ? `${props.data.type}s/${props.data.name.replace(/\./g, '-')}` : undefined"
+        :is="productRoute ? RouterLink : 'div'" :to="productRoute"
         :class="ui.base({ class: [props.ui?.base] })"
       >
         <span v-if="props.data.type" :class="ui.type({ class: props.ui?.type })">

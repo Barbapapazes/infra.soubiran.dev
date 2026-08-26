@@ -112,10 +112,11 @@ function ecosystemToNodesEdges(
     nodes.set(id, currentNode)
 
     if (parentNode) {
+      const isConsumer = item.relationship === 'consumer'
       const edge = {
         id: `${parentNode.id}-${id}`,
-        source: id,
-        target: parentNode.id,
+        source: isConsumer ? parentNode.id : id,
+        target: isConsumer ? id : parentNode.id,
         animated: true,
       } satisfies Edge
 

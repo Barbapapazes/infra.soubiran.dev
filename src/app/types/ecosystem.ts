@@ -4,9 +4,10 @@ export type EcosystemType
     | 'data'
     | 'deployment'
     | 'domain'
+    | 'internal-tool'
     | 'object-storage'
-    | 'platform'
     | 'repository'
+    | 'service'
     | 'stack'
     | 'website'
     | 'realtime'
@@ -35,8 +36,12 @@ export type EcosystemName
     | 'Litestream'
     | ({} & string)
 
+export type EcosystemRelationship = 'consumer' | 'producer'
+
 export interface EcosystemItem {
   type?: EcosystemType
+  /** Relationship to the parent node. Defaults to producer. */
+  relationship?: EcosystemRelationship
   id?: string
   name: EcosystemName
   description?: string
