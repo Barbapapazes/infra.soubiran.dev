@@ -24,12 +24,14 @@ const router = useRouter()
 const routes = computed(() => {
   const prefix = props.pathPrefix.endsWith('/') ? props.pathPrefix : `${props.pathPrefix}/`
   return router.getRoutes()
-    .filter(route => route.path.startsWith(prefix) && route.path !== prefix)
+    .filter(route => route.path.startsWith(prefix) && route.path !== prefix && route.meta.frontmatter)
     .map((route) => {
+      const frontmatter = route.meta.frontmatter!
+
       return {
         path: route.path,
-        title: route.meta.frontmatter.title,
-        description: route.meta.frontmatter.description,
+        title: frontmatter.title,
+        description: frontmatter.description,
       }
     })
 })

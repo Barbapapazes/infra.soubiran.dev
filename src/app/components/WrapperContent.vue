@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { TableOfContentsItem } from '@soubiran/ui/components/TableOfContents.vue'
-import type { Ecosystem } from '@/types/ecosystem'
+import type { Ecosystem } from '@/app/types/ecosystem'
 import { useHead } from '@unhead/vue'
 import { motion } from 'motion-v'
 
@@ -52,6 +52,8 @@ useHead({
         <USeparator class="my-2" />
 
         <Feedback :id="props.frontmatter.id" />
+
+        <!-- Comments -->
       </motion.div>
     </template>
 
@@ -64,6 +66,12 @@ useHead({
         :ecosystem="frontmatter.ecosystem"
         :ui="{ root: 'w-full h-160' }"
       />
+
+      <UContainer class="max-w-7xl w-full mx-auto">
+        <div class="max-w-3xl mx-auto">
+          <Comments :page-id="props.frontmatter.id" />
+        </div>
+      </UContainer>
     </template>
   </Page>
 </template>

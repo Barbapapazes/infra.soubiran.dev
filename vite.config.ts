@@ -1,5 +1,4 @@
 import type { BreadcrumbItem, StructuredDataPageConfig } from '@soubiran/vite/types'
-import ui from '@soubiran/ui/ui'
 import soubiran from '@soubiran/vite'
 import { getUri, toUrl } from '@soubiran/vite/utils'
 import { defineConfig } from 'vite'
@@ -10,6 +9,7 @@ const title = 'Estéban\'s Infra'
 const hostname = 'infra.soubiran.dev'
 
 export default defineConfig({
+  ssr: { noExternal: ['@soubiran/ui', '@nuxt/ui'] },
   plugins: [
     verifyEcosystemLinks(),
     generatePagesJson({
@@ -20,9 +20,6 @@ export default defineConfig({
     soubiran({
       title,
       hostname,
-      ui: {
-        ui,
-      },
       router: {
         extractPage,
       },

@@ -38,6 +38,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/auth/callback': RouteRecordInfo<
+      '/auth/callback',
+      '/auth/callback',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/ecosystem': RouteRecordInfo<
       '/ecosystem',
       '/ecosystem',
@@ -145,6 +152,12 @@ declare module 'vue-router/auto-routes' {
     'src/app/pages/index.md': {
       routes:
         | '/'
+      views:
+        | never
+    }
+    'src/app/pages/auth/callback.vue': {
+      routes:
+        | '/auth/callback'
       views:
         | never
     }

@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { EcosystemItem } from '@/types/ecosystem'
+import type { EcosystemItem } from '@/app/types/ecosystem'
 import { motion } from 'motion-v'
 import graph from '~icons/ph/graph-duotone'
 import house from '~icons/ph/house-duotone'
@@ -24,8 +24,9 @@ function trackClick(label: string) {
 
 const router = useRouter()
 const ecosystem = router.getRoutes()
-  .filter(route => (/^\/(?:websites|services|internal-tools)\//).test(route.path) && route.meta.frontmatter.ecosystem)
+  .filter(route => (/^\/(?:websites|services|internal-tools)\//).test(route.path) && route.meta.frontmatter?.ecosystem)
   .map((route) => {
+    const frontmatter = route.meta.frontmatter!
     const type = route.path.startsWith('/websites/')
       ? 'website'
       : route.path.startsWith('/services/')
@@ -34,8 +35,8 @@ const ecosystem = router.getRoutes()
 
     return {
       type,
-      name: route.meta.frontmatter.title,
-      ecosystem: route.meta.frontmatter.ecosystem!,
+      name: frontmatter.title,
+      ecosystem: frontmatter.ecosystem!,
     } satisfies EcosystemItem
   })
 
