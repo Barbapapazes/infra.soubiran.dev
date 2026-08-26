@@ -43,12 +43,16 @@ export default defineConfig({
           wrapperComponent: (id) => {
             const page = extractPage(id)
 
-            if (page === 'platforms-index') {
-              return 'WrapperPlatforms'
+            if (page === 'services-index') {
+              return 'WrapperServices'
             }
 
             if (page === 'websites-index') {
               return 'WrapperWebsites'
+            }
+
+            if (page === 'internal-tools-index') {
+              return 'WrapperInternalTools'
             }
 
             return 'WrapperContent'
@@ -58,19 +62,17 @@ export default defineConfig({
       seo: {
         assert: {
           rules: (id, frontmatter) => {
-          // Check if this is a platform or website page (not index pages)
-            const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
+          // Check if this is a project page (not index pages)
+            const isProject = (id.includes('/services/') || id.includes('/websites/') || id.includes('/internal-tools/'))
               && !id.endsWith('index.md')
 
-            // Validate url field for platform/website pages
-            if (isPlatformOrWebsite && !frontmatter.url) {
+            if (isProject && !frontmatter.url) {
               throw new Error(
                 `Missing required field 'url' in frontmatter for file: ${id}`,
               )
             }
 
-            // Validate repository field for platform/website pages
-            if (isPlatformOrWebsite && !frontmatter.repository) {
+            if (isProject && !frontmatter.repository) {
               throw new Error(
                 `Missing required field 'repository' in frontmatter for file: ${id}`,
               )
@@ -79,7 +81,17 @@ export default defineConfig({
         },
         structuredData: {
           pageConfig: (page, frontmatter): StructuredDataPageConfig => {
-            if (page === 'platforms-show' || page === 'websites-show') {
+            if (page === 'services-show' || page === 'websites-show' || page === 'internal-tools-show') {
+              const category = page === 'services-show'
+                ? 'services'
+                : page === 'websites-show'
+                  ? 'websites'
+                  : 'internal-tools'
+              const categoryTitle = page === 'services-show'
+                ? 'Services'
+                : page === 'websites-show'
+                  ? 'Websites'
+                  : 'Internal tools'
               const breadcrumbItems: BreadcrumbItem[] = [
                 {
                   title,
@@ -87,9 +99,9 @@ export default defineConfig({
                   url: toUrl(hostname),
                 },
                 {
-                  title: page === 'platforms-show' ? 'Platforms' : 'Websites',
+                  title: categoryTitle,
                   type: 'WebPage',
-                  url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
+                  url: toUrl(hostname, category),
                 },
                 {
                   title: frontmatter.title,
@@ -102,7 +114,7 @@ export default defineConfig({
               }
             }
 
-            if (page === 'platforms-index' || page === 'websites-index') {
+            if (page === 'services-index' || page === 'websites-index' || page === 'internal-tools-index') {
               return { type: 'collection' }
             }
 
@@ -111,7 +123,7 @@ export default defineConfig({
         },
       },
       api: {
-        categories: ['websites', 'platforms'],
+        categories: ['websites', 'services', 'internal-tools'],
       },
     }),
   ],
@@ -125,7 +137,7 @@ export default defineConfig({
   },
 })
 
-type Page = 'index' | 'platforms-index' | 'platforms-show' | 'websites-index' | 'websites-show' | 'ecosystem'
+type Page = 'index' | 'services-index' | 'services-show' | 'websites-index' | 'websites-show' | 'internal-tools-index' | 'internal-tools-show' | 'ecosystem'
 
 function extractPage(id: string): Page | null {
   const uri = getUri(id)
@@ -134,12 +146,12 @@ function extractPage(id: string): Page | null {
     return 'index'
   }
 
-  if (uri === 'platforms') {
-    return 'platforms-index'
+  if (uri === 'services') {
+    return 'services-index'
   }
 
-  if (uri.startsWith('platforms/')) {
-    return 'platforms-show'
+  if (uri.startsWith('services/')) {
+    return 'services-show'
   }
 
   if (uri === 'websites') {
@@ -148,6 +160,14 @@ function extractPage(id: string): Page | null {
 
   if (uri.startsWith('websites/')) {
     return 'websites-show'
+  }
+
+  if (uri === 'internal-tools') {
+    return 'internal-tools-index'
+  }
+
+  if (uri.startsWith('internal-tools/')) {
+    return 'internal-tools-show'
   }
 
   if (uri === 'ecosystem') {

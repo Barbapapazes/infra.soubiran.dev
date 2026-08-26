@@ -2,8 +2,8 @@
 id: 6ea85ef4-62a7-49ab-b9c5-d1c28ae70808
 title: soubiran.dev
 description: >-
-  This is my personal website and main domain. It is the entry point to my
-  writings, projects, talks, and other content.
+  My statically generated personal website, with build-time content sources,
+  API-backed interactions, and a realtime viewer count.
 url: 'https://soubiran.dev'
 repository:
   url: 'https://github.com/barbapapazes/soubiran.dev'
@@ -29,62 +29,88 @@ ecosystem:
                 name: VitePress
                 href: 'https://vitepress.dev'
               - type: stack
+                name: Vue
+                href: 'https://vuejs.org'
+              - type: stack
+                name: Tailwind CSS
+                href: 'https://tailwindcss.com'
+              - type: stack
                 name: Pinia Colada
                 href: 'https://pinia-colada.esm.dev'
-          - type: ci/cd
-            name: GitHub Actions
-            description: Rebuild the site every day to keep external data fresh.
-          - type: data
-            name: talks.soubiran.dev
-            description: Fetch the talks metadata displayed in the talks section.
-            href: /websites/talks-soubiran-dev
-          - type: data
-            id: projects
-            name: GitHub
-            description: Fetch repository data to populate the projects section.
-            href: 'https://github.com/barbapapazes?tab=repositories'
-  - type: object-storage
-    id: soubiran-dev
-    name: Cloudflare R2
-    description: Store the website's videos outside the Git repository.
+              - type: ci/cd
+                relationship: consumer
+                name: GitHub Actions
+                description: Check changes, refresh remote build data each day, and react to pushes on `main`.
+                ecosystem:
+                  - type: service
+                    relationship: consumer
+                    name: redeploy.soubiran.dev
+                    description: Wait for this website deployment before invoking the API deploy hook.
+  - type: website
+    name: talks.soubiran.dev
+    description: Supply talk metadata and transcripts to the website build.
+  - type: data
+    id: github-projects
+    name: GitHub repository data
+    description: Supply current public project metadata to the projects section during the build.
+  - type: service
+    name: api.soubiran.dev
+    description: Own accounts, comments, reactions, feedback, votes, messages, and notifications.
+  - type: realtime
+    name: PartyKit
+    description: Count active browser connections and broadcast the current viewer count.
+  - type: data
+    relationship: consumer
+    name: Website metadata
+    description: Publish `meta.json` with stable post and series records.
+    ecosystem:
+      - type: service
+        relationship: consumer
+        name: api.soubiran.dev
+        description: Import the current website records during each API deployment.
+  - type: data
+    relationship: consumer
+    name: Website catalog and documents
+    description: Publish `pages.json` and complete Markdown documents.
+    ecosystem:
+      - type: service
+        relationship: consumer
+        name: mcp.soubiran.dev
+        description: List and retrieve the public website content for MCP clients.
   - type: domain
     name: Cloudflare Domains
     description: Manage the DNS records that route `soubiran.dev` to the website.
-  - type: realtime
-    name: PartyKit
-    description: Power the live viewer count displayed across the website.
 ---
 
-The website [soubiran.dev](https://soubiran.dev) is my personal website and main domain. It serves as the entry point to my writings, projects, talks, and more.
+[soubiran.dev](https://soubiran.dev) is my personal website and the main public entry point for my posts, series, projects, and talks. VitePress generates the content as static files, while [api.soubiran.dev](/services/api-soubiran-dev) and PartyKit add the parts that need shared state after a page reaches the browser.
 
-![soubiran.dev homepage screenshot](/websites/soubiran-dev/homepage.png)
+The split is the useful part of this project. Most requests need only files at the edge, but readers can still comment, react, vote, receive notifications, and see how many people are online.
 
-## Development
+## Why the content stays static
 
-This website is content-driven and built with [VitePress](https://vitepress.dev) and a custom fork of Nuxt UI. This setup streamlines development and makes it easy to create and manage content.
+My content changes when I publish, not when someone requests a page. I keep the English and French Markdown in the website repository and let VitePress render it during the build. Cloudflare Workers Static Assets can then serve the result without a server rendering each visit.
 
-> [!NOTE]
-> A migration is scheduled to a standard Vite + Vue setup later in 2025.
+Some sections depend on data owned elsewhere. The build reads public repository metadata from GitHub and the current catalog from [talks.soubiran.dev](/websites/talks-soubiran-dev). It also downloads available talk transcripts to create pages under the main domain. Pulling this data at build time keeps the delivered pages static and gives the website one consistent snapshot of each source.
 
-## Deployment
+I did not put comments or accounts into that build. Those records change independently of publication and belong to [api.soubiran.dev](/services/api-soubiran-dev), where Laravel owns their validation, permissions, and storage. This division works well for a content site whose public pages are read often but whose interactive data still needs authenticated writes.
 
-The website is statically generated. The build process is automated with [Cloudflare Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) and deployed to [Cloudflare Workers](https://workers.cloudflare.com/).
+## How the build and live features meet
 
-At build time, the website fetches data from [talks.soubiran.dev](/websites/talks-soubiran-dev) to display the list of talks I've given over the years. GitHub data is also fetched to populate the projects section with up-to-date information about my open source repositories.
+The build produces more than HTML. It copies the source Markdown into the deployed output and generates two catalogs with different consumers:
 
-The website accesses [the API](/platforms/api-soubiran-dev) only on the client side to fetch dynamic data, such as comments, reactions, and more.
+- `pages.json` describes pages, posts, series, episodes, translations, source references, and canonical URLs. [mcp.soubiran.dev](/services/mcp-soubiran-dev) uses it with the published Markdown to list and retrieve website content.
+- `meta.json` contains the stable IDs, titles, URLs, dates, and publication fields that the Laravel API imports for posts and series.
 
-Videos are hosted on [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/) using [rclone](https://rclone.org/) to optimize performance and avoid bloating the Git repository with large files. All images are converted to WebP to reduce their size and improve loading times.
+Those stable IDs connect a generated page to its mutable records. Once the browser loads, it calls the API for comments, reactions, feedback, next-article votes, the current user, and notifications. It also sends comments, reactions, votes, feedback, and messages there. Requests include the browser session, and writes use Laravel Sanctum's CSRF cookie rather than exposing credentials in the static files.
 
-This last step is not part of the build process. It is done manually when new videos or images are added.
+PartyKit handles one smaller realtime concern. The viewer component opens a WebSocket connection to the `soubiran-dev` room. The PartyKit server counts active connections and broadcasts the new total whenever someone connects or leaves. The browser only reads that count, so realtime presence stays separate from both the static build and the Laravel data model.
 
-> [!NOTE]
-> Currently, Raycast is used to resize and convert images. In the future, images will be stored in R2 and processed on the fly using Cloudflare Images.
+## How publication stays in order
 
-## Automation
+Cloudflare Builds runs the VitePress build and deploys `.vitepress/dist` through Workers Static Assets. A scheduled GitHub Actions workflow calls the website deploy hook each day so the build refreshes GitHub and talk data even when the content repository has not changed.
 
-To reduce maintenance, keep a single source of truth, and focus on creating content, I've automated data fetching and the redeployment of both the website and the API whenever new content is available.
+Remote build data makes deployment order matter. When [talks.soubiran.dev](/websites/talks-soubiran-dev) changes, it asks [redeploy.soubiran.dev](/services/redeploy-soubiran-dev) to wait until the new Talks Worker is in production before calling the personal website deploy hook. The website build then reads the matching talk catalog and transcripts instead of the previous deployment.
 
-1. Every day, a GitHub Action rebuilds and deploys the website to Cloudflare Workers, ensuring the data is always up to date.
-2. Every time I publish a new talk, the website is rebuilt and deployed automatically.
-3. For every commit on the main branch, a GitHub Action triggers a new deployment of [the API](/platforms/api-soubiran-dev) to ensure it is always in sync with the website content.
+A push to the website's `main` branch starts the reverse dependency. GitHub Actions sends the website Worker name and the API deploy hook to [redeploy.soubiran.dev](/services/redeploy-soubiran-dev). After the coordinator confirms that the latest website build is live, it invokes the API deployment. Laravel imports the new `meta.json` during that deployment, so it can associate interactive records with newly published posts and series.
+
+GitHub Actions also runs the unit tests and linter for repository changes. Cloudflare Access service credentials protect requests to the redeployment coordinator, and GitHub stores the deploy hook URLs as secrets. The website, its catalogs, and its Markdown documents stay public.
