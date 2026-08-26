@@ -45,6 +45,20 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/internal-tools/': RouteRecordInfo<
+      '/internal-tools/',
+      '/internal-tools',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/internal-tools/calendar-soubiran-dev': RouteRecordInfo<
+      '/internal-tools/calendar-soubiran-dev',
+      '/internal-tools/calendar-soubiran-dev',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/services/': RouteRecordInfo<
       '/services/',
       '/services',
@@ -137,6 +151,18 @@ declare module 'vue-router/auto-routes' {
     'src/app/pages/ecosystem.vue': {
       routes:
         | '/ecosystem'
+      views:
+        | never
+    }
+    'src/app/pages/internal-tools/index.md': {
+      routes:
+        | '/internal-tools/'
+      views:
+        | never
+    }
+    'src/app/pages/internal-tools/calendar-soubiran-dev.md': {
+      routes:
+        | '/internal-tools/calendar-soubiran-dev'
       views:
         | never
     }

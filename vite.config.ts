@@ -51,6 +51,10 @@ export default defineConfig({
               return 'WrapperWebsites'
             }
 
+            if (page === 'internal-tools-index') {
+              return 'WrapperInternalTools'
+            }
+
             return 'WrapperContent'
           },
         },
@@ -59,7 +63,7 @@ export default defineConfig({
         assert: {
           rules: (id, frontmatter) => {
           // Check if this is a project page (not index pages)
-            const isProject = (id.includes('/services/') || id.includes('/websites/'))
+            const isProject = (id.includes('/services/') || id.includes('/websites/') || id.includes('/internal-tools/'))
               && !id.endsWith('index.md')
 
             if (isProject && !frontmatter.url) {
@@ -77,9 +81,17 @@ export default defineConfig({
         },
         structuredData: {
           pageConfig: (page, frontmatter): StructuredDataPageConfig => {
-            if (page === 'services-show' || page === 'websites-show') {
-              const category = page === 'services-show' ? 'services' : 'websites'
-              const categoryTitle = page === 'services-show' ? 'Services' : 'Websites'
+            if (page === 'services-show' || page === 'websites-show' || page === 'internal-tools-show') {
+              const category = page === 'services-show'
+                ? 'services'
+                : page === 'websites-show'
+                  ? 'websites'
+                  : 'internal-tools'
+              const categoryTitle = page === 'services-show'
+                ? 'Services'
+                : page === 'websites-show'
+                  ? 'Websites'
+                  : 'Internal tools'
               const breadcrumbItems: BreadcrumbItem[] = [
                 {
                   title,
@@ -102,7 +114,7 @@ export default defineConfig({
               }
             }
 
-            if (page === 'services-index' || page === 'websites-index') {
+            if (page === 'services-index' || page === 'websites-index' || page === 'internal-tools-index') {
               return { type: 'collection' }
             }
 
@@ -111,7 +123,7 @@ export default defineConfig({
         },
       },
       api: {
-        categories: ['websites', 'services'],
+        categories: ['websites', 'services', 'internal-tools'],
       },
     }),
   ],
@@ -125,7 +137,7 @@ export default defineConfig({
   },
 })
 
-type Page = 'index' | 'services-index' | 'services-show' | 'websites-index' | 'websites-show' | 'ecosystem'
+type Page = 'index' | 'services-index' | 'services-show' | 'websites-index' | 'websites-show' | 'internal-tools-index' | 'internal-tools-show' | 'ecosystem'
 
 function extractPage(id: string): Page | null {
   const uri = getUri(id)
@@ -148,6 +160,14 @@ function extractPage(id: string): Page | null {
 
   if (uri.startsWith('websites/')) {
     return 'websites-show'
+  }
+
+  if (uri === 'internal-tools') {
+    return 'internal-tools-index'
+  }
+
+  if (uri.startsWith('internal-tools/')) {
+    return 'internal-tools-show'
   }
 
   if (uri === 'ecosystem') {

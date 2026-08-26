@@ -11,5 +11,6 @@ test('ecosystem page has overlay header', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Home' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Websites' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Services' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Internal tools' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Ecosystem' })).toBeVisible()
 })

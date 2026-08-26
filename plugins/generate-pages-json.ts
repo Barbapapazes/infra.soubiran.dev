@@ -10,7 +10,7 @@ export interface GeneratePagesJsonOptions {
   outputFile: string
 }
 
-type PageType = 'documentation' | 'service' | 'website'
+type PageType = 'documentation' | 'internal-tool' | 'service' | 'website'
 
 interface RepositoryLink {
   url: string
@@ -113,12 +113,20 @@ async function createPageEntry(filePath: string, hostname: string, pagesDir: str
 function getPageType(filePath: string, pagesDir: string): PageType {
   const relativePath = path.relative(pagesDir, filePath)
 
+  if (path.basename(relativePath) === 'index.md') {
+    return 'documentation'
+  }
+
   if (relativePath.startsWith(`services${path.sep}`)) {
     return 'service'
   }
 
   if (relativePath.startsWith(`websites${path.sep}`)) {
     return 'website'
+  }
+
+  if (relativePath.startsWith(`internal-tools${path.sep}`)) {
+    return 'internal-tool'
   }
 
   return 'documentation'

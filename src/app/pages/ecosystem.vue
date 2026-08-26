@@ -5,6 +5,7 @@ import graph from '~icons/ph/graph-duotone'
 import house from '~icons/ph/house-duotone'
 import squaresFour from '~icons/ph/squares-four-duotone'
 import stack from '~icons/ph/stack-duotone'
+import toolbox from '~icons/ph/toolbox-duotone'
 import Ecosystem from '@/app/components/Ecosystem/Ecosystem.vue'
 
 const ecosystemTV = tv({
@@ -23,12 +24,20 @@ function trackClick(label: string) {
 
 const router = useRouter()
 const ecosystem = router.getRoutes()
-  .filter(route => (route.path.startsWith('/websites/') || route.path.startsWith('/services/')) && route.meta.frontmatter.ecosystem)
-  .map(route => ({
-    type: route.path.startsWith('/websites/') ? 'website' : 'service',
-    name: route.meta.frontmatter.title,
-    ecosystem: route.meta.frontmatter.ecosystem!,
-  } satisfies EcosystemItem))
+  .filter(route => (/^\/(?:websites|services|internal-tools)\//).test(route.path) && route.meta.frontmatter.ecosystem)
+  .map((route) => {
+    const type = route.path.startsWith('/websites/')
+      ? 'website'
+      : route.path.startsWith('/services/')
+        ? 'service'
+        : 'internal-tool'
+
+    return {
+      type,
+      name: route.meta.frontmatter.title,
+      ecosystem: route.meta.frontmatter.ecosystem!,
+    } satisfies EcosystemItem
+  })
 
 const ui = computed(() => ecosystemTV())
 </script>
@@ -77,6 +86,17 @@ const ui = computed(() => ecosystemTV())
             :icon="stack"
             :class="ui.link()"
             @click="trackClick('Services')"
+          />
+        </UTooltip>
+        <UTooltip text="Internal tools">
+          <UButton
+            to="/internal-tools"
+            variant="link"
+            color="neutral"
+            aria-label="Internal tools"
+            :icon="toolbox"
+            :class="ui.link()"
+            @click="trackClick('Internal tools')"
           />
         </UTooltip>
         <UTooltip text="Ecosystem">

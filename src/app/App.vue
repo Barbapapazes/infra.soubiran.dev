@@ -4,6 +4,7 @@ import graph from '~icons/ph/graph-duotone'
 import house from '~icons/ph/house-duotone'
 import squaresFour from '~icons/ph/squares-four-duotone'
 import stack from '~icons/ph/stack-duotone'
+import toolbox from '~icons/ph/toolbox-duotone'
 
 const route = useRoute()
 
@@ -11,6 +12,7 @@ const links = [
   { icon: house, label: 'Home', to: '/' },
   { icon: squaresFour, label: 'Websites', to: '/websites' },
   { icon: stack, label: 'Services', to: '/services' },
+  { icon: toolbox, label: 'Internal tools', to: '/internal-tools' },
   { icon: graph, label: 'Ecosystem', to: '/ecosystem' },
 ]
 </script>
