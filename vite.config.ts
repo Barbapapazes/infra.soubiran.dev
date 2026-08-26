@@ -9,6 +9,7 @@ const title = 'Estéban\'s Infra'
 const hostname = 'infra.soubiran.dev'
 
 export default defineConfig({
+  ssr: { noExternal: ['@soubiran/ui', '@nuxt/ui'] },
   plugins: [
     verifyEcosystemLinks(),
     generatePagesJson({
