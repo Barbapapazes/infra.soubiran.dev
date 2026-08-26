@@ -24,7 +24,7 @@ const links = [
       :initial="{ opacity: 0 }"
       :animate="{ opacity: 1, transition: { delay: 0.8, duration: 0.6 } }"
     >
-      <Header v-if="route.meta.frontmatter.page !== 'ecosystem'" :links="links" />
+      <Header v-if="route.meta.frontmatter && route.meta.frontmatter.page !== 'ecosystem'" :links="links" />
     </motion.div>
 
     <App>
